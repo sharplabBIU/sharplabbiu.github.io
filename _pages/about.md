@@ -1,7 +1,7 @@
 ---
 layout: about
 title: Home
-permalink: /Home/
+permalink: /
 
 profile:
   align: right

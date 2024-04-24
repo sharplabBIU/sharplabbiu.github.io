@@ -2,7 +2,6 @@
 layout: page
 title: PI
 permalink: /PI/
-nav_order: 2
 ---
 
 <p>
