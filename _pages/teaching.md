@@ -1,10 +1,10 @@
 ---
 layout: page
-permalink: /teaching/
+permalink: /mentoring/
 title: Mentoring Philosophy
 description:
 nav: true
-nav_order: 6
+nav_order: 7
 ---
 
 # Overview

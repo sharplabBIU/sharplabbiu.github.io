@@ -3,7 +3,7 @@ layout: cv
 permalink: /cv/
 title: cv
 nav: true
-nav_order: 5
+nav_order: 8
 cv_pdf: CV.pdf
 description: Dr. Paul Sharp CV
 toc:

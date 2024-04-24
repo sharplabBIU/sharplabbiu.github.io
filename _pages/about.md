@@ -1,7 +1,9 @@
 ---
 layout: about
 title: Home
-permalink: /
+permalink: /Home/
+nav_order: 1
+
 
 profile:
   align: right
