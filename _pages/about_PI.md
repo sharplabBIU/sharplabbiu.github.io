@@ -1,7 +1,7 @@
 ---
 layout: about
 title: PI
-permalink: /
+permalink: /PI/
 
 profile:
   align: right

@@ -1,13 +1,13 @@
 ---
 layout: page
 permalink: /teaching/
-title: teaching
-description: Materials for courses you taught. Replace this text with your description.
+title: Mentoring Philosophy
+description:
 nav: true
 nav_order: 6
 ---
 
-# Overview of Mentoring Philosophy
+# Overview
 
 I recall a teacher from my youth emphasizing their love for teaching because it was a reciprocal process. As much as a joy as it was for her to guide us towards new knowledge, she was just as thankful for the ample ways in which she learned from us. Embracing intellectual humility and openness in a position of authority as a teacher and mentor are deeply important for personal and scientific growth on the part of both the teacher and students. In my roles as teacher and mentor, I adhere to three core principles that I believe create conditions for intellectual humility, creative interchange and reciprocal learning to thrive.
 
