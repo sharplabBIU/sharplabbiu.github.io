@@ -4,7 +4,7 @@ title: team
 permalink: /team/
 description: Our Team
 nav: true
-display_categories: [Director, PHD, Msc, Alumni]
+display_categories: [Director, PHD, Post-Doc, MA, Alumni]
 horizontal: false
 ---
 

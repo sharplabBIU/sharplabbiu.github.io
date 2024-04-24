@@ -10,7 +10,7 @@ category: work
 
 The purpose of the following study was to design a cognitive task with optimal starting points for planning in order to model how we infer when to initiate planning. In the task, participants learned the cognitive map displayed below by randomly starting at a specific image (e.g., car) and being instructed to take a specific action (left or right). This action deterministically transitioned them to a subsequent image, reflected in the black arrows. Participants learned these 1-step transitions and were quizzed on them. They were told they could then use this knowledge to plan and win money in a later phase of the task. Note, all variations of this experiment presented here are pilot studies (Study 1 with time pressure n=14; Study 2 without time pressure n=16; Study 3 n=10).
 
-![Image](/asets/img/4steptask.png =300x200)
+![Image](/assets/img/4steptask.png =300x200)
 
 ## Planning depth determines when to start planning
 
