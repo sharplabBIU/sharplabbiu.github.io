@@ -1,8 +1,9 @@
 github_users:
-  - sharplabbiu
-  - psharp1289
+
+- sharplabbiu
+- psharp1289
 
 github_repos:
-  - psharp1289/psharp1289.github.io
-  - sharplabbiu/sharplabbiu.github.io
 
+- psharp1289/psharp1289.github.io
+- sharplabbiu/sharplabbiu.github.io
