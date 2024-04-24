@@ -17,5 +17,3 @@ Download CV:
 <a href="../assets/pdf/CV.pdf" download>
   <img src="../assets/img/cv_icon.png" alt="Download Icon" style="width: 20px; height: 20px;"/> Click to download
 </a>
-
-
