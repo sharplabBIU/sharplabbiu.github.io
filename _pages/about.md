@@ -15,5 +15,5 @@ social: false # includes social icons at the bottom of the page
 ---
 
 <p>
-Our lab seeks to understand how humans learn and plan. We primarily use a reinforcement learning framework to develop algorithmic explanations of cognitive functions. Importantly, we also seek to use this framework to shed light on mechanisms of psychopathology, with specific focus on anxiety.
+Our lab seeks to understand the computational processes underlying how humans learn, plan, and make decisions. We primarily use a reinforcement learning framework to develop algorithmic explanations of these cognitive processes. Importantly, we also seek to use this framework to shed light on mechanisms of psychopathology, with specific focus on understanding mechanisms anxiety.
 </p>
