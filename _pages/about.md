@@ -15,8 +15,5 @@ social: false # includes social icons at the bottom of the page
 ---
 
 <p>
-The lab seeks to understand how humans learn and plan. We primarily use a reinforcement learning framework to develop algorithmic explanations of human learning and planning. Importantly, we also seek to use this framework to shed light on mechanisms of human anxiety.
-
-The Lab PI, Paul, took a nontraditional path and welcomes those with diverse interests to join the team. Paul began in a clinical psychology PhD, moved to a devleopmental neuroscience lab to finish my PhD, and spent the past 5 years in computational cognitive science labs.
-
+Our lab seeks to understand how humans learn and plan. We primarily use a reinforcement learning framework to develop algorithmic explanations of cognitive functions. Importantly, we also seek to use this framework to shed light on mechanisms of psychopathology, with specific focus on anxiety.
 </p>
