@@ -12,4 +12,4 @@ selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
 
-### Our lab seeks to understand the computational processes underlying human **learning and planning**. We use a **reinforcement learning** framework to develop explanations of these processes. Importantly, we seek to use this framework to elucidate mechanisms of **psychopathology**.
+### Our lab seeks to understand the **computations** involved in human **learning and planning**. We use a **reinforcement learning** framework to develop explanations of these processes and their breakdowns in forms of **psychopathology**.
