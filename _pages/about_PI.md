@@ -3,13 +3,6 @@ layout: page
 title: PI
 permalink: /PI/
 nav_order: 2
-
-
-profile:
-  align: right
-  image: prof_pic.png
-  address: >
-    <p></p>
 ---
 
 <p>
