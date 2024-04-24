@@ -1,7 +1,7 @@
 ---
 layout: page
 permalink: /mentoring/
-title: Mentoring Philosophy
+title: mentoring
 description:
 nav: true
 nav_order: 7

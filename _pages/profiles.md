@@ -1,7 +1,7 @@
 ---
 layout: profiles
-permalink: /people/
-title: People
+permalink: /team/
+title: team
 nav: true
 nav_order: 3
 
@@ -10,7 +10,7 @@ profiles:
   # and create one content file for each profile inside _pages/
   - align: right
     image: prof_pic.jpg
-    content: about_PI.md
+    content: PI.md
     image_circular: false # crops the image to make it circular
     more_info: >
       <p> I lead the Sharp Lab.
