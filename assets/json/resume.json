@@ -25,10 +25,7 @@
         "title": "PhD",
         "institution": "University of North Carolina at Chapel Hill",
         "year": "2019",
-        "description": [
-          "Psychology",
-          "Neuroscience"
-        ]
+        "description": ["Psychology", "Neuroscience"]
       }
     ]
   },
@@ -65,9 +62,7 @@
     "contents": [
       {
         "year": "2021",
-        "items": [
-          "Fulbright Fellowship"
-        ]
+        "items": ["Fulbright Fellowship"]
       }
     ]
   }
