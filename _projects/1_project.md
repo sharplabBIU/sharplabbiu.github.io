@@ -1,6 +1,6 @@
 ---
 layout: page
-title: optimally-delayed planning
+title: Optimally-Delayed Planning
 img: assets/img/3step_task.png
 importance: 1
 category: work
