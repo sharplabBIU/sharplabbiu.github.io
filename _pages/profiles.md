@@ -14,8 +14,6 @@ profiles:
     content: about_PI.md
     image_circular: false # crops the image to make it circular
     more_info: >
-      <p> I lead the Sharp Lab. I draw from my diverse background in comptuational, cognitive, clinical and developmental psychology to understand algorithms of human learning and planning, and how they go awry in anxiety and depression. 
+      <p> I lead the Sharp Lab.
       </p>
-      
- 
 ---
