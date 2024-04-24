@@ -2,7 +2,7 @@
 layout: about
 title: PI
 permalink: /
-subtitle: Senior Lecturer, Bar-Ilan University
+subtitle: Senior Lecturer
 
 profile:
   align: right
