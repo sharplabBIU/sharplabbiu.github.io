@@ -1,11 +1,11 @@
 ---
 layout: about
-title: Home
+title: PI
 permalink: /
 
 profile:
   align: right
-  image: lab_logo.png
+  image: prof_pic.png
   address: >
     <p></p>
 
