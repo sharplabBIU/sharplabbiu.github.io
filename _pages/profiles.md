@@ -2,7 +2,7 @@
 layout: page
 title: team
 permalink: /team/
-description: Our Team
+description: Team
 nav: true
 display_categories: [Director, PHD, Msc, Alumni]
 horizontal: false
