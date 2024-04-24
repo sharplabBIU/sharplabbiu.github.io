@@ -11,5 +11,5 @@ nav_order: 2
 </p>
 
 <p>
-I am a computational cognitive scientist with a diverse academic background. I began in a clinical psychology PhD, moved to a devleopmental neuroscience lab to finish my PhD, and spent the past 5 years in computational cognitive science labs. To do so, I've spent time in Chapel Hill (UNC), London (UCL), Jerusalem (Hebrew University), and New Haven (Yale).
+I am a computational cognitive scientist with a diverse academic background. I began in a clinical psychology PhD, moved to a devleopmental neuroscience lab to finish my PhD, and spent the past 5 years in computational cognitive science labs. To do so, I've spent time in UIUC, UNC, UCL (London), Hebrew University (Jerusalem), and Yale.
 </p>
