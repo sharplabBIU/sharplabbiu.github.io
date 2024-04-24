@@ -12,7 +12,6 @@ The purpose of the following study was to design a cognitive task with optimal s
 
 ![Image](/asets/img/4steptask.png =300x200)
 
-
 ## Planning depth determines when to start planning
 
 Participants were told that they would always start by deciding between the images at the top of the map -- here the trident or the planet. Their decision was based on an instructed reward they could plan for. For example, they could be told 400 points is hiding behind the image of the snorkel, and they can plan to get to the snorkel from the very first decision. As you see below, if the reward is at the snorkel, they NEED to start planning from their 1st of 4 decisions, because if they don't choose the planet, they cannot arrive at the snorkel. Therefore, the snorkel has a planning depth of 4, requiring all 4 decisions to be planned out starting from the very first decision. When participants took an action, they arrived at a new image determined by the map structure, and could continue executing a plan or initiating a new plan.
