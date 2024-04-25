@@ -20,4 +20,4 @@ Download CV:
 
 Academic Profile:
 
-[Google Scholar](https://link-url-here.org)
+[Google Scholar](https://scholar.google.com/citations?user=KXU4cS8AAAAJ&hl=en)
