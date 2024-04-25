@@ -1127,8 +1127,8 @@ swiper-container {
   border-bottom: 1px solid var(--global-divider-color);
   background-color: var(--global-bg-color);
   opacity: 0.95;
-  display: flex;             // Use flexbox for layout
-  justify-content: center;   // Center content horizontally
+  display: flex; // Use flexbox for layout
+  justify-content: center; // Center content horizontally
 }
 
 .navbar-nav {
@@ -1137,9 +1137,9 @@ swiper-container {
 }
 
 .navbar .navbar-nav {
-  display: flex;               // Ensures the navbar items are laid out flexibly
-  flex-direction: row;         // Aligns the navbar items in a row
-  justify-content: center;     // Center items horizontally
+  display: flex; // Ensures the navbar items are laid out flexibly
+  flex-direction: row; // Aligns the navbar items in a row
+  justify-content: center; // Center items horizontally
 }
 
 .navbar .dropdown-menu {
