@@ -7,11 +7,11 @@ nav: true
 nav_order: 7
 ---
 
-I recall a teacher emphasizing their love for teaching because it was a reciprocal process. As much as a joy as it was for her to guide us towards new knowledge, she was just as thankful for the ample ways in which she learned from us. Embracing intellectual humility and openness in a position of authority as a teacher and mentor are deeply important for personal and scientific growth on the part of both the teacher and students. 
+I recall a teacher emphasizing their love for teaching because it was a reciprocal process. As much as a joy as it was for her to guide us towards new knowledge, she was just as thankful for the ample ways in which she learned from us. Embracing intellectual humility and openness in a position of authority as a teacher and mentor are deeply important for personal and scientific growth on the part of both the teacher and students.
 
 # creating an inclusive environment
 
-Inclusivity from the broadest perspective refers to creating environments where individuals feel that they are valued inherently for who they are, which I regard as a necessary precursor to any meaningful intellectual exchange. This requires a space filled with intellectual humility, where it is the PI's responsibility to express what he or she  does not know. It also requires setting a space to respect others for speaking up. Having a space where it is easy to ask questions promotes creativity.
+Inclusivity from the broadest perspective refers to creating environments where individuals feel that they are valued inherently for who they are, which I regard as a necessary precursor to any meaningful intellectual exchange. This requires a space filled with intellectual humility, where it is the PI's responsibility to express what he or she does not know. It also requires setting a space to respect others for speaking up. Having a space where it is easy to ask questions promotes creativity.
 
 # adjusting our mental models in dialogue
 
