@@ -3,7 +3,7 @@ layout: page
 title: optimally-delayed planning
 img: assets/img/3step_task.png
 importance: 1
-category: work
+category: Planning
 ---
 
 ## Study synopsis

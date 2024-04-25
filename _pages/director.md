@@ -1,7 +1,7 @@
 ---
 layout: page
-title: PI
-permalink: /PI/
+title: director
+permalink: /director/
 nav: true
 nav_order: 2
 ---
