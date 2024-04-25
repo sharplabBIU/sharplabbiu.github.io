@@ -17,4 +17,4 @@ Creating a vibrant partnership with mentees requires perspective-taking. I try t
 
 ## learning through experience
 
-It is my job to ensure students have the tools to critically evaluate their new hypotheses. This involves exposing them tools to measure key variables in their hypotheses and statistical methods to determine the level of credibility they should re-assign to their hypotheses after collecting data. Fostering scientific creativity is best achieved through a project-oriented approach. We use interactive coding tools, such as Jupyter Notebooks, to facilitate this.
+Fostering scientific creativity is best achieved through a project-oriented approach. We use interactive coding tools, such as Jupyter Notebooks, to experiment with algorithms that instantiate our new hypotheses. It is my job to ensure students learn the tools to measure key variables in their hypotheses and statistical methods to evaluate their veracity.
