@@ -17,3 +17,7 @@ Download CV:
 <a href="../assets/pdf/CV.pdf" download>
   <img src="../assets/img/cv_icon.png" alt="Download" style="width: 40px; height: 40px;"/> download
 </a>
+
+Academic Profile:
+
+[Google Scholar](https://link-url-here.org)
