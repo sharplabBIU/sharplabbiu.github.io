@@ -10,7 +10,7 @@ category: work
 
 The purpose of the following study was to design a cognitive task with optimal starting points for planning in order to model how we infer when to initiate planning. In the task, participants learned the cognitive map displayed below by randomly starting at a specific image (e.g., car) and being instructed to take a specific action (left or right). This action deterministically transitioned them to a subsequent image, reflected in the black arrows. Participants learned these 1-step transitions and were quizzed on them. They were told they could then use this knowledge to plan and win money in a later phase of the task. Note, all variations of this experiment presented here are pilot studies (Study 1 with time pressure n=14; Study 2 without time pressure n=16; Study 3 n=10).
 
-![im1](../../assets/img/4steptask.png "4stepTask")
+![im1](../assets/img/4steptask.png "4stepTask")
 
 ## Planning depth determines when to start planning
 
@@ -84,7 +84,7 @@ We inspected how particiapnts delayed control for each goal over time, since the
 
 ## Delayed control = delayed planning
 
-A large potential confound in the study is that when participants gave up control at certain early decisions, they didn't **actually delay their planning**. To show this, we need evidence that participants indeed had greater reaction times at the decision point where they had to start planning, since planning takes time! To estimate whether this occurred, we modelled participants' reaction time as a function of several causes of more or less reaction time. Specifically, we used a hierarchical Bayesian regression to explain RT as a function of the following variables. Note below, variable 1 test our main hypothesis that subjects in fact delayed planning:
+When participants gave up control at certain early decisions, it remains a question as to whether they **actually delay their planning**. To rule this out, we need evidence that participants indeed had spent more time at the decision point where they had to initiate planning, since planning takes time! To estimate whether this occurred, we modelled participants' reaction time as a function of several causes of more or less reaction time. Specifically, we used a hierarchical Bayesian regression to explain RT as a function of the following variables. Note below, variable 1 test our main hypothesis that subjects in fact delayed planning:
 
 1. Optimally delayed planning (Initiate planning optimally if there’s behavioral evidence they also gave up control at that time).
 2. Trial number (people got faster over time, suggesting some form of learning)
