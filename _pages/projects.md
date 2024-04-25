@@ -4,7 +4,7 @@ title: current projects
 permalink: /projects/
 nav: true
 nav_order: 4
-display_categories: [Planning,Learning,Psychopathology]
+display_categories: [Planning, Learning, Psychopathology]
 horizontal: false
 ---
 
