@@ -9,15 +9,15 @@ nav_order: 7
 
 I recall a teacher emphasizing their love for teaching because it was a reciprocal process. As much as a joy as it was for her to guide us towards new knowledge, she was just as thankful for the ample ways in which she learned from us. Embracing intellectual humility and openness in a position of authority as a teacher and mentor are deeply important for personal and scientific growth on the part of both the teacher and students.
 
-# creating an inclusive environment
+# creativity, intellectual humility, and speaking freely
 
 Inclusivity from the broadest perspective refers to creating environments where individuals feel that they are valued inherently for who they are, which I regard as a necessary precursor to any meaningful intellectual exchange. This requires a space filled with intellectual humility, where it is the PI's responsibility to express what he or she does not know. It also requires setting a space to respect others for speaking up. Having a space where it is easy to ask questions promotes creativity.
 
-# adjusting our mental models in dialogue
+# seeing the other's perspective
 
 Creating a vibrant partnership with mentees requires perspective-taking. I try to do this by letting go of my mental model to try to understand how a mentee has constructed their own mental model. Doing this is a great example of mutual learning. When I try to understand how the student is thinking, I force myself to stretch my understanding to new terrain, and ask the student to do the same through clarifying for themselves what they mean. This frequently involves drawing diagrams, offering analogies, or working through metaphors, in order to find a common ground for understanding.
 
-# learning through experience in projects
+# learning through experience 
 
 It is my job to ensure students have the tools to critically evaluate their new hypotheses. This involves exposing them to philosophies of science regarding how to corroborate or falsify one’s hypotheses, tools to measure key variables in their hypotheses, and statistical methods to determine the level of credibility they should re-assign to their hypotheses after collecting data.
 
