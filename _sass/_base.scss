@@ -1120,3 +1120,38 @@ swiper-container {
     border-bottom: 2px solid var(--global-text-color);
   }
 }
+
+// Navbar customization
+.navbar {
+  box-shadow: none;
+  border-bottom: 1px solid var(--global-divider-color);
+  background-color: var(--global-bg-color);
+  opacity: 0.95;
+  display: flex;             // Use flexbox for layout
+  justify-content: center;   // Center content horizontally
+}
+
+.navbar-nav {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.navbar .navbar-nav {
+  display: flex;               // Ensures the navbar items are laid out flexibly
+  flex-direction: row;         // Aligns the navbar items in a row
+  justify-content: center;     // Center items horizontally
+}
+
+.navbar .dropdown-menu {
+  background-color: var(--global-bg-color);
+  border: 1px solid var(--global-divider-color);
+  a:not(.active) {
+    color: var(--global-text-color);
+  }
+  a:hover {
+    color: var(--global-hover-color);
+  }
+  .dropdown-divider {
+    border-top: 1px solid var(--global-divider-color) !important;
+  }
+}
