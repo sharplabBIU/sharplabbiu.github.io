@@ -17,7 +17,7 @@ Inclusivity from the broadest perspective refers to creating environments where 
 
 Creating a vibrant partnership with mentees requires perspective-taking. I try to do this by letting go of my mental model to try to understand how a mentee has constructed their own mental model. Doing this is a great example of mutual learning. When I try to understand how the student is thinking, I force myself to stretch my understanding to new terrain, and ask the student to do the same through clarifying for themselves what they mean. This frequently involves drawing diagrams, offering analogies, or working through metaphors, in order to find a common ground for understanding.
 
-# learning through experience 
+# learning through experience
 
 It is my job to ensure students have the tools to critically evaluate their new hypotheses. This involves exposing them to philosophies of science regarding how to corroborate or falsify one’s hypotheses, tools to measure key variables in their hypotheses, and statistical methods to determine the level of credibility they should re-assign to their hypotheses after collecting data.
 
