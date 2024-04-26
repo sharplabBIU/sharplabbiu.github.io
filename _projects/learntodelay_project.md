@@ -1,7 +1,7 @@
 ---
 layout: page
-title: optimally-delayed planning
-img: assets/img/delayedplanning.png
+title: delayed planning
+img: assets/img/delayplanning.png
 importance: 1
 category: Planning
 ---

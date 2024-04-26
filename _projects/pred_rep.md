@@ -1,6 +1,6 @@
 ---
 layout: page
-title: predecessor representation
+title: backward learning
 img: assets/img/predecessorrep.png
 importance: 1
 category: Learning
