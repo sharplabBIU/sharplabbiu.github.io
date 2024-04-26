@@ -8,3 +8,5 @@ category: Director
 ---
 
 ### I study the computations by which humans plan, and how they are disrupted in chronic worry. To do so, I've spent time in UIUC, UNC, UCL (London), Hebrew University (Jerusalem), and Yale.
+
+![im1]({{ '/assets/img/barilan.png' | prepend: site.baseurl }} "barilanlogo")
