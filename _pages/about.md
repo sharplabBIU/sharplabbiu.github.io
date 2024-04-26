@@ -12,7 +12,7 @@ selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
 
-### Our lab uses **computational models** and **neuroimaging** to understand human **learning** and **planning**. We use a reinforcement learning framework to develop explanations of these processes and their breakdown in forms of **psychopathology**.
+### Our lab uses **computational models** and **neuroimaging** to understand human **learning** and **planning**. We draw from [reinforcement learning](http://incompleteideas.net/book/the-book-2nd.html) to model these processes and their breakdown in forms of **psychopathology**.
 
 <br/>
 <br/>
