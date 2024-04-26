@@ -10,9 +10,7 @@ category: Learning
 
 Little work in reinforcement learning studies of planning has formalized algorithms for backwards planning and their advantages over algorithms for forwards planning. Prior work in experimental psychology, however, has demonstrated humans have a general bias towards backwards planning (Park, Lu & Hedgcock, 2017, Psychological Science). The present study will investigate whether humans utilize an efficient form of backwards planning that we term a predecessor representation (PR). Like a successor representation (SR), a predecessor representation encodes long-run expectations of state occupancies given current states and actions taken. However, unlike a successor representation which predicts future state occupancies, a predecessor representation predicts past state occupancies. In the present study, we use simulations of the conditions under which PR-based planning would lead to better outcomes than SR-based planning or even more complex model-based (MB) planning, to develop a task to test whether individuals utilize PR-based planning. Below, I describe below pilot data (n=111) supporting our main hypothesis that individuals do indeed use PR-based planning, as well as the details of the planning task, our hypothesis, and the methods used to analyze the data we plan to collect. For the full details of our preregistration, see here: [OSF Repository](https://osf.io/s286z/)
 
-{:refdef: style="text-align: center;"}
-![mypic](assets/img/task_PR.png). 
-{: refdef} 
+![im1]({{ '/assets/img/task_PR.png' | prepend: site.baseurl }} "1")
 
 ## Study design
 
@@ -24,13 +22,9 @@ After this learning phase, participants face planning queries that ask them to u
 2. Evidence participants can perform transition revaluation using backwards-MB (variable 2)
 3. Evidence participants have a bias for immediate vs. distal rewards when planning (variable 3)
 4. Evidence participants can perform reward revaluation using any approximate (SR PR) strategy (variable 4)
-5. Evidence participants have a bias to select the left or right action (variable 5). 
+5. Evidence participants have a bias to select the left or right action (variable 5).
 
-    
-{:refdef: style="text-align: center;"}
-![mypic](assets/img/transition_reval.png). 
-{: refdef} 
-
+![im1]({{ '/assets/img/transition_reval.png' | prepend: site.baseurl }} "2")
 
 ## Model of main hypothesis
 
@@ -47,40 +41,32 @@ with pm.Model() as hierarchical_model:
     omega = pm.Beta('omega', 1., 1.)
     kappa_minus2 = pm.Gamma('kappa_minus2', 1.105125 , 0.1051249, transform=None)
     kappa = pm.Deterministic('kappa', kappa_minus2 + 2)
-    
+
     theta = pm.Beta('theta', alpha=omega*(kappa-2)+1, beta=(1-omega)*(kappa-2)+1, shape=n_subjects)
 
-    y = pm.Binomial('y',n=8,p=theta[subjects], observed=PR_evidence) 
-    
+    y = pm.Binomial('y',n=8,p=theta[subjects], observed=PR_evidence)
+
 with hierarchical_model:
     trace_main = pm.sample(draws=4000, target_accept=0.99,init='adapt_diag')
 ```
 
 ## Posterior distribution for group-level tendency to choose in line with PR-based planning
 
-As you see below, the parameter omega defining the group-level tendency to choose in line with PR-based planning was significantly greater than the null value of 0.5. Specifically, the posterior highest density interval does not contain any values in the pre-defined region of practical equivalence, defining values similar-enough to 0.5 to be considered null effect sizes. 
-    
-{:refdef: style="text-align: center;"}
-![mypic](assets/img/omega_PRevidence_posterior_betabinomial.png). 
-{: refdef}    
+As you see below, the parameter omega defining the group-level tendency to choose in line with PR-based planning was significantly greater than the null value of 0.5. Specifically, the posterior highest density interval does not contain any values in the pre-defined region of practical equivalence, defining values similar-enough to 0.5 to be considered null effect sizes.
 
+![im1]({{ '/assets/img/omega_PRevidence_posterior_betabinomial.png' | prepend: site.baseurl }} "3")
 
 ## Fit model for manipulation check 1: Bias for distal reward?
 
 We fit the same beta-binomial hierarchical model described to model evidence for our main hypothesis to estimate the group-level tendency to display either a distal reward bias. The only difference in this model is that the choice data being modelled will come from Variable 3. As you see below, the manipulatin checked worked, as the posterior does not include 0.3.
 
-{:refdef: style="text-align: center;"}
-![mypic](assets/img/omega_posterior_distalbias_betabinomial.png). 
-{: refdef}
+![im1]({{ '/assets/img/omega_posterior_distalbias_betabinomial.png' | prepend: site.baseurl }} "4")
 
 ## Fit model for manipulation check 2: Bias for left-wards action?
 
-
 We fit the same beta-binomial hierarchical model described to model evidence for our main hypothesis to estimate the group-level tendency to display a left-ward action bias. The only difference in this model is that the choice data being modelled will come from Variable 5. As you see below, the manipulatin checked worked, as the posterior does not include 0.3.
 
-{:refdef: style="text-align: center;"}
-![mypic](assets/img/omega_posterior_actionbias_betabinomial.png). 
-{: refdef}
+![im1]({{ '/assets/img/omega_posterior_actionbias_betabinomial.png' | prepend: site.baseurl }} "5")
 
 ## Fit model to determine if the cost of transition revaluation is significantly greater than the effect of reward evaluation
 
@@ -99,11 +85,9 @@ with pm.Model() as model_effect_TR:  # model specifications in PyMC3 are wrapped
 
     # Define likelihood
     likelihood = Normal("y", mu=mu, sigma=sigma, observed=effect_TR)
-    
+
 with model_effect_TR:
     trace_effect_TR = pm.sample(draws=4000, target_accept=0.9999,init='adapt_diag')
 ```
 
-{:refdef: style="text-align: center;"}
-![mypic](assets/img/effect_TR.png). 
-{: refdef}
+![im1]({{ '/assets/img/effect_TR.png' | prepend: site.baseurl }} "5")

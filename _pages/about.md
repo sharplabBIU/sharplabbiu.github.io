@@ -20,4 +20,3 @@ social: false # includes social icons at the bottom of the page
 #### We are part of the Department of Psychology at [Bar-Ilan University](https://psychology.biu.ac.il/en), near Tel-Aviv. We welcome prospective trainees from psychology, neuroscience, computer science, and engineering.
 
 <br/>
-
