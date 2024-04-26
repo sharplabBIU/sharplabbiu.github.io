@@ -1,7 +1,7 @@
 ---
 layout: page
 title: optimally-delayed planning
-img: assets/img/3step_task.png
+img: assets/img/delayedplanning.png
 importance: 1
 category: Planning
 ---
