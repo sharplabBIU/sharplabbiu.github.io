@@ -14,4 +14,4 @@ social: false # includes social icons at the bottom of the page
 
 ### Our lab uses **computational models** to understand human **learning** and **planning**. We use a reinforcement learning framework to develop explanations of these processes and their breakdown in forms of **psychopathology**.
 
-![im1]({{ '/assets/img/barilan.png' | prepend: site.baseurl }} "barilanlogo")
+#### We are housed within the Department of Psychology at [Bar-Ilan University](https://psychology.biu.ac.il/en), located and with easy access to Tel-Aviv. We welcome those from diverse academic backgrounds spanning psychology, neuroscience, computer science, and engineering.
