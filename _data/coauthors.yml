@@ -1,31 +1,35 @@
-"Eldar":
+"eldar":
   - firstname: ["Eran"]
     url: https://sites.google.com/site/eldareran/
 
-"Miller":
+"miller":
   - firstname: ["Gregory"]
     url: https://www.psych.ucla.edu/faculty-page/gamiller/
 
-"Fradkin":
+"fradkin":
   - firstname: ["Isaac"]
     url: https://sites.google.com/view/thought-dynamics-lab/
 
-"Heller":
+"heller":
   - firstname: ["Wendy"]
     url: https://psychology.illinois.edu/directory/profile/w-heller
 
-"Telzer":
+"telzer":
   - firstname: ["Eva"]
     url: https://dsnlab.web.unc.edu/
 
-"Russek":
+"russek":
   - firstname: ["Evan"]
     url: https://cocosci.princeton.edu/people.php
 
-"Huys":
+"huys":
   - firstname: ["Quentin"]
     url: https://acplab.org/
 
-"Thomas":
+"thomas":
   - firstname: ["Joel"]
     url: https://www.agnesscott.edu/directory/faculty/thomas-joel.html
+
+"do":
+  - firstname: ["Kathy"]
+    url: https://kathydo.web.unc.edu/
