@@ -46,7 +46,6 @@ When we removed time pressure, we saw individuals in general successfully inferr
 
 ![im2]({{ '/assets/img/success_4step.png' | prepend: site.baseurl }} "success_4step2")
 
-
 ## Chronic worry is associated with impaired inference to delay planning
 
 A motivating clinical hypothesis that we investigated is whether individuals that worry frequently plan too much. Intuitively we know such individuals are constantly planning how to avoid dangerous futures even when it isn't helpful to do so, given how exhausting planning can be. We show here the first experimental evidence that chronic worry is associated with over-planning (specifically, a failure to optimally delaying planning). We created a continuous score, shown on the y-axis of the graph below, which quantifies the degree to which participants delayed control when they should and engaged control when they should. The correlation (_r_ = -0.63) replicates a correlation we found above in the more complicated 4-decision task.
