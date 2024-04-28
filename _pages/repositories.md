@@ -6,7 +6,7 @@ nav: true
 nav_order: 6
 ---
 
-## GitHub users
+## profiles
 
 {% if site.data.repositories.github_users %}
 
@@ -25,7 +25,6 @@ nav_order: 6
   <h4>{{ user }}</h4>
   {% endif %}
   <div class="repositories d-flex flex-wrap flex-md-row flex-column justify-content-between align-items-center">
-  {% include repository/repo_trophies.liquid username=user %}
   </div>
 
 ---
