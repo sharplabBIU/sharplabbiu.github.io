@@ -34,12 +34,6 @@ Remarkably, when participants were under time pressure, which in our task meant 
 
 ![im2]({{ '/assets/img/failure_timepressure.png' | prepend: site.baseurl }} "failure_timepressure")
 
-## Worriers fail to plan under time pressure
-
-Perhaps even more interesting, for subjects the reported they worried frequently, they failed to plan successfully at all under these stressful conditions. Here we measured if participants arrived at the instructed goal.
-
-![im2]({{ '/assets/img/worriers_fail.png' | prepend: site.baseurl }} "worriers_fail2")
-
 ## Humans infer when to start planning
 
 When we removed time pressure, we saw individuals in general successfully inferred when to initiate planning.
@@ -78,9 +72,3 @@ When participants gave up control at certain early decisions, it remains a quest
 As you can see, Variable 1 was highly significant in the predicted direction. The timepoint at which individuals should start planning did indeed have greater reaction time than all other timepoints.
 
 ![im2]({{ '/assets/img/RT_3step.png' | prepend: site.baseurl }} "RT_3step2")
-
-## Chronic worry is associated with impaired inference to delay planning
-
-A motivating clinical hypothesis that we investigated is whether individuals that worry frequently plan too much. Intuitively we know such individuals are constantly planning how to avoid dangerous futures even when it isn't helpful to do so, given how exhausting planning can be. We show here the first experimental evidence that chronic worry is associated with over-planning (specifically, a failure to optimally delaying planning). We created a continuous score, shown on the y-axis of the graph below, which quantifies the degree to which participants delayed control when they should and engaged control when they should. The correlation (_r_ = -0.63) replicates a correlation we found above in the more complicated 4-decision task.
-
-![im2]({{ '/assets/img/worry_correlation.png' | prepend: site.baseurl }} "worry_correlation2")
