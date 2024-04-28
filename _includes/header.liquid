@@ -22,6 +22,7 @@
         </a>
       {% elsif site.enable_navbar_social %}
         <!-- Social Icons -->
+        <link rel="shortcut icon" href="{{ site.icon | prepend: '/assets/img/' | relative_url | bust_file_cache}}">
         <div class="navbar-brand social">{% include social.liquid %}</div>
       {% endif %}
       <!-- Navbar Toggle -->
