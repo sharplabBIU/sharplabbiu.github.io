@@ -14,7 +14,7 @@ I am a computational cognitive scientist with a diverse academic background. I b
 
 Download CV:
 
-<a href="../assets/pdf/cv_updated.pdf" download>
+<a href="../assets/pdf/cv_latest.pdf" download>
   <img src="../assets/img/cv_icon.png" alt="Download" style="width: 40px; height: 40px;"/> download
 </a>
 
