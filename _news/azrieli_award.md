@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Team leader Paul Sharp wins Azrieli Faculty Fellowship!
+Lab director Paul Sharp wins Azrieli Faculty Fellowship!
