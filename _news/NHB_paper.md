@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-[Article](https://rdcu.be/dNWDV]) on predecessor representation accepted at Nature Human Behaviour!
+[Article](https://rdcu.be/dNWDV) on predecessor representation accepted at Nature Human Behaviour!
