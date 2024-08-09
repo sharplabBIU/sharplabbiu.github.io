@@ -13,7 +13,7 @@ I am a computational cognitive scientist with a diverse academic background. I b
 
 Download CV:
 
-[![Download](../assets/img/cv_icon.png){: width=40 height=40 }](assets/pdf/cv_latest.pdf)
+[![Download](../assets/img/cv_icon.png){: width=40 height=40 }](../assets/pdf/cv_latest.pdf)
 
 [Google Scholar](https://scholar.google.com/citations?user=KXU4cS8AAAAJ&hl=en)
 
