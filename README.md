@@ -16,6 +16,7 @@ Our primary research areas include:
 - **Planning:** Examining how individuals anticipate and prepare for future events through various strategies.
 - **Psychopathology:** Examining how precise parameters within our models explain variation in types of anxiety and depression.
 - **Computational Modeling:** Utilizing mathematical models, particularly from a reinforcement learning framework, and computer simulations to predict and explain human behavior in learning and planning tasks.
+- **Neuroimaging:** we test our models using neuroimaging modalities to understand their physical implementation.
 
 ### About Us
 
