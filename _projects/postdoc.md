@@ -1,10 +1,10 @@
 ---
 layout: page
-title: Open Post-Doc
-description: 3-year contract
+title: Dr. Marine Haingeurlot
+description: Postdocto
 importance: 1
-img: assets/img/futurepostdoc.png
+img: assets/img/PHS_2469.jpg
 category: Post-Doc
 ---
 
-### We are recruiting for a 3-year post-doctoral position in cognitive computational science. We will pursue questions about how humans plan and how that is related to anxiety. There will be chances to use MEG-based neuroimaging to study human replay. There are many questions falling under this umbrella, so please get in touch with me and we can set up a meeting!
+### Dr. Marine Haingeurlot uses behavioral experiments and computational models to study people's beliefs. Marine will spearhead our new projects relating computations of planning onto worry. She received her Ph.D. in Economics from University Paris 1 Panthéon-Sorbonne, where she worked under the supervision of Vincent de Gardelle and Jean-Christophe Vergnaud.
