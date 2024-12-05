@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Marine Hainguerlot begins her first week as post-doc and as inaugural Sharp Lab member!
+Post-doc Marine Hainguerlot begins starts as inaugural Sharp Lab member!
