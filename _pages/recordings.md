@@ -1,7 +1,7 @@
 ---
 layout: page
-permalink: /recordings/
-title: recordings
+permalink: /roundtables/
+title: roundtable discussions
 description:
 nav: true
 nav_order: 7
