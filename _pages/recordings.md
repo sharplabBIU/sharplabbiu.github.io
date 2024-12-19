@@ -4,7 +4,7 @@ permalink: /roundtables/
 title: roundtables
 description:
 nav: true
-nav_order: 8
+nav_order: 7
 ---
 
 ### A discussion with Amitai Shenhav on The Affective Gradient Hypothesis (AGH)
