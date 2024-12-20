@@ -1,7 +1,7 @@
 ---
 layout: page
-title: people
-permalink: /people/
+title: team
+permalink: /team/
 description: Our Team
 nav: true
 display_categories: [Director, Post-Doc, PhD, MA, BA, Collaborators, Alumni]
