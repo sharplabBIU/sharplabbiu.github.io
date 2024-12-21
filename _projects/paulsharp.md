@@ -7,7 +7,7 @@ importance: 1
 category: Director
 ---
 
-<p>I am a computational cognitive scientist with a diverse academic background. I began in a clinical psychology PhD program, moved to a developmental neuroscience lab to finish my PhD, and spent 5 years in computational cognitive science labs. Before coming to Bar-Ilan, I spent time in UIUC, UNC, UCL (London), Hebrew University (Jerusalem), and Yale. I am excited to work with aspiring trainees at any level with psychology, neuroscience, computer science and engineering backgrounds.</p>
+<p>I am a computational cognitive neuroscientist with a diverse academic background. Before coming to Bar-Ilan, I spent time in UIUC, UNC, UCL (London), Hebrew University (Jerusalem), and Yale. My main interest is to develop formal models of learning and planning to better understand variation in mental health. I am excited to work with aspiring trainees at any level with psychology, neuroscience, computer science and engineering backgrounds.</p>
 
 <p>Download CV:</p>
 
