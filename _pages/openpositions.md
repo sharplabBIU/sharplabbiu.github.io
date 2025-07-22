@@ -9,6 +9,6 @@ nav_order: 6
 
 ### PhD positions
 
-We have two fully-funded PhD positions available. You can apply through either  the neuroscience or psychology programs. If you are interested, please contact Dr. Sharp at paul.sharp@biu.ac.il. 
+We have two fully-funded PhD positions available. You can apply through either the neuroscience or psychology programs. If you are interested, please contact Dr. Sharp at paul.sharp@biu.ac.il.
 
-When reaching out, please include a statement about your past experience relevant to working in the lab, and why you'd like to join our lab. 
+When reaching out, please include a statement about your past experience relevant to working in the lab, and why you'd like to join our lab.

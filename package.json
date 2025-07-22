@@ -1,6 +1,25 @@
 {
   "devDependencies": {
-    "@shopify/prettier-plugin-liquid": "1.4.0",
-    "prettier": "3.1.1"
-  }
+    "@shopify/prettier-plugin-liquid": "^1.4.0",
+    "prettier": "^3.1.1"
+  },
+  "name": "sharplabbiu.github.io",
+  "version": "1.0.0",
+  "description": "Welcome to the Sharp Lab at Bar-Ilan University. We are dedicated to advancing the understanding of human learning and planning through cutting-edge research in computational modeling.",
+  "main": "purgecss.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sharplabBIU/sharplabbiu.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sharplabBIU/sharplabbiu.github.io/issues"
+  },
+  "homepage": "https://github.com/sharplabBIU/sharplabbiu.github.io#readme"
 }
