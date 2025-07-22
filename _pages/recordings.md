@@ -9,7 +9,7 @@ nav_order: 7
 
 ### 12/16/24: A discussion with Peter F. Hitchcock on cognitive action learning
 
-We discuss with Professor [Peter Hitchcock](https://www.translational-lab.com/) his recent proposal that shows the mechanics and consequences of learning cognitive actions through external reinforcement alone. See his preprint on this topic [here](psyarxiv.com/y2wqf).
+We discuss with Professor [Peter Hitchcock](https://www.translational-lab.com/) his recent proposal that shows the mechanics and consequences of learning cognitive actions through external reinforcement alone. See his preprint on this topic [here](https://www.psyarxiv.com/y2wqf).
 
 ### 12/12/24: A discussion with Amitai Shenhav on The Affective Gradient Hypothesis (AGH)
 
