@@ -2,7 +2,7 @@
 layout: page
 title: Hadas Harris
 description: BA Student
-img: assets/img/Hadas.jpg
+img: assets/img/hadas.jpg
 importance: 1
 category: BA
 ---
