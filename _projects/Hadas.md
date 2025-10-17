@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Hadas Harris
+title: Hadas Schiff
 description: BA Student
-img: assets/img/hadas.jpg
+img: assets/img/hadass.jpg
 importance: 1
 category: BA
 ---
