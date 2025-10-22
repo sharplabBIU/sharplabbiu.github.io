@@ -2,7 +2,7 @@
 layout: page
 title: Dafna Yavetz
 description: MA
-img:assets/img/dafna.jpg
+img: assets/img/dafna.jpg
 importance: 1
 category: MA
 ---
