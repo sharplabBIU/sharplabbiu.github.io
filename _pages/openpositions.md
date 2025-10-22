@@ -9,7 +9,7 @@ nav_order: 6
 
 ### Postdoctoral Fellowships
 
-We have two postdoctoral fellowship positions open. If you are interested, please contact Dr. Sharp at paul.sharp@biu.ac.il. Strong math and coding skills are required. 
+We have two postdoctoral fellowship positions open. If you are interested, please contact Dr. Sharp at paul.sharp@biu.ac.il. Strong math and coding skills are required.
 
 ### PhD positions
 

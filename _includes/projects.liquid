@@ -2,7 +2,8 @@
   <a href="{% if project.redirect %}{{ project.redirect }}{% else %}{{ project.url | relative_url }}{% endif %}">
     <div class="card h-100 hoverable">
       {% if project.img %}
-        {% include figure.liquid
+        {%
+          include figure.liquid
           loading="eager"
           path=project.img
           sizes = "100px"
