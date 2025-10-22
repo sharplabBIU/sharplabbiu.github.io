@@ -7,7 +7,7 @@ importance: 1
 category: Director
 ---
 
-<p>I am a computational cognitive neuroscientist that develops formal models of learning and planning, and their abberations in various psychopathologies. My work has been published in top outlets in the field, including Nature Human Behavior, Trends in Cognitive Sciences, Current Directions in Psychological Science, eLife, and Psychological Medicine. I am excited to work with aspiring trainees at any level with psychology, neuroscience, computer science and engineering backgrounds. </p>
+<p>I am a computational cognitive neuroscientist that develops formal models of learning and planning, and their abberations in various psychopathologies. My work has been published in top outlets in the field, including Nature Human Behavior, Trends in Cognitive Sciences, Current Directions in Psychological Science, eLife, and Psychological Medicine. I am excited to work with aspiring trainees at any level with psychology, neuroscience, abd computer science backgrounds. </p>
 
 <p>Download CV:</p>
 
