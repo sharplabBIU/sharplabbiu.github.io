@@ -8,7 +8,5 @@ nav_order: 5
 
 <!-- _pages/publications.md -->
 <div class="publications">
-
-{% bibliography %}
-
+  {% bibliography %}
 </div>
