@@ -2,7 +2,7 @@
 layout: page
 title: Adi Pizanti
 description: MA
-img:
+img: assets/img/adi.jpg
 importance: 1
 category: MA
 ---
