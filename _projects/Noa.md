@@ -2,7 +2,7 @@
 layout: page
 title: Noa Yadid
 description: MA
-img:
+img: assets/img/noa.jpg
 importance: 1
 category: MA
 ---
