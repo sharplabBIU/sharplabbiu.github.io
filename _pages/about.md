@@ -12,7 +12,7 @@ selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
 
-### We use **computational models** and **neuroimaging**, to understand human **learning** and **planning**. We draw from [reinforcement learning](http://incompleteideas.net/book/the-book-2nd.html) and [bayesian](https://mitpress.mit.edu/9780262049412/bayesian-models-of-cognition) frameworks study basic cognition and its breakdown in **psychopathology**.
+### We use **computational models** to explain human learning and planning. We draw from [reinforcement learning](http://incompleteideas.net/book/the-book-2nd.html) and [bayesian](https://mitpress.mit.edu/9780262049412/bayesian-models-of-cognition) frameworks to study basic cognition and psychopathology.
 
 <br>
 
