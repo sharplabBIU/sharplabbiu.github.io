@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Post-Doc Rami Nasser (PhD Tel-Aviv U), MA fellows Dafna Yavetz (BA Princeton), Noa Yadid (BA BIU), and Adi Pizanti (BA Tel-Aviv College) begin as new lab members!!!
+MA fellows Dafna Yavetz (BA Princeton), Noa Yadid (BA BIU), and Adi Pizanti (BA Tel-Aviv College) begin as new lab members!!!
