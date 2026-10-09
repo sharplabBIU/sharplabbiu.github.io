@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Noam Gil-adi
+title: Noam Gil-Adi
 description: PhD Student
 importance: 1
 category: PhD
