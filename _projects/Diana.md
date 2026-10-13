@@ -2,6 +2,7 @@
 layout: page
 title: Diana Vrubel
 description: PhD Student
+img: assets/img/diana.jpg
 importance: 1
 category: PhD
 ---
