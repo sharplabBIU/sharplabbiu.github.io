@@ -2,6 +2,7 @@
 layout: page
 title: Noam Gil-Adi
 description: PhD Student
+img: assets/img/noam.jpg
 importance: 1
 category: PhD
 ---
