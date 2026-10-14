@@ -7,6 +7,8 @@ importance: 1
 category: PhD
 ---
 
+<img src="/assets/img/diana.jpg" alt="Diana Vrubel" class="img-fluid rounded z-depth-1" style="max-width: 250px; margin-bottom: 1rem;">
+
 <p>
   Diana is beginning a PhD and is interested in computational approaches to mental and neurological disorders, particularly how chronic anxiety alters
   cognitive processes. Diana completed an M.S. in Cognitive Sciences and Technologies at HSE University in Moscow, developing machine-learning methods

@@ -2,7 +2,6 @@
 layout: page
 title: Hadas Schiff
 description: Former BA Student
-img: assets/img/hadass.jpg
 importance: 1
 category: Alumni
 ---

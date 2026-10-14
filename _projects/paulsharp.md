@@ -7,6 +7,8 @@ importance: 1
 category: Director
 ---
 
+<img src="/assets/img/prof_pic.jpg" alt="Paul Sharp" class="img-fluid rounded z-depth-1" style="max-width: 250px; margin-bottom: 1rem;">
+
 <p>
   I am a computational cognitive neuroscientist that develops formal models of learning and planning, and their abberations in various
   psychopathologies. My work has been published in top outlets in the field, including Nature Human Behavior, Trends in Cognitive Sciences, Current
