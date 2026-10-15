@@ -621,6 +621,13 @@ footer.sticky-bottom {
     img {
       width: 100%;
     }
+
+    // Keep team/project card thumbnails short so more cards fit on screen
+    img.card-img-top {
+      height: 180px;
+      object-fit: cover;
+      object-position: center 25%;
+    }
   }
 
   .grid-sizer,
