@@ -8,6 +8,10 @@ profile:
   image: lab_logo2.png
 
 news: true # includes a list of news items
+video: # embedded YouTube video, shown after the news
+  youtube_id: kQJ5UU56xXA
+  title: "Why Do We Worry? - Paul Sharp"
+  heading: "Watch a TED-style talk describing our research:"
 selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
@@ -19,15 +23,3 @@ social: false # includes social icons at the bottom of the page
 ### We are part of the Department of Psychology at [Bar-Ilan University](https://www.biu.ac.il/en), near Tel Aviv. We welcome prospective trainees from psychology, neuroscience, computer science, and engineering.
 
 <br>
-
-#### Watch a TED-style talk describing our research here:
-
-<p align="center">
-  <a href="https://www.youtube.com/watch?v=kQJ5UU56xXA" target="_blank" rel="noopener noreferrer">
-    <img
-      src="https://img.youtube.com/vi/kQJ5UU56xXA/hqdefault.jpg"
-      alt="Click to watch our TED-style talk"
-      style="max-width: 100%; height: auto; border: 0;"
-    >
-  </a>
-</p>

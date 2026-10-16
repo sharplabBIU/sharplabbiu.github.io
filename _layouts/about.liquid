@@ -48,6 +48,25 @@ layout: default
       {% include news.liquid limit=true %}
     {% endif %}
 
+    <!-- Embedded YouTube video (shown after the news) -->
+    {% if page.video %}
+      <div class="home-video">
+        {% if page.video.heading %}
+          <h4>{{ page.video.heading }}</h4>
+        {% endif %}
+        <div class="video-embed">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/{{ page.video.youtube_id }}"
+            title="{{ page.video.title }}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            loading="lazy"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    {% endif %}
+
     <!-- Selected papers -->
     {% if page.selected_papers %}
       <h2>
