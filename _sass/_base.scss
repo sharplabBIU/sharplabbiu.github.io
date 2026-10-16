@@ -717,18 +717,32 @@ body {
   font-size: 1.15rem;
 }
 
-// Canvas for the animated math notation in the side margins (assets/js/margin-math.js)
-.margin-math {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 0;
-  pointer-events: none;
-}
+// Static side borders on wide screens: a fixed-width strip down each edge, filled
+// with computational-cognitive-science / RL icons (assets/img/side-border.svg),
+// running the full height over the top and bottom bars
+@media screen and (min-width: 1280px) {
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 72px;
+    z-index: 1035;
+    pointer-events: none;
+    background: #f5f7fb url("../img/side-border.svg") repeat-y center top;
+  }
 
-@media print {
-  .margin-math {
-    display: none;
+  body::before {
+    left: 0;
+    border-right: 1px solid #e1e7f2;
+  }
+
+  // Offset the right strip by half a tile so the two sides show different icons
+  body::after {
+    right: 0;
+    border-left: 1px solid #e1e7f2;
+    background-position: center 360px;
   }
 }
 

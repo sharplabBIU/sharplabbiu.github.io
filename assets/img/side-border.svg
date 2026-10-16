@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="720" viewBox="0 0 72 720">
+  <!-- Repeating tile for the side borders: line icons for computational cognitive
+       science and reinforcement learning, joined by a faint circuit trace. -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <!-- circuit trace between icons -->
+    <g stroke="#c3cde0" stroke-width="1.5">
+      <path d="M36 62 V82 M36 134 V154 M36 206 V226 M36 278 V298 M36 350 V370 M36 422 V442 M36 494 V514 M36 566 V586 M36 638 V658 M36 710 V730 M36 -10 V10" />
+    </g>
+    <g fill="#c3cde0" stroke="none">
+      <circle cx="36" cy="62" r="2" /><circle cx="36" cy="82" r="2" /><circle cx="36" cy="134" r="2" /><circle cx="36" cy="154" r="2" />
+      <circle cx="36" cy="206" r="2" /><circle cx="36" cy="226" r="2" /><circle cx="36" cy="278" r="2" /><circle cx="36" cy="298" r="2" />
+      <circle cx="36" cy="350" r="2" /><circle cx="36" cy="370" r="2" /><circle cx="36" cy="422" r="2" /><circle cx="36" cy="442" r="2" />
+      <circle cx="36" cy="494" r="2" /><circle cx="36" cy="514" r="2" /><circle cx="36" cy="566" r="2" /><circle cx="36" cy="586" r="2" />
+      <circle cx="36" cy="638" r="2" /><circle cx="36" cy="658" r="2" /><circle cx="36" cy="710" r="2" /><circle cx="36" cy="10" r="2" />
+    </g>
+
+    <!-- 1. brain (navy) -->
+    <g stroke="#00369f" transform="translate(16 16)">
+      <path d="M20 4 C14 2 8 5 8 10 C3 11 2 17 5 20 C2 23 3 30 8 31 C9 36 15 38 20 35 C25 38 31 36 32 31 C37 30 38 23 35 20 C38 17 37 11 32 10 C32 5 26 2 20 4 Z" />
+      <path d="M20 4 V35 M8 10 C12 12 13 15 12 18 M32 10 C28 12 27 15 28 18 M5 20 C9 21 11 24 10 27 M35 20 C31 21 29 24 30 27" />
+    </g>
+
+    <!-- 2. agent-environment loop (green) -->
+    <g stroke="#00ab37">
+      <path d="M22 106 A14 14 0 0 1 50 106" />
+      <path d="M50 110 A14 14 0 0 1 22 110" />
+      <path d="M46 103 L50 108 L54 103 M18 113 L22 108 L26 113" />
+      <circle cx="36" cy="108" r="3" fill="#00ab37" stroke="none" />
+    </g>
+
+    <!-- 3. decision tree with a goal leaf (cyan, goal in red) -->
+    <g stroke="#2698ba">
+      <path d="M36 164 L24 180 M36 164 L48 180 M24 180 L18 198 M24 180 L30 198 M48 180 L42 198 M48 180 L54 198" />
+      <circle cx="36" cy="162" r="3.5" fill="#fff" />
+      <circle cx="24" cy="180" r="3.5" fill="#fff" />
+      <circle cx="48" cy="180" r="3.5" fill="#fff" />
+      <circle cx="18" cy="199" r="3.5" fill="#fff" />
+      <circle cx="30" cy="199" r="3.5" fill="#fff" />
+      <circle cx="42" cy="199" r="3.5" fill="#fff" />
+      <circle cx="54" cy="199" r="3.5" fill="#d6455d" stroke="#d6455d" />
+    </g>
+
+    <!-- 4. gamma (red) -->
+    <text x="36" y="264" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="36" fill="#d6455d" stroke="none">γ</text>
+
+    <!-- 5. neural network (blue) -->
+    <g stroke="#0076df" stroke-width="1.5">
+      <path d="M20 314 L36 306 M20 314 L36 324 M20 314 L36 342 M20 334 L36 306 M20 334 L36 324 M20 334 L36 342 M36 306 L52 324 M36 324 L52 324 M36 342 L52 324" />
+      <g fill="#fff" stroke-width="2">
+        <circle cx="20" cy="314" r="4" /><circle cx="20" cy="334" r="4" />
+        <circle cx="36" cy="306" r="4" /><circle cx="36" cy="324" r="4" /><circle cx="36" cy="342" r="4" />
+        <circle cx="52" cy="324" r="4" />
+      </g>
+    </g>
+
+    <!-- 6. Bayesian bell curve (navy) -->
+    <g stroke="#00369f">
+      <path d="M14 412 H58" />
+      <path d="M14 411 C24 411 27 380 36 380 C45 380 48 411 58 411" />
+      <path d="M36 382 V412" stroke-dasharray="2 3" stroke-width="1.5" />
+    </g>
+
+    <!-- 7. grid world with a path to the goal (green, goal in red) -->
+    <g stroke="#00ab37">
+      <path d="M18 450 H54 V486 H18 Z M30 450 V486 M42 450 V486 M18 462 H54 M18 474 H54" stroke-width="1.2" stroke="#7fd39b" />
+      <path d="M24 480 V468 H48 V459" />
+      <path d="M45 461 L48 457 L51 461" />
+      <circle cx="48" cy="456" r="3" fill="#d6455d" stroke="none" />
+    </g>
+
+    <!-- 8. pi (cyan) -->
+    <text x="36" y="552" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="34" fill="#2698ba" stroke="none">π</text>
+
+    <!-- 9. reward star (red) -->
+    <g stroke="#d6455d">
+      <path d="M36 596 L40.1 605.3 L50.3 606.3 L42.6 613 L44.8 623 L36 617.8 L27.2 623 L29.4 613 L21.7 606.3 L31.9 605.3 Z" />
+    </g>
+
+    <!-- 10. value estimates as bars (blue) -->
+    <g stroke="#0076df">
+      <path d="M18 700 H54" />
+      <path d="M24 700 V684 M32 700 V672 M40 700 V690 M48 700 V678" stroke-width="5" stroke-linecap="butt" />
+    </g>
+  </g>
+</svg>
