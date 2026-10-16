@@ -310,8 +310,10 @@ scholar:
   details_link: Details
 
   query: "@*"
-  group_by: year
-  group_order: descending
+  # One continuous, numbered list (newest first) rather than sections by year
+  group_by: none
+  sort_by: year
+  order: descending
 
 # Display different badges withs stats for your publications
 enable_publication_badges:

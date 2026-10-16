@@ -861,9 +861,17 @@ body {
     list-style: none;
     padding: 0;
     margin-top: 0;
+    counter-reset: publication;
 
     li {
       margin-bottom: 1rem;
+      counter-increment: publication;
+
+      // Number each publication at the start of its title
+      .title::before {
+        content: counter(publication) ". ";
+        color: $blue-color-dark;
+      }
 
       .preview {
         width: 100%;
