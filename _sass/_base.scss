@@ -730,7 +730,8 @@ body {
     width: 144px;
     z-index: 1035;
     pointer-events: none;
-    background: #f5f7fb url("../img/side-border.svg") repeat-y center top;
+    // Bump ?v= when side-border.svg changes so browsers fetch the new tile
+    background: #f5f7fb url("../img/side-border.svg?v=2") repeat-y center top;
   }
 
   body::before {
