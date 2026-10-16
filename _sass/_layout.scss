@@ -31,10 +31,11 @@ body.sticky-bottom-footer {
   max-width: $max-content-width;
 }
 
-// Profile
+// Profile (home page logo): fixed size, hugging the right edge of the text column
 .profile {
   img {
-    width: 50%;
+    width: 160px;
+    max-width: 100%;
   }
 }
 
