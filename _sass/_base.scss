@@ -433,6 +433,7 @@ ul.task-list input[type="checkbox"] {
 // Footer
 footer.fixed-bottom {
   background-color: var(--global-footer-bg-color);
+  border-top: 1px solid var(--global-divider-color);
   font-size: 0.86rem;
 
   .container {
@@ -731,18 +732,18 @@ body {
     z-index: 1035;
     pointer-events: none;
     // Bump ?v= when side-border.svg changes so browsers fetch the new tile
-    background: #f5f7fb url("../img/side-border.svg?v=2") repeat-y center top;
+    background: #2b2f36 url("../img/side-border.svg?v=3") repeat-y center top;
   }
 
   body::before {
     left: 0;
-    border-right: 1px solid #e1e7f2;
+    border-right: 1px solid #1f2328;
   }
 
   // Offset the right strip by half a tile so the two sides show different objects
   body::after {
     right: 0;
-    border-left: 1px solid #e1e7f2;
+    border-left: 1px solid #1f2328;
     background-position: center 620px;
   }
 }
@@ -1327,6 +1328,33 @@ swiper-container {
 // Larger page links, centered on the page itself (not just in the space beside the logo)
 #navbar .navbar-nav .nav-link {
   font-size: 1.2rem;
+}
+
+// White header with the same dark blue text as the footer
+#navbar {
+  background-color: $white-color;
+  opacity: 1;
+
+  .navbar-brand,
+  .navbar-nav .nav-item .nav-link,
+  .navbar-nav .nav-item .nav-link:hover {
+    color: $blue-color-dark;
+  }
+
+  .navbar-nav .nav-item .nav-link:hover {
+    opacity: 0.75;
+  }
+
+  .navbar-nav .nav-item.active > .nav-link {
+    color: $blue-color-dark;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+
+  .navbar-toggler .icon-bar {
+    background-color: $blue-color-dark;
+  }
 }
 
 @media (min-width: 768px) {
