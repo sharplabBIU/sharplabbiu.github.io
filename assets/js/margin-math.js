@@ -1,6 +1,7 @@
-// Animated "math rain" in the empty side margins: Matrix-style streams of
-// reinforcement-learning / Bayesian notation, drawn only outside the main
-// content column. Each page gets a symbol set related to its topic.
+// Matrix-style "math rain" in the empty side margins: green streams of
+// reinforcement-learning / Bayesian notation falling on a black background,
+// drawn only outside the main content column. Each page gets a symbol set
+// related to its topic.
 (function () {
   "use strict";
 
@@ -30,11 +31,15 @@
   else if (path.indexOf("/team") === 0 || path.indexOf("/projects/") === 0) symbols = SETS.learning;
   else if (path.indexOf("/join") === 0) symbols = SETS.explore;
 
-  var FONT_SIZE = 15;
-  var LINE = 22; // vertical spacing between tokens in a stream
-  var GAP = 12; // keep this far away from the content column
+  var FONT_SIZE = 20;
+  var LINE = 38; // vertical distance between expressions in a stream
+  var COL_PAD = 14; // horizontal space between streams
+  var GAP = 12; // white space kept between the content column and the black margin
   var MIN_MARGIN = 40; // don't draw in margins narrower than this
-  var FPS = 14;
+  var FPS = 20;
+  var GREEN = "rgba(0, 255, 65, 0.9)";
+  var HEAD = "#eaffea"; // the newest expression in each stream glows white-green
+  var FADE = "rgba(0, 0, 0, 0.06)";
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var canvas = document.createElement("canvas");
@@ -43,39 +48,31 @@
   document.body.appendChild(canvas);
   var ctx = canvas.getContext("2d");
 
-  var dpr = 1;
   var width = 0;
   var height = 0;
-  var regions = []; // [{x, w}] margin strips
+  var regions = []; // [{x, y, w, h}] margin strips between the navbar and footer
   var streams = [];
   var running = false;
   var last = 0;
 
-  function font() {
-    return "italic " + FONT_SIZE + 'px "Cambria Math", "STIX Two Math", "Times New Roman", serif';
-  }
-
   function pick(maxWidth) {
-    for (var tries = 0; tries < 10; tries++) {
+    for (var tries = 0; tries < 12; tries++) {
       var s = symbols[Math.floor(Math.random() * symbols.length)];
       if (ctx.measureText(s).width <= maxWidth) return s;
     }
-    return symbols[0].length <= 2 ? symbols[0] : "γ";
+    return "γ";
   }
 
-  function newStream(region, x, colWidth, randomStart) {
-    return {
-      region: region,
-      x: x,
-      colWidth: colWidth,
-      y: randomStart ? Math.random() * height : -Math.random() * height * 0.5,
-      speed: 0.6 + Math.random() * 0.9, // lines per frame
-      alpha: 0.35 + Math.random() * 0.35,
-    };
+  function resetStream(st, randomStart) {
+    var r = st.region;
+    st.y = r.y + 8 + (randomStart ? Math.floor(Math.random() * (r.h / LINE)) * LINE : -LINE * Math.floor(1 + Math.random() * 12));
+    st.every = 2 + Math.floor(Math.random() * 4); // frames between steps (speed)
+    st.count = 0;
+    st.prev = null;
   }
 
   function layout() {
-    dpr = window.devicePixelRatio || 1;
+    var dpr = window.devicePixelRatio || 1;
     width = window.innerWidth;
     height = window.innerHeight;
     canvas.width = Math.round(width * dpr);
@@ -83,32 +80,59 @@
     canvas.style.width = width + "px";
     canvas.style.height = height + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.font = font();
+    ctx.font = "italic " + FONT_SIZE + 'px "Cambria Math", "STIX Two Math", "Times New Roman", serif';
     ctx.textBaseline = "top";
 
     var rect = content.getBoundingClientRect();
     var left = Math.max(0, rect.left - GAP);
     var rightStart = Math.min(width, rect.right + GAP);
+    var nav = document.getElementById("navbar");
+    var footer = document.querySelector("footer.fixed-bottom");
+    var top = nav ? Math.max(0, nav.getBoundingClientRect().bottom) : 0;
+    var bottom = footer ? Math.min(height, footer.getBoundingClientRect().top) : height;
     regions = [];
-    if (left >= MIN_MARGIN) regions.push({ x: 0, w: left });
-    if (width - rightStart >= MIN_MARGIN) regions.push({ x: rightStart, w: width - rightStart });
+    if (bottom - top > LINE) {
+      if (left >= MIN_MARGIN) regions.push({ x: 0, y: top, w: left, h: bottom - top });
+      if (width - rightStart >= MIN_MARGIN) regions.push({ x: rightStart, y: top, w: width - rightStart, h: bottom - top });
+    }
 
+    ctx.clearRect(0, 0, width, height);
+    // Confine all drawing to the margin strips
+    ctx.beginPath();
+    regions.forEach(function (r) {
+      ctx.rect(r.x, r.y, r.w, r.h);
+    });
+    ctx.clip();
+    ctx.fillStyle = "#000";
     streams = [];
     regions.forEach(function (region) {
-      var colWidth = Math.min(90, region.w - 10);
-      var cols = Math.max(1, Math.floor(region.w / 60));
+      ctx.fillRect(region.x, region.y, region.w, region.h);
+      var cols = Math.max(1, Math.floor(region.w / 90));
       var step = region.w / cols;
       for (var c = 0; c < cols; c++) {
-        streams.push(newStream(region, region.x + c * step + 5, Math.min(colWidth, step - 10), true));
+        var st = { region: region, x: region.x + c * step + COL_PAD / 2, colWidth: step - COL_PAD };
+        resetStream(st, true);
+        streams.push(st);
       }
     });
-    ctx.clearRect(0, 0, width, height);
   }
 
-  function drawToken(st) {
+  function advance(st) {
+    // Repaint the previous head in green, then draw the new head below it
+    if (st.prev) {
+      ctx.fillStyle = "#000";
+      ctx.fillRect(st.x - 1, st.prev.y - 2, st.prev.w + 2, FONT_SIZE + 6);
+      ctx.fillStyle = GREEN;
+      ctx.fillText(st.prev.token, st.x, st.prev.y);
+    }
     var token = pick(st.colWidth);
-    ctx.fillStyle = "rgba(0, 54, 159, " + st.alpha + ")";
+    ctx.fillStyle = "#000"; // clear the cell so expressions never overlap
+    ctx.fillRect(st.x - 1, st.y - 2, st.colWidth + 2, FONT_SIZE + 6);
+    ctx.fillStyle = HEAD;
     ctx.fillText(token, st.x, st.y);
+    st.prev = { token: token, y: st.y, w: ctx.measureText(token).width };
+    st.y += LINE;
+    if (st.y > st.region.y + st.region.h + LINE) resetStream(st, false);
   }
 
   function frame(t) {
@@ -117,29 +141,25 @@
     if (t - last < 1000 / FPS) return;
     last = t;
 
-    // Fade previous tokens into the white page background (margins only)
-    ctx.fillStyle = "rgba(255, 255, 255, 0.07)";
+    // Fade older expressions into the black margins
+    ctx.fillStyle = FADE;
     regions.forEach(function (r) {
-      ctx.fillRect(r.x, 0, r.w, height);
+      ctx.fillRect(r.x, r.y, r.w, r.h);
     });
 
     streams.forEach(function (st) {
-      st.y += st.speed * LINE * 0.5;
-      if (Math.random() < 0.7) drawToken(st);
-      if (st.y > height + LINE) {
-        var fresh = newStream(st.region, st.x, st.colWidth, false);
-        fresh.y = -LINE * (1 + Math.random() * 10);
-        Object.assign(st, fresh);
+      if (++st.count >= st.every) {
+        st.count = 0;
+        advance(st);
       }
     });
   }
 
   function drawStatic() {
+    ctx.fillStyle = GREEN;
     streams.forEach(function (st) {
-      for (var y = Math.random() * LINE * 3; y < height; y += LINE * (1 + Math.random() * 3)) {
-        st.y = y;
-        st.alpha = 0.15 + Math.random() * 0.2;
-        drawToken(st);
+      for (var y = st.region.y + 8; y < st.region.y + st.region.h; y += LINE) {
+        if (Math.random() < 0.5) ctx.fillText(pick(st.colWidth), st.x, y);
       }
     });
   }
@@ -171,5 +191,6 @@
     else start();
   });
 
+  window.addEventListener("load", start); // re-measure once fonts and images have loaded
   start();
 })();
