@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="144" height="1240" viewBox="0 0 144 1240">
-  <!-- Repeating tile for the side borders: computational cognitive science and
+  <!-- Repeating tile for the side borders (drawn for a dark grey #2b2f36 background): computational cognitive science and
        reinforcement-learning objects, joined by a faint circuit trace. -->
   <defs>
     <style>
@@ -10,9 +10,9 @@
   </defs>
   <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
     <!-- circuit trace between objects -->
-    <path stroke="#c3cde0" stroke-width="1.5"
+    <path stroke="#5b6474" stroke-width="1.5"
       d="M72 -10 V8 M72 108 V124 M72 200 V216 M72 336 V352 M72 452 V468 M72 554 V570 M72 690 V706 M72 798 V814 M72 910 V926 M72 1022 V1038 M72 1124 V1136 M72 1224 V1250" />
-    <g fill="#c3cde0" stroke="none">
+    <g fill="#5b6474" stroke="none">
       <circle cx="72" cy="8" r="2.2" /><circle cx="72" cy="108" r="2.2" /><circle cx="72" cy="124" r="2.2" />
       <circle cx="72" cy="200" r="2.2" /><circle cx="72" cy="216" r="2.2" /><circle cx="72" cy="336" r="2.2" />
       <circle cx="72" cy="352" r="2.2" /><circle cx="72" cy="452" r="2.2" /><circle cx="72" cy="468" r="2.2" />
@@ -24,63 +24,63 @@
     </g>
 
     <!-- 1. decision tree with outcome values (goal leaf in red) -->
-    <g stroke="#2698ba">
+    <g stroke="#4fd1e8">
       <path d="M72 18 L40 48 M72 18 L104 48 M40 48 L22 80 M40 48 L58 80 M104 48 L86 80 M104 48 L122 80" />
-      <circle cx="72" cy="18" r="5" fill="#fff" />
-      <circle cx="40" cy="48" r="5" fill="#fff" />
-      <circle cx="104" cy="48" r="5" fill="#fff" />
-      <rect x="18" y="80" width="8" height="8" fill="#d6455d" stroke="#d6455d" />
-      <rect x="54" y="80" width="8" height="8" fill="#fff" />
-      <rect x="82" y="80" width="8" height="8" fill="#fff" />
-      <rect x="118" y="80" width="8" height="8" fill="#fff" />
+      <circle cx="72" cy="18" r="5" fill="#2b2f36" />
+      <circle cx="40" cy="48" r="5" fill="#2b2f36" />
+      <circle cx="104" cy="48" r="5" fill="#2b2f36" />
+      <rect x="18" y="80" width="8" height="8" fill="#ff6b81" stroke="#ff6b81" />
+      <rect x="54" y="80" width="8" height="8" fill="#2b2f36" />
+      <rect x="82" y="80" width="8" height="8" fill="#2b2f36" />
+      <rect x="118" y="80" width="8" height="8" fill="#2b2f36" />
     </g>
-    <g class="num" font-size="10" fill="#00369f" stroke="none" text-anchor="middle">
-      <text x="22" y="101" fill="#d6455d">+4</text><text x="58" y="101">0</text><text x="86" y="101">−1</text><text x="122" y="101">+2</text>
+    <g class="num" font-size="10" fill="#8fb4ff" stroke="none" text-anchor="middle">
+      <text x="22" y="101" fill="#ff6b81">+4</text><text x="58" y="101">0</text><text x="86" y="101">−1</text><text x="122" y="101">+2</text>
     </g>
 
     <!-- 2. TD learning -->
-    <rect x="8" y="128" width="128" height="68" rx="8" fill="#fff" stroke="#dce3f0" stroke-width="1.2" />
+    <rect x="8" y="128" width="128" height="68" rx="8" fill="#363c47" stroke="#4a5263" stroke-width="1.2" />
     <g class="eq" font-size="12.5" stroke="none" text-anchor="middle">
-      <text x="72" y="156" fill="#00369f">δ = r + γV(s′) − V(s)</text>
-      <text x="72" y="181" fill="#00ab37">V(s) ← V(s) + αδ</text>
+      <text x="72" y="156" fill="#8fb4ff">δ = r + γV(s′) − V(s)</text>
+      <text x="72" y="181" fill="#3ddc84">V(s) ← V(s) + αδ</text>
     </g>
 
     <!-- 3. cognitive map: states, transitions and a planned route (start green, goal red) -->
-    <path stroke="#9fb0d3" stroke-width="1.5"
+    <path stroke="#7d8aa6" stroke-width="1.5"
       d="M30 236 L72 228 L114 242 M30 236 L44 280 M44 280 L96 284 M72 228 L96 284 M114 242 L96 284 M96 284 L110 322 M44 280 L28 318 M28 318 L110 322" />
-    <path stroke="#00ab37" stroke-width="2.6" d="M30 236 L44 280 L96 284 L110 322" />
-    <path stroke="#00ab37" stroke-width="2.6" d="M103.7 314.7 L109 320 L110.4 312.7" />
-    <g stroke="#00369f">
-      <circle cx="30" cy="236" r="5.5" fill="#00ab37" stroke="#00ab37" />
-      <circle cx="72" cy="228" r="5" fill="#fff" />
-      <circle cx="114" cy="242" r="5" fill="#fff" />
-      <circle cx="44" cy="280" r="5" fill="#fff" />
-      <circle cx="96" cy="284" r="5" fill="#fff" />
-      <circle cx="28" cy="318" r="5" fill="#fff" />
-      <circle cx="110" cy="324" r="5.5" fill="#d6455d" stroke="#d6455d" />
+    <path stroke="#3ddc84" stroke-width="2.6" d="M30 236 L44 280 L96 284 L110 322" />
+    <path stroke="#3ddc84" stroke-width="2.6" d="M103.7 314.7 L109 320 L110.4 312.7" />
+    <g stroke="#8fb4ff">
+      <circle cx="30" cy="236" r="5.5" fill="#3ddc84" stroke="#3ddc84" />
+      <circle cx="72" cy="228" r="5" fill="#2b2f36" />
+      <circle cx="114" cy="242" r="5" fill="#2b2f36" />
+      <circle cx="44" cy="280" r="5" fill="#2b2f36" />
+      <circle cx="96" cy="284" r="5" fill="#2b2f36" />
+      <circle cx="28" cy="318" r="5" fill="#2b2f36" />
+      <circle cx="110" cy="324" r="5.5" fill="#ff6b81" stroke="#ff6b81" />
     </g>
 
     <!-- 4. vectors in a 2-D feature space -->
-    <g stroke="#00369f" stroke-width="1.5">
+    <g stroke="#8fb4ff" stroke-width="1.5">
       <path d="M34 432 H126 M121 428 L126 432 L121 436" />
       <path d="M34 432 V364 M30 369 L34 364 L38 369" />
     </g>
-    <path stroke="#9fb0d3" stroke-width="1.3" stroke-dasharray="3 3" d="M104 392 V432" />
-    <path stroke="#0076df" stroke-width="2.4" d="M34 432 L104 392 M99 399.4 L104 392 L95.1 392.5" />
-    <path stroke="#00ab37" stroke-width="2.4" d="M34 432 L70 370 M69.4 378.9 L70 370 L62.5 374.9" />
+    <path stroke="#7d8aa6" stroke-width="1.3" stroke-dasharray="3 3" d="M104 392 V432" />
+    <path stroke="#5aa9ff" stroke-width="2.4" d="M34 432 L104 392 M99 399.4 L104 392 L95.1 392.5" />
+    <path stroke="#3ddc84" stroke-width="2.4" d="M34 432 L70 370 M69.4 378.9 L70 370 L62.5 374.9" />
     <g class="lbl" font-size="12" stroke="none">
-      <text x="109" y="389" fill="#0076df">v</text><text x="74" y="368" fill="#00ab37">w</text>
+      <text x="109" y="389" fill="#5aa9ff">v</text><text x="74" y="368" fill="#3ddc84">w</text>
     </g>
 
     <!-- 5. action values as a column vector -->
-    <text class="eq" x="12" y="520" font-size="13.5" fill="#00369f" stroke="none">Q(s,·) =</text>
-    <path stroke="#00369f" stroke-width="1.6" d="M86 478 H82 V546 H86 M122 478 H126 V546 H122" />
+    <text class="eq" x="12" y="520" font-size="13.5" fill="#8fb4ff" stroke="none">Q(s,·) =</text>
+    <path stroke="#8fb4ff" stroke-width="1.6" d="M86 478 H82 V546 H86 M122 478 H126 V546 H122" />
     <g class="num" font-size="12.5" stroke="none" text-anchor="middle">
-      <text x="104" y="497" fill="#00ab37">0.8</text><text x="104" y="519" fill="#00369f">0.3</text><text x="104" y="541" fill="#00369f">−0.2</text>
+      <text x="104" y="497" fill="#3ddc84">0.8</text><text x="104" y="519" fill="#8fb4ff">0.3</text><text x="104" y="541" fill="#8fb4ff">−0.2</text>
     </g>
 
     <!-- 6. successor-representation matrix -->
-    <g stroke="none" fill="#0076df">
+    <g stroke="none" fill="#5aa9ff">
       <rect x="36" y="576" width="11" height="11" opacity="0.9" /><rect x="48" y="576" width="11" height="11" opacity="0.6" /><rect x="60" y="576" width="11" height="11" opacity="0.35" /><rect x="72" y="576" width="11" height="11" opacity="0.2" /><rect x="84" y="576" width="11" height="11" opacity="0.1" /><rect x="96" y="576" width="11" height="11" opacity="0.06" />
       <rect x="36" y="588" width="11" height="11" opacity="0.12" /><rect x="48" y="588" width="11" height="11" opacity="0.9" /><rect x="60" y="588" width="11" height="11" opacity="0.6" /><rect x="72" y="588" width="11" height="11" opacity="0.35" /><rect x="84" y="588" width="11" height="11" opacity="0.2" /><rect x="96" y="588" width="11" height="11" opacity="0.1" />
       <rect x="36" y="600" width="11" height="11" opacity="0.06" /><rect x="48" y="600" width="11" height="11" opacity="0.12" /><rect x="60" y="600" width="11" height="11" opacity="0.9" /><rect x="72" y="600" width="11" height="11" opacity="0.6" /><rect x="84" y="600" width="11" height="11" opacity="0.35" /><rect x="96" y="600" width="11" height="11" opacity="0.2" />
@@ -88,32 +88,32 @@
       <rect x="36" y="624" width="11" height="11" opacity="0.04" /><rect x="48" y="624" width="11" height="11" opacity="0.04" /><rect x="60" y="624" width="11" height="11" opacity="0.06" /><rect x="72" y="624" width="11" height="11" opacity="0.12" /><rect x="84" y="624" width="11" height="11" opacity="0.9" /><rect x="96" y="624" width="11" height="11" opacity="0.6" />
       <rect x="36" y="636" width="11" height="11" opacity="0.04" /><rect x="48" y="636" width="11" height="11" opacity="0.04" /><rect x="60" y="636" width="11" height="11" opacity="0.04" /><rect x="72" y="636" width="11" height="11" opacity="0.06" /><rect x="84" y="636" width="11" height="11" opacity="0.12" /><rect x="96" y="636" width="11" height="11" opacity="0.9" />
     </g>
-    <text class="eq" x="72" y="672" font-size="13" fill="#2698ba" stroke="none" text-anchor="middle">M = (I − γT)⁻¹</text>
+    <text class="eq" x="72" y="672" font-size="13" fill="#4fd1e8" stroke="none" text-anchor="middle">M = (I − γT)⁻¹</text>
 
     <!-- 7. brain -->
-    <g stroke="#00369f" stroke-width="1.4" transform="translate(40 718) scale(1.6)">
+    <g stroke="#8fb4ff" stroke-width="1.4" transform="translate(40 718) scale(1.6)">
       <path d="M20 4 C14 2 8 5 8 10 C3 11 2 17 5 20 C2 23 3 30 8 31 C9 36 15 38 20 35 C25 38 31 36 32 31 C37 30 38 23 35 20 C38 17 37 11 32 10 C32 5 26 2 20 4 Z" />
       <path d="M20 4 V35 M8 10 C12 12 13 15 12 18 M32 10 C28 12 27 15 28 18 M5 20 C9 21 11 24 10 27 M35 20 C31 21 29 24 30 27" />
     </g>
 
     <!-- 8. Q-learning (off-policy) -->
-    <rect x="6" y="818" width="132" height="88" rx="8" fill="#fff" stroke="#dce3f0" stroke-width="1.2" />
-    <g class="eq" font-size="11.5" fill="#00369f" stroke="none" text-anchor="middle">
+    <rect x="6" y="818" width="132" height="88" rx="8" fill="#363c47" stroke="#4a5263" stroke-width="1.2" />
+    <g class="eq" font-size="11.5" fill="#8fb4ff" stroke="none" text-anchor="middle">
       <text x="72" y="842">Q(s,a) ← Q(s,a)</text>
-      <text x="72" y="865">+ α[r + γ <tspan fill="#d6455d">maxₐ′</tspan> Q(s′,a′)</text>
+      <text x="72" y="865">+ α[r + γ <tspan fill="#ff6b81">maxₐ′</tspan> Q(s′,a′)</text>
       <text x="72" y="888">− Q(s,a)]</text>
     </g>
 
     <!-- 9. Bayesian updating: prior to posterior -->
-    <path stroke="#00369f" stroke-width="1.3" d="M16 992 H128" />
-    <path stroke="#2698ba" stroke-width="1.8" stroke-dasharray="4 3" d="M18 991 C44 991 52 958 72 958 C92 958 100 991 126 991" />
-    <path stroke="#00369f" stroke-width="2.2" d="M40 991 C58 991 62 940 78 940 C94 940 98 991 116 991" />
-    <text class="eq" x="72" y="1013" font-size="11.5" fill="#00369f" stroke="none" text-anchor="middle">P(θ|D) ∝ P(D|θ) P(θ)</text>
+    <path stroke="#8fb4ff" stroke-width="1.3" d="M16 992 H128" />
+    <path stroke="#4fd1e8" stroke-width="1.8" stroke-dasharray="4 3" d="M18 991 C44 991 52 958 72 958 C92 958 100 991 126 991" />
+    <path stroke="#8fb4ff" stroke-width="2.2" d="M40 991 C58 991 62 940 78 940 C94 940 98 991 116 991" />
+    <text class="eq" x="72" y="1013" font-size="11.5" fill="#8fb4ff" stroke="none" text-anchor="middle">P(θ|D) ∝ P(D|θ) P(θ)</text>
 
     <!-- 10. grid cells: hexagonal firing lattice -->
-    <path stroke="#7fd39b" stroke-width="1.3" stroke-dasharray="3 3"
+    <path stroke="#5fbf86" stroke-width="1.3" stroke-dasharray="3 3"
       d="M104.9 1099 L72 1118 L39.1 1099 L39.1 1061 L72 1042 L104.9 1061 Z" />
-    <g stroke="none" fill="#00ab37">
+    <g stroke="none" fill="#3ddc84">
       <circle cx="72" cy="1080" r="7" opacity="0.25" /><circle cx="72" cy="1080" r="2.8" />
       <circle cx="94.5" cy="1093" r="7" opacity="0.25" /><circle cx="94.5" cy="1093" r="2.8" />
       <circle cx="72" cy="1106" r="7" opacity="0.25" /><circle cx="72" cy="1106" r="2.8" />
@@ -124,15 +124,15 @@
     </g>
 
     <!-- 11. agent-environment loop -->
-    <rect x="12" y="1166" width="46" height="26" rx="6" fill="#fff" stroke="#00ab37" stroke-width="1.6" />
-    <rect x="86" y="1166" width="46" height="26" rx="6" fill="#fff" stroke="#00369f" stroke-width="1.6" />
+    <rect x="12" y="1166" width="46" height="26" rx="6" fill="#2b2f36" stroke="#3ddc84" stroke-width="1.6" />
+    <rect x="86" y="1166" width="46" height="26" rx="6" fill="#2b2f36" stroke="#8fb4ff" stroke-width="1.6" />
     <g class="num" font-size="10.5" stroke="none" text-anchor="middle">
-      <text x="35" y="1183" fill="#00ab37">agent</text><text x="109" y="1183" fill="#00369f">env</text>
+      <text x="35" y="1183" fill="#3ddc84">agent</text><text x="109" y="1183" fill="#8fb4ff">env</text>
     </g>
-    <path stroke="#00ab37" stroke-width="1.6" d="M52 1166 C62 1152 82 1152 92 1166 M90.8 1158.3 L92 1166 L85.1 1162.3" />
-    <path stroke="#00369f" stroke-width="1.6" d="M92 1192 C82 1206 62 1206 52 1192 M58.9 1195.7 L52 1192 L53.2 1199.7" />
+    <path stroke="#3ddc84" stroke-width="1.6" d="M52 1166 C62 1152 82 1152 92 1166 M90.8 1158.3 L92 1166 L85.1 1162.3" />
+    <path stroke="#8fb4ff" stroke-width="1.6" d="M92 1192 C82 1206 62 1206 52 1192 M58.9 1195.7 L52 1192 L53.2 1199.7" />
     <g class="lbl" stroke="none" text-anchor="middle">
-      <text x="72" y="1151" fill="#00ab37">a</text><text x="72" y="1219" fill="#00369f">r, s′</text>
+      <text x="72" y="1151" fill="#3ddc84">a</text><text x="72" y="1219" fill="#8fb4ff">r, s′</text>
     </g>
   </g>
 </svg>
