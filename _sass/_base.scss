@@ -473,6 +473,11 @@ footer .footer-content {
   align-items: center;
   gap: 0.25rem;
 
+  // A site-wide rule colors every div with the body text color; keep the footer dark blue
+  .footer-copyright {
+    color: var(--global-footer-text-color);
+  }
+
   .footer-social {
     font-size: 1.8rem;
     line-height: 1;
