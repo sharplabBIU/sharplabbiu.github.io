@@ -463,6 +463,24 @@ footer.sticky-bottom {
   }
 }
 
+// Footer contents: social icons beside the copyright line, centered
+footer .footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem 1.5rem;
+
+  .footer-social {
+    font-size: 1.3rem;
+    line-height: 1;
+
+    a {
+      margin: 0 0.35rem;
+    }
+  }
+}
+
 // CV
 
 .cv {
@@ -1239,6 +1257,24 @@ swiper-container {
   display: flex; // Ensures the navbar items are laid out flexibly
   flex-direction: row; // Aligns the navbar items in a row
   justify-content: center; // Center items horizontally
+}
+
+// Larger page links, centered on the page itself (not just in the space beside the logo)
+#navbar .navbar-nav .nav-link {
+  font-size: 1.2rem;
+}
+
+@media (min-width: 768px) {
+  #navbar .container {
+    position: relative;
+  }
+
+  #navbar .navbar-nav {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .navbar .dropdown-menu {
