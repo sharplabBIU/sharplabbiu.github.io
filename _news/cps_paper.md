@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Our perspective paper with Rachel Bedder (Princeton) and Peter Hitchcock (Emory), _Unravelling Repetitive Negative Thinking With Reinforcement Learning_, was accepted at Clinical Psychological Science! Drawing on reinforcement learning and meta-reasoning, it proposes two accounts of repetitive negative thinking: worry as planning, and rumination as inference.
+Our perspective paper with Rachel Bedder (Princeton) and Peter Hitchcock (Emory), _Unravelling Repetitive Negative Thinking With Reinforcement Learning_, was accepted at Clinical Psychological Science!
