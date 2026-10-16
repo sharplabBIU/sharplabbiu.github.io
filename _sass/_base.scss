@@ -669,6 +669,21 @@ footer.sticky-bottom {
   }
 }
 
+// Lab photo collage beside the team list (stacks below it on small screens)
+.lab-collage {
+  column-count: 2;
+  column-gap: 0.5rem;
+  margin-top: 1.5rem;
+
+  img {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    break-inside: avoid;
+  }
+}
+
 // Publications
 
 .publications {
