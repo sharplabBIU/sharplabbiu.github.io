@@ -727,7 +727,7 @@ body {
     position: fixed;
     top: 0;
     bottom: 0;
-    width: 72px;
+    width: 144px;
     z-index: 1035;
     pointer-events: none;
     background: #f5f7fb url("../img/side-border.svg") repeat-y center top;
@@ -738,11 +738,18 @@ body {
     border-right: 1px solid #e1e7f2;
   }
 
-  // Offset the right strip by half a tile so the two sides show different icons
+  // Offset the right strip by half a tile so the two sides show different objects
   body::after {
     right: 0;
     border-left: 1px solid #e1e7f2;
-    background-position: center 360px;
+    background-position: center 620px;
+  }
+}
+
+// Between 1280px and 1420px, narrow the page column so it never sits under the borders
+@media screen and (min-width: 1280px) and (max-width: 1419.98px) {
+  body .container {
+    max-width: calc(100vw - 320px);
   }
 }
 
