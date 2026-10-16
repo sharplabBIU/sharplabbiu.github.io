@@ -647,6 +647,28 @@ footer.sticky-bottom {
   }
 }
 
+// Team
+
+.team {
+  h2.team-category {
+    text-align: left;
+    font-size: 1.75rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  ul.team-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0.5rem;
+
+    li {
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+  }
+}
+
 // Publications
 
 .publications {
