@@ -80,6 +80,11 @@
   <script>
     initTheme();
   </script>
+{% else %}
+  <script>
+    // Light mode only: ignore saved or system dark-mode preferences
+    determineComputedTheme = () => "light";
+  </script>
 {% endif %}
 
 <!-- GeoJSON support via Leaflet -->
