@@ -669,6 +669,39 @@ footer.sticky-bottom {
   }
 }
 
+// Research areas on the projects page: icon beside a large title, paragraph below
+.research-areas {
+  .research-area {
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .research-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .research-icon {
+    flex-shrink: 0;
+    width: 3.5rem;
+    font-size: 2.5rem;
+    text-align: center;
+    color: var(--global-theme-color);
+  }
+
+  h2.research-title {
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+}
+
 // Lab photo collage beside the team list (stacks below it on small screens)
 .lab-collage {
   column-count: 2;
