@@ -1265,8 +1265,10 @@ swiper-container {
 }
 
 @media (min-width: 768px) {
+  // Same navbar height on every page (the home page has no logo in the navbar)
   #navbar .container {
     position: relative;
+    min-height: 70px;
   }
 
   #navbar .navbar-nav {
