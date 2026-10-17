@@ -20,7 +20,7 @@ social: false # includes social icons at the bottom of the page
 
 <br>
 
-### To understand what goes wrong in psychopathology, we work from **first principles**. Working from [first principles of cognition](https://osf.io/preprints/psyarxiv/8ubct_v1), we characterize how normative cognitive functions work so that we can pinpoint when they become dysfunctional. Working from [first principles of psychopathology](/publications/#preprints), we question the basic definitions of psychological disorders, many of which are more idiosyncratic, rooted in a person's domain-specific beliefs, than they are typically assumed to be.
+### To understand psychopathology, we work from first principles: of [cognition](https://osf.io/preprints/psyarxiv/8ubct_v1), studying how normative functions work so we can see when they fail; and of [psychopathology](https://osf.io/preprints/psyarxiv/98ktg_v4), rethinking disorders as rooted in person-specific beliefs.
 
 <br>
 
