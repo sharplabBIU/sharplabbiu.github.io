@@ -723,39 +723,30 @@ body {
   font-size: 1.15rem;
 }
 
-// Projects page collage: key figures from the papers first, then one combined diagram and
-// equation. Flex wrapping keeps that order on every screen size.
+// Projects page collage: key figures from the papers first, then one small combined diagram
+// and equation, all in a single row. Each figure sets --ar (its width / height) so the row's
+// figures share one height; --ar also caps how tall a figure can grow.
 .project-collage {
   display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  gap: 12px;
-  margin-top: 1rem;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 1.25rem;
 
   figure.paper-fig {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex: 1 1 300px;
-    max-width: 560px;
+    flex: var(--ar, 1.5) 1 0;
+    min-width: 0;
+    max-width: calc(var(--ar, 1.5) * 300px + 18px);
     margin: 0;
     padding: 8px;
     border: 1px solid #e1e7f2;
     border-radius: 10px;
     background: $white-color;
 
-    &.wide {
-      flex: 2 1 520px;
-      max-width: none;
-    }
-
     img {
       display: block;
-      width: auto;
-      max-width: 100%;
+      width: 100%;
       height: auto;
-      max-height: 380px;
-      margin: 0 auto;
     }
 
     figcaption {
@@ -766,29 +757,35 @@ body {
     }
   }
 
-  // Diagrams are drawn for a dark background, so they sit on a dark tile
   .graphic-tile {
-    display: flex;
-    flex: 0 0 220px;
-    align-items: center;
-    justify-content: center;
-    padding: 12px;
+    flex: 0 0 130px;
+    padding: 8px;
+    border: 1px solid #e1e7f2;
     border-radius: 10px;
-    background: #2b2f36;
+    background: $white-color;
 
     img {
-      max-width: 100%;
-      max-height: 230px;
+      display: block;
+      width: 100%;
+      height: auto;
     }
   }
 }
 
-@media (max-width: 575.98px) {
-  .project-collage figure.paper-fig,
-  .project-collage figure.paper-fig.wide,
-  .project-collage .graphic-tile {
-    flex: 1 1 100%;
-    max-width: none;
+// On narrow screens a single row would be too small to read, so let the collage wrap
+@media (max-width: 767.98px) {
+  .project-collage {
+    flex-wrap: wrap;
+
+    figure.paper-fig {
+      flex: 1 1 100%;
+      max-width: none;
+    }
+
+    .graphic-tile {
+      flex: 0 0 160px;
+      margin: 0 auto;
+    }
   }
 }
 
@@ -815,7 +812,7 @@ body {
 .research-areas {
   .research-area {
     margin-top: 1.5rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 4.5rem;
   }
 
   .research-header {
@@ -887,6 +884,21 @@ body {
     margin-top: 2rem;
     margin-bottom: -2rem;
     text-align: right;
+  }
+
+  // Preprints are listed without numbers and don't affect the publication count
+  .preprints ol.bibliography li {
+    counter-increment: none;
+
+    .title::before {
+      content: none;
+    }
+  }
+
+  h2#preprints,
+  h2#peer-reviewed {
+    margin-top: 1.5rem;
+    color: $blue-color-dark;
   }
 
   ol.bibliography {

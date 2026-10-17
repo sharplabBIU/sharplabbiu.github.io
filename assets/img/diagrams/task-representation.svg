@@ -1,23 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="136" height="162" viewBox="0 0 136 162">
-  <!-- Task representation τ inferred from prior knowledge K and task instructions I; drawn for a dark grey (#2b2f36) tile -->
+  <!-- Task representation τ inferred from prior knowledge K and task instructions I; drawn for a white background -->
   <style>.eq { font-family: Georgia, "Times New Roman", serif; font-style: italic; } .txt { font-family: Georgia, "Times New Roman", serif; }</style>
   <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-    <rect x="2" y="4" width="60" height="36" rx="6" fill="#2b2f36" stroke="#8fb4ff" stroke-width="1.6" />
-    <rect x="74" y="4" width="60" height="36" rx="6" fill="#2b2f36" stroke="#4fd1e8" stroke-width="1.6" />
+    <rect x="2" y="4" width="60" height="36" rx="6" fill="#ffffff" stroke="#00369f" stroke-width="1.6" />
+    <rect x="74" y="4" width="60" height="36" rx="6" fill="#ffffff" stroke="#1f87a8" stroke-width="1.6" />
     <g stroke="none" text-anchor="middle">
-      <text class="eq" x="32" y="23" font-size="15" fill="#8fb4ff">K</text>
-      <text class="txt" x="32" y="35" font-size="8" fill="#8fb4ff">prior knowledge</text>
-      <text class="eq" x="104" y="23" font-size="15" fill="#4fd1e8">I</text>
-      <text class="txt" x="104" y="35" font-size="8" fill="#4fd1e8">instructions</text>
+      <text class="eq" x="32" y="23" font-size="15" fill="#00369f">K</text>
+      <text class="txt" x="32" y="35" font-size="8" fill="#00369f">prior knowledge</text>
+      <text class="eq" x="104" y="23" font-size="15" fill="#1f87a8">I</text>
+      <text class="txt" x="104" y="35" font-size="8" fill="#1f87a8">instructions</text>
     </g>
-    <path stroke="#8fb4ff" stroke-width="1.6" d="M32 40 L59.8 73.9 M58.3 67.4 L59.8 73.9 L53.7 71.2" />
-    <path stroke="#4fd1e8" stroke-width="1.6" d="M104 40 L76.2 73.9 M82.3 71.2 L76.2 73.9 L77.7 67.4" />
-    <circle cx="68" cy="84" r="13" fill="#2b2f36" stroke="#3ddc84" stroke-width="2" />
-    <text class="eq" x="68" y="89" font-size="15" fill="#3ddc84" stroke="none" text-anchor="middle">τ</text>
-    <text class="txt" x="68" y="111" font-size="9" fill="#3ddc84" stroke="none" text-anchor="middle">τ = task representation</text>
+    <path stroke="#00369f" stroke-width="1.6" d="M32 40 L59.8 73.9 M58.3 67.4 L59.8 73.9 L53.7 71.2" />
+    <path stroke="#1f87a8" stroke-width="1.6" d="M104 40 L76.2 73.9 M82.3 71.2 L76.2 73.9 L77.7 67.4" />
+    <circle cx="68" cy="84" r="13" fill="#ffffff" stroke="#009f3e" stroke-width="2" />
+    <text class="eq" x="68" y="89" font-size="15" fill="#009f3e" stroke="none" text-anchor="middle">τ</text>
+    <text class="txt" x="68" y="111" font-size="9" fill="#009f3e" stroke="none" text-anchor="middle">τ = task representation</text>
     <g class="eq" font-size="12" stroke="none" text-anchor="middle">
-      <text x="68" y="137" fill="#3ddc84">P(τ | I, K)</text>
-      <text x="68" y="155" fill="#8fb4ff"><tspan font-family="'Times New Roman', 'STIX Two Math', serif" font-style="normal" font-size="1.15em">∝</tspan> P(I | τ) · P(τ | K)</text>
+      <text x="68" y="137" fill="#009f3e">P(τ | I, K)</text>
+      <text x="68" y="155" fill="#00369f"><tspan font-family="'Times New Roman', 'STIX Two Math', serif" font-style="normal" font-size="1.15em">∝</tspan> P(I | τ) · P(τ | K)</text>
     </g>
   </g>
 </svg>

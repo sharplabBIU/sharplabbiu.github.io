@@ -7,7 +7,7 @@ nav_order: 4
 ---
 
 <!-- Research areas: icon + title, a summary paragraph, then a collage: one key figure from each relevant paper first,
-     followed by a single combined diagram and equation -->
+     followed by a single small combined diagram and equation, in one row -->
 <div class="research-areas">
   <div class="research-area">
     <div class="research-header">
@@ -23,14 +23,14 @@ nav_order: 4
       healthy aging and anxiety.
     </p>
     <div class="project-collage">
-      <figure class="paper-fig wide">
+      <figure class="paper-fig" style="--ar: 3.51">
         <img src="/assets/img/projects/delayed_planning_control.png" alt="Control choices across planning depths compared with the optimal policy" data-zoomable>
         <figcaption>
           People learn to delay planning until it is needed: their control choices follow the optimal pattern across planning depths
           (<a href="https://osf.io/preprints/psyarxiv/8ubct_v1">Sharp &amp; Eldar</a>).
         </figcaption>
       </figure>
-      <figure class="paper-fig wide">
+      <figure class="paper-fig" style="--ar: 4.98">
         <img src="/assets/img/projects/nhb_forward_backward.png" alt="Evidence of backward prediction in a divergent environment and forward prediction in a convergent one" data-zoomable>
         <figcaption>
           People favor backward prediction in divergent environments and forward prediction in convergent ones
@@ -56,7 +56,7 @@ nav_order: 4
       including two preregistered replications, as if the wait were a cost charged to that choice (Yadid, Linkovski &amp; Sharp, in preparation).
     </p>
     <div class="project-collage">
-      <figure class="paper-fig">
+      <figure class="paper-fig" style="--ar: 0.78">
         <img src="/assets/img/projects/iti_switching.png" alt="Probability of switching after a 1 s or 4 s inter-trial interval, after a win and after a loss" data-zoomable>
         <figcaption>
           After a win, people switch more often following a 4 s than a 1 s inter-trial interval (preregistered study, n = 439; Yadid, Linkovski
@@ -84,14 +84,14 @@ nav_order: 4
       <em>eLife</em></a>), and that worry is linked to excessive model-based revaluation.
     </p>
     <div class="project-collage">
-      <figure class="paper-fig">
+      <figure class="paper-fig" style="--ar: 1.74">
         <img src="/assets/img/projects/topics_worry_undergeneralization.png" alt="Worry score against undergeneralization in threat contexts" data-zoomable>
         <figcaption>
           Higher worry predicts undergeneralizing actions learned under social threat
           (<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/tops.70051">Schiff &amp; Sharp, <em>Topics in Cognitive Science</em> 2026</a>).
         </figcaption>
       </figure>
-      <figure class="paper-fig">
+      <figure class="paper-fig" style="--ar: 1.55">
         <img src="/assets/img/projects/elife_goal_perseveration.png" alt="Goal perseveration weights for reward and punishment" data-zoomable>
         <figcaption>
           People perseverate on punishment-avoidance goals: goal perseveration is stronger for punishment than for reward
