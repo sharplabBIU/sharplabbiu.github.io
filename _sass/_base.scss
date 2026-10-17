@@ -723,17 +723,21 @@ body {
   font-size: 1.15rem;
 }
 
-// Projects page collage: main-finding figures from the papers plus related diagrams
+// Projects page collage: key figures from the papers first, then one combined diagram and
+// equation. Flex wrapping keeps that order on every screen size.
 .project-collage {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  grid-auto-flow: dense;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
   gap: 12px;
-  align-items: center;
   margin-top: 1rem;
 
   figure.paper-fig {
-    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 1 300px;
+    max-width: 560px;
     margin: 0;
     padding: 8px;
     border: 1px solid #e1e7f2;
@@ -741,12 +745,17 @@ body {
     background: $white-color;
 
     &.wide {
-      grid-column: span 3;
+      flex: 2 1 520px;
+      max-width: none;
     }
 
     img {
-      width: 100%;
+      display: block;
+      width: auto;
+      max-width: 100%;
       height: auto;
+      max-height: 380px;
+      margin: 0 auto;
     }
 
     figcaption {
@@ -757,12 +766,12 @@ body {
     }
   }
 
-  // Diagrams are drawn for a dark background, so they sit on dark tiles
+  // Diagrams are drawn for a dark background, so they sit on a dark tile
   .graphic-tile {
     display: flex;
+    flex: 0 0 220px;
     align-items: center;
     justify-content: center;
-    min-height: 150px;
     padding: 12px;
     border-radius: 10px;
     background: #2b2f36;
@@ -776,8 +785,10 @@ body {
 
 @media (max-width: 575.98px) {
   .project-collage figure.paper-fig,
-  .project-collage figure.paper-fig.wide {
-    grid-column: 1 / -1;
+  .project-collage figure.paper-fig.wide,
+  .project-collage .graphic-tile {
+    flex: 1 1 100%;
+    max-width: none;
   }
 }
 
