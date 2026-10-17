@@ -723,73 +723,6 @@ body {
   font-size: 1.15rem;
 }
 
-// Projects page collage: key figures from the papers first, then one small combined diagram
-// and equation, all in a single row. Each figure sets --ar (its width / height) so the row's
-// figures share one height; --ar also caps how tall a figure can grow.
-.project-collage {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 16px;
-  margin-top: 1.25rem;
-
-  figure.paper-fig {
-    // Grow in proportion to the figure's aspect ratio (--ar); each figure's max-width (set inline
-    // in _pages/projects.md as --ar x 300px) keeps it at most about 300px tall
-    flex: var(--ar, 1.5) 1 0;
-    min-width: 0;
-    margin: 0;
-    padding: 8px;
-    border: 1px solid #e1e7f2;
-    border-radius: 10px;
-    background: $white-color;
-
-    img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    figcaption {
-      margin-top: 6px;
-      font-size: 0.85rem;
-      line-height: 1.35;
-      color: #555;
-    }
-  }
-
-  .graphic-tile {
-    flex: 0 0 130px;
-    padding: 8px;
-    border: 1px solid #e1e7f2;
-    border-radius: 10px;
-    background: $white-color;
-
-    img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-  }
-}
-
-// On narrow screens a single row would be too small to read, so let the collage wrap
-@media (max-width: 767.98px) {
-  .project-collage {
-    flex-wrap: wrap;
-
-    figure.paper-fig {
-      flex: 1 1 100%;
-      max-width: none;
-    }
-
-    .graphic-tile {
-      flex: 0 0 160px;
-      margin: 0 auto;
-    }
-  }
-}
-
 // Embedded video on the home page (responsive 16:9)
 .home-video {
   margin-top: 2rem;
@@ -798,7 +731,7 @@ body {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: unquote("16 / 9");
 
     iframe {
       width: 100%;
@@ -809,36 +742,95 @@ body {
   }
 }
 
-// Research areas on the projects page: icon beside a large title, paragraph below
+// Projects page: each research area has its diagram + equation beside the title and summary,
+// then key figures from the papers below in identical rectangular frames
 .research-areas {
   .research-area {
     margin-top: 1.5rem;
     margin-bottom: 4.5rem;
   }
 
-  .research-header {
+  .research-intro {
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.75rem;
+    align-items: flex-start;
+    gap: 1.5rem;
   }
 
-  .research-icon {
-    flex-shrink: 0;
-    width: 3.5rem;
-    font-size: 2.5rem;
-    text-align: center;
-    color: var(--global-theme-color);
+  .research-diagram {
+    flex: 0 0 150px;
+    padding: 8px;
+    border: 1px solid #e1e7f2;
+    border-radius: 10px;
+    background: $white-color;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .research-text {
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   h2.research-title {
-    margin: 0;
+    margin: 0 0 0.75rem;
     font-size: 2rem;
   }
 
   p {
     font-size: 1.2rem;
     line-height: 1.6;
+  }
+}
+
+.project-figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 1.25rem;
+
+  figure.paper-fig {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 10px;
+    border: 1px solid #e1e7f2;
+    border-radius: 10px;
+    background: $white-color;
+  }
+
+  // Every figure gets the same 16:9 frame; the image is scaled to fit inside it
+  .fig-frame {
+    aspect-ratio: unquote("16 / 9");
+    width: 100%;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  figcaption {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    line-height: 1.35;
+    color: #555;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .research-areas .research-intro {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .project-figures {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
