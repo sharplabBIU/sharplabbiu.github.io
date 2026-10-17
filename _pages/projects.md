@@ -6,17 +6,20 @@ nav: true
 nav_order: 4
 ---
 
-<!-- Research areas: icon + title, a summary paragraph, then a collage of main-finding figures and related diagrams -->
+<!-- Research areas: icon + title, a summary paragraph, then a collage: one key figure from each relevant paper first,
+     followed by a single combined diagram and equation -->
 <div class="research-areas">
   <div class="research-area">
     <div class="research-header">
-      <i class="fa-solid fa-hourglass-half research-icon" aria-hidden="true"></i>
-      <h2 class="research-title">Delayed Planning</h2>
+      <i class="fa-solid fa-gauge-high research-icon" aria-hidden="true"></i>
+      <h2 class="research-title">Planning Efficiency</h2>
     </div>
     <p>
-      Planning is powerful but costly, so knowing when to plan matters as much as knowing how. We study the meta-control computations that decide
-      when to start planning. In two preregistered studies, people learned to defer planning until it was needed, guided by a cognitive map of the
-      task rather than by trial and error (<a href="https://osf.io/preprints/psyarxiv/8ubct_v1">Sharp &amp; Eldar</a>). Ongoing work extends this to
+      Planning is powerful but costly, so efficient decision makers must decide when and how to plan. One route is timing: in two preregistered
+      studies, people learned to defer planning until it was needed, guided by a cognitive map of the task rather than by trial and error
+      (<a href="https://osf.io/preprints/psyarxiv/8ubct_v1">Sharp &amp; Eldar</a>). Another route is direction: people adaptively plan forward from
+      where they are or backward from their goals, choosing whichever predictive representation is more efficient in a given environment
+      (<a href="https://doi.org/10.1038/s41562-024-01930-8">Sharp &amp; Eldar, <em>Nature Human Behaviour</em></a>). Ongoing work extends this to
       healthy aging and anxiety.
     </p>
     <div class="project-collage">
@@ -27,8 +30,6 @@ nav_order: 4
           (<a href="https://osf.io/preprints/psyarxiv/8ubct_v1">Sharp &amp; Eldar</a>).
         </figcaption>
       </figure>
-      <div class="graphic-tile"><img src="/assets/img/border/decision-tree.svg" alt="Decision tree"></div>
-      <div class="graphic-tile"><img src="/assets/img/border/bellman.svg" alt="Bellman equations for state values"></div>
       <figure class="paper-fig wide">
         <img src="/assets/img/projects/nhb_forward_backward.png" alt="Evidence of backward prediction in a divergent environment and forward prediction in a convergent one" data-zoomable>
         <figcaption>
@@ -36,7 +37,9 @@ nav_order: 4
           (<a href="https://doi.org/10.1038/s41562-024-01930-8">Sharp &amp; Eldar, <em>Nature Human Behaviour</em> 2024</a>).
         </figcaption>
       </figure>
-      <div class="graphic-tile"><img src="/assets/img/border/cognitive-map.svg" alt="Cognitive map with a planned route"></div>
+      <div class="graphic-tile">
+        <img src="/assets/img/diagrams/planning-efficiency.svg" alt="Decision tree with the planned route to the goal and the Bellman optimality equation">
+      </div>
     </div>
   </div>
 
@@ -47,27 +50,38 @@ nav_order: 4
     </div>
     <p>
       We learn quickly from few experiences partly through <a href="https://arxiv.org/pdf/2005.01643">offline learning</a>: using memories and a
-      model of the world to simulate actions and outcomes, for example between decisions or during rest. Because it relies on internal models, offline
-      learning can also bias how we value actions. We study when it helps, when it misleads, and how it relates to psychopathology.
+      model of the world to simulate actions and outcomes, for example between decisions or during rest. In work in progress presented at the 2026
+      Computational Psychiatry Conference (Best Poster Award), we asked how the few seconds between choices shape learning. Rather than consolidating
+      what was just learned, longer inter-trial intervals made people more likely to abandon an option that had just paid off, across four studies
+      including two preregistered replications, as if the wait were a cost charged to that choice (Yadid, Linkovski &amp; Sharp, in preparation).
     </p>
     <div class="project-collage">
-      <div class="graphic-tile"><img src="/assets/img/border/dyna.svg" alt="Dyna architecture: acting, direct RL, model learning and planning"></div>
-      <div class="graphic-tile"><img src="/assets/img/border/sr-matrix.svg" alt="Successor representation matrix"></div>
-      <div class="graphic-tile"><img src="/assets/img/border/q-learning.svg" alt="Q-learning update"></div>
+      <figure class="paper-fig">
+        <img src="/assets/img/projects/iti_switching.png" alt="Probability of switching after a 1 s or 4 s inter-trial interval, after a win and after a loss" data-zoomable>
+        <figcaption>
+          After a win, people switch more often following a 4 s than a 1 s inter-trial interval (preregistered study, n = 439; Yadid, Linkovski
+          &amp; Sharp, in preparation).
+        </figcaption>
+      </figure>
+      <div class="graphic-tile">
+        <img src="/assets/img/diagrams/offline-learning.svg" alt="Dyna architecture with the planning update from simulated experience">
+      </div>
     </div>
   </div>
 
   <div class="research-area">
     <div class="research-header">
       <i class="fa-solid fa-map-location-dot research-icon" aria-hidden="true"></i>
-      <h2 class="research-title">Task Misconstrual in Anxiety</h2>
+      <h2 class="research-title">Task Construal in Anxiety</h2>
     </div>
     <p>
-      Planning relies on an internal model of the task. We propose that anxiety distorts these models, leading to excessive planning, re-checking of
-      decisions already made, and poor generalization (<a href="https://www.sciencedirect.com/science/article/pii/S1364661324002924">Sharp,
-      <em>Trends in Cognitive Sciences</em></a>). Recent work links anxiety to biased task generalization (<a
-      href="https://onlinelibrary.wiley.com/doi/full/10.1111/tops.70051">Schiff &amp; Sharp, <em>Topics in Cognitive Science</em></a>) and worry to
-      excessive model-based revaluation.
+      Planning relies on an internal model, or construal, of the task. We propose that anxiety distorts these construals, leading to excessive
+      planning, re-checking of decisions already made, and poor generalization
+      (<a href="https://www.sciencedirect.com/science/article/pii/S1364661324002924">Sharp, <em>Trends in Cognitive Sciences</em></a>). Recent work
+      shows that worry predicts undergeneralizing actions learned under threat
+      (<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/tops.70051">Schiff &amp; Sharp, <em>Topics in Cognitive Science</em></a>), that people
+      keep pursuing punishment-avoidance goals the task no longer requires (<a href="https://doi.org/10.7554/eLife.74402">Sharp et al.,
+      <em>eLife</em></a>), and that worry is linked to excessive model-based revaluation.
     </p>
     <div class="project-collage">
       <figure class="paper-fig">
@@ -77,7 +91,6 @@ nav_order: 4
           (<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/tops.70051">Schiff &amp; Sharp, <em>Topics in Cognitive Science</em> 2026</a>).
         </figcaption>
       </figure>
-      <div class="graphic-tile"><img src="/assets/img/border/task-representation.svg" alt="Task representation inferred from prior knowledge and instructions"></div>
       <figure class="paper-fig">
         <img src="/assets/img/projects/elife_goal_perseveration.png" alt="Goal perseveration weights for reward and punishment" data-zoomable>
         <figcaption>
@@ -85,7 +98,9 @@ nav_order: 4
           (<a href="https://doi.org/10.7554/eLife.74402">Sharp et al., <em>eLife</em> 2022</a>).
         </figcaption>
       </figure>
-      <div class="graphic-tile"><img src="/assets/img/border/bayes.svg" alt="Bayesian updating from prior to posterior"></div>
+      <div class="graphic-tile">
+        <img src="/assets/img/diagrams/task-representation.svg" alt="Task representation inferred from prior knowledge and task instructions">
+      </div>
     </div>
   </div>
 </div>
