@@ -93,7 +93,7 @@ nav_order: 4
         <img src="/assets/img/diagrams/task-representation.svg" alt="Task representation inferred from prior knowledge and task instructions">
       </div>
       <div class="research-text">
-        <h2 class="research-title">Task Construal in Anxiety</h2>
+        <h2 class="research-title">Task (Mis)construal</h2>
         <p>
           Planning relies on an internal model, or construal, of the task. We propose that anxiety distorts these construals, leading to excessive
           planning, re-checking of decisions already made, and poor generalization
