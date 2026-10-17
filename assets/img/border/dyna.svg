@@ -17,7 +17,7 @@
     <g class="eq" font-size="8.5" stroke="none">
       <text x="17" y="68" fill="#4fd1e8">acting</text>
       <text x="53" y="82" fill="#8fb4ff">direct RL</text>
-      <text x="104" y="62" fill="#3ddc84">planning</text>
+      <text x="62" y="58" fill="#3ddc84">planning</text>
       <text x="72" y="140" fill="#ff6b81" text-anchor="middle">model learning</text>
     </g>
   </g>

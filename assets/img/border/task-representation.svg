@@ -16,7 +16,7 @@
     <text class="eq" x="68" y="89" font-size="15" fill="#3ddc84" stroke="none" text-anchor="middle">τ</text>
     <g class="eq" font-size="12" stroke="none" text-anchor="middle">
       <text x="68" y="120" fill="#3ddc84">P(τ | I, K)</text>
-      <text x="68" y="138" fill="#8fb4ff">∝ P(I | τ) · P(τ | K)</text>
+      <text x="68" y="138" fill="#8fb4ff"><tspan font-family="'Times New Roman', 'STIX Two Math', serif" font-style="normal" font-size="1.15em">∝</tspan> P(I | τ) · P(τ | K)</text>
     </g>
   </g>
 </svg>
