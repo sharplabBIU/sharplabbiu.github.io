@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="136" height="114" viewBox="0 0 136 114">
+  <!-- Side-border object (bellman), drawn for the dark grey (#2b2f36) border background -->
+  <style>.eq { font-family: Georgia, "Times New Roman", serif; font-style: italic; } .txt { font-family: Georgia, "Times New Roman", serif; }</style>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <rect x="1" y="1" width="134" height="112" rx="8" fill="#363c47" stroke="#4a5263" stroke-width="1.2" />
+    <g class="eq" font-size="11" stroke="none" text-anchor="middle">
+      <text x="68" y="27" fill="#8fb4ff">Vπ(s) = Σₐ π(a|s) [ R(s,a)</text>
+      <text x="68" y="45" fill="#8fb4ff">+ γ Σₛ′ P(s′|s,a) Vπ(s′) ]</text>
+      <text x="68" y="81" fill="#3ddc84">V*(s) = <tspan fill="#ff6b81">maxₐ</tspan> [ R(s,a)</text>
+      <text x="68" y="99" fill="#3ddc84">+ γ Σₛ′ P(s′|s,a) V*(s′) ]</text>
+    </g>
+    <path stroke="#4a5263" stroke-width="1" d="M22 59 H114" />
+  </g>
+</svg>
