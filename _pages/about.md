@@ -20,7 +20,7 @@ social: false # includes social icons at the bottom of the page
 
 <br>
 
-### We operate from first principles, studying how [cognitive functions work](https://osf.io/preprints/psyarxiv/8ubct_v1) before we ask when they fail in psychopathology. Current work explores whether anxiety is caused by [person-specific beliefs about threat](https://osf.io/preprints/psyarxiv/98ktg_v4), challenging traditional definitions of anxiety disorders.
+### We operate from first principles, studying how [cognitive functions work](https://osf.io/preprints/psyarxiv/8ubct_v1) before we ask when they fail in psychopathology. Current work explores how [planning is made less efficient in anxiety](https://www.sciencedirect.com/science/article/pii/S1364661324002924), through online control of [when](https://osf.io/preprints/psyarxiv/8ubct_v1) and [how](https://doi.org/10.1038/s41562-024-01930-8) to plan, as well as how [world models](https://osf.io/preprints/psyarxiv/98ktg_v4) used to plan consolidate offline.
 
 <br>
 
