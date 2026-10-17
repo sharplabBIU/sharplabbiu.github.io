@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="136" height="144" viewBox="0 0 136 144">
+  <!-- Side-border object (dyna), drawn for the dark grey (#2b2f36) border background -->
+  <style>.eq { font-family: Georgia, "Times New Roman", serif; font-style: italic; } .txt { font-family: Georgia, "Times New Roman", serif; }</style>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <rect x="30" y="4" width="76" height="24" rx="6" fill="#2b2f36" stroke="#8fb4ff" stroke-width="1.6" />
+    <rect x="2" y="104" width="58" height="24" rx="6" fill="#2b2f36" stroke="#4fd1e8" stroke-width="1.6" />
+    <rect x="84" y="104" width="50" height="24" rx="6" fill="#2b2f36" stroke="#ff6b81" stroke-width="1.6" />
+    <g class="txt" font-size="10" stroke="none" text-anchor="middle">
+      <text x="68" y="20" fill="#8fb4ff">value / policy</text>
+      <text x="31" y="120" fill="#4fd1e8">experience</text>
+      <text x="109" y="120" fill="#ff6b81">model</text>
+    </g>
+    <path stroke="#4fd1e8" stroke-width="1.5" d="M34 28 C14 46 8 76 14 104 M15.7 97.5 L14 104 L9.8 98.8" />
+    <path stroke="#8fb4ff" stroke-width="1.5" d="M44 104 C46 80 52 50 56 28 M57.9 34.4 L56 28 L52 33.4" />
+    <path stroke="#ff6b81" stroke-width="1.5" d="M60 116 H84 M79 112.5 L84 116 L79 119.5" />
+    <path stroke="#3ddc84" stroke-width="2.4" d="M102 104 C104 80 98 50 86 28 M91.5 31.8 L86 28 L86.2 34.7" />
+    <g class="eq" font-size="8.5" stroke="none">
+      <text x="17" y="68" fill="#4fd1e8">acting</text>
+      <text x="53" y="82" fill="#8fb4ff">direct RL</text>
+      <text x="104" y="62" fill="#3ddc84">planning</text>
+      <text x="72" y="140" fill="#ff6b81" text-anchor="middle">model learning</text>
+    </g>
+  </g>
+</svg>

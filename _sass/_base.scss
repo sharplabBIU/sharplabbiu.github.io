@@ -723,33 +723,41 @@ body {
   font-size: 1.15rem;
 }
 
-// Static side borders on wide screens: a fixed-width strip down each edge, filled
-// with computational-cognitive-science / RL icons (assets/img/side-border.svg),
-// running the full height over the top and bottom bars
+// Static side borders on wide screens (_includes/side_borders.liquid): a fixed-width dark
+// strip down each edge, running the full height over the top and bottom bars, holding four
+// evenly spaced computational / RL objects (assets/img/border/*.svg)
+.side-border {
+  display: none;
+}
+
 @media screen and (min-width: 1280px) {
-  body::before,
-  body::after {
-    content: "";
+  .side-border {
     position: fixed;
     top: 0;
     bottom: 0;
     width: 144px;
     z-index: 1035;
     pointer-events: none;
-    // Bump ?v= when side-border.svg changes so browsers fetch the new tile
-    background: #2b2f36 url("../img/side-border.svg?v=3") repeat-y center top;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #2b2f36;
+
+    img {
+      max-width: 136px;
+      max-height: calc((100vh - 48px) / 4);
+    }
   }
 
-  body::before {
+  .side-border-left {
     left: 0;
     border-right: 1px solid #1f2328;
   }
 
-  // Offset the right strip by half a tile so the two sides show different objects
-  body::after {
+  .side-border-right {
     right: 0;
     border-left: 1px solid #1f2328;
-    background-position: center 620px;
   }
 }
 
