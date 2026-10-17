@@ -20,7 +20,7 @@ social: false # includes social icons at the bottom of the page
 
 <br>
 
-### To understand psychopathology, we work from first principles: of [cognition](https://osf.io/preprints/psyarxiv/8ubct_v1), studying how normative functions work so we can see when they fail, and of [psychopathology](https://osf.io/preprints/psyarxiv/98ktg_v4), rethinking disorders as rooted in person-specific beliefs.
+### We operate from first principles, studying how [cognitive functions work](https://osf.io/preprints/psyarxiv/8ubct_v1) before we ask when they fail in psychopathology. Current work explores whether anxiety is caused by [person-specific beliefs about threat](https://osf.io/preprints/psyarxiv/98ktg_v4), challenging traditional definitions of anxiety disorders.
 
 <br>
 

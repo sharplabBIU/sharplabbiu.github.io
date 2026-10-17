@@ -10,10 +10,10 @@ category: Director
 <img src="/assets/img/prof_pic.jpg" alt="Paul Sharp" class="img-fluid rounded z-depth-1" style="max-width: 250px; margin-bottom: 1rem;">
 
 <p>
-  I am a computational cognitive neuroscientist that develops formal models of learning and planning, and their abberations in various
-  psychopathologies. My work has been published in top outlets in the field, including Nature Human Behavior, Trends in Cognitive Sciences, Current
+  I am a computational cognitive neuroscientist that develops formal models of learning and planning, and their aberrations in various
+  psychopathologies. My work has been published in top outlets in the field, including Nature Human Behaviour, Trends in Cognitive Sciences, Current
   Directions in Psychological Science, eLife, and Psychological Medicine. I am excited to work with aspiring trainees at any level with psychology,
-  neuroscience, abd computer science backgrounds.
+  neuroscience, and computer science backgrounds.
 </p>
 
 <p>Download CV:</p>
