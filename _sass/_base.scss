@@ -734,9 +734,10 @@ body {
   margin-top: 1.25rem;
 
   figure.paper-fig {
+    // Grow in proportion to the figure's aspect ratio (--ar); each figure's max-width (set inline
+    // in _pages/projects.md as --ar x 300px) keeps it at most about 300px tall
     flex: var(--ar, 1.5) 1 0;
     min-width: 0;
-    max-width: calc(var(--ar, 1.5) * 300px + 18px);
     margin: 0;
     padding: 8px;
     border: 1px solid #e1e7f2;
