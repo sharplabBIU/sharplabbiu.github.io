@@ -20,10 +20,10 @@ social: false # includes social icons at the bottom of the page
 
 <br>
 
-### To understand psychopathology, we work from first principles: of [cognition](https://osf.io/preprints/psyarxiv/8ubct_v1), studying how normative functions work so we can see when they fail; and of [psychopathology](https://osf.io/preprints/psyarxiv/98ktg_v4), rethinking disorders as rooted in person-specific beliefs.
+### To understand psychopathology, we work from first principles: of [cognition](https://osf.io/preprints/psyarxiv/8ubct_v1), studying how normative functions work so we can see when they fail, and of [psychopathology](https://osf.io/preprints/psyarxiv/98ktg_v4), rethinking disorders as rooted in person-specific beliefs.
 
 <br>
 
-### We are part of the Department of Psychology at [Bar-Ilan University](https://www.biu.ac.il/en), near Tel Aviv. We welcome prospective trainees from psychology, neuroscience, computer science, and engineering.
+### The lab is part of the [Psychology Department](https://psychology.biu.ac.il/en) and the [Gonda Multidisciplinary Brain Research Center](https://gondabrain.biu.ac.il/en) at Bar-Ilan University near Tel Aviv. We welcome prospective trainees from psychology, neuroscience, computer science, and engineering.
 
 <br>
