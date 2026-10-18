@@ -998,6 +998,22 @@ body {
 
       .badges {
         padding-bottom: 0.5rem;
+
+        // Google Scholar citation count (from _data/citations.yml)
+        a.scholar-citations {
+          display: inline-block;
+          padding: 1px 10px;
+          border: 1px solid #dce3f0;
+          border-radius: 999px;
+          background: #f5f7fb;
+          color: $blue-color-dark;
+          font-size: 0.85rem;
+
+          &:hover {
+            text-decoration: none;
+            background: #e9eef8;
+          }
+        }
         span {
           display: inline-block;
           color: $black-color;
@@ -1438,4 +1454,11 @@ swiper-container {
   .dropdown-divider {
     border-top: 1px solid var(--global-divider-color) !important;
   }
+}
+
+// Papers page: source and date of the citation counts
+.publications p.citation-note {
+  margin-bottom: 0;
+  font-size: 0.85rem;
+  color: #666;
 }

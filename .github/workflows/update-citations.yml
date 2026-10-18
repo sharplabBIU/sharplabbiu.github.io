@@ -1,0 +1,40 @@
+name: Update citation counts
+
+# Refreshes the Google Scholar citation counts shown on the papers page
+# (_data/citations.yml) every week, then rebuilds the site if any count changed.
+on:
+  schedule:
+    - cron: "17 4 * * 1" # Mondays 04:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch Google Scholar citation counts
+        run: python3 bin/update_citations.py
+      - name: Commit and redeploy if counts changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- _data/citations.yml; then
+            echo "Citation counts unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _data/citations.yml
+          git commit -m "Update Google Scholar citation counts"
+          git push
+          # Pushes made with the workflow token don't trigger other workflows, so start the deploy explicitly
+          gh workflow run deploy.yml --ref "${GITHUB_REF_NAME}"

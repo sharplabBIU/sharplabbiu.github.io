@@ -285,15 +285,14 @@
             ></span>
           {% endif %}
           {% if site.enable_publication_badges.google_scholar and entry_has_google_scholar_badge %}
+            <!-- Citation count stored in _data/citations.yml (refreshed weekly by bin/update_citations.py) -->
+            {% assign scholar_citations = site.data.citations.counts[entry.google_scholar_id] | default: 0 %}
             <a
+              class="scholar-citations"
               href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user={{ site.scholar_userid }}&citation_for_view={{ site.scholar_userid }}:{{ entry.google_scholar_id }}"
-              aria-label="Google Scholar link"
-              role="button"
+              title="Google Scholar citations"
             >
-              <img
-                src="https://img.shields.io/badge/scholar-{% google_scholar_citations site.scholar_userid entry.google_scholar_id %}-4285F4?logo=googlescholar&labelColor=beige"
-                alt="{% google_scholar_citations site.scholar_userid entry.google_scholar_id %} Google Scholar citations"
-              >
+              <i class="ai ai-google-scholar" aria-hidden="true"></i> Cited by {{ scholar_citations }}
             </a>
           {% endif %}
         </div>
