@@ -16,7 +16,11 @@ selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 ---
 
-### We use **computational models** to explain human learning and planning. Currently, we're investigating how [trait anxiety biases planning](https://www.sciencedirect.com/science/article/pii/S1364661324002924), altering the content of [world models](https://osf.io/preprints/psyarxiv/98ktg_v4), [timing of deployment](https://osf.io/preprints/psyarxiv/8ubct_v1), and [temporal structure](https://doi.org/10.1038/s41562-024-01930-8).
+### We use **computational models** to explain human learning and planning. We draw from [reinforcement learning](http://incompleteideas.net/book/the-book-2nd.html) and [bayesian](https://mitpress.mit.edu/9780262049412/bayesian-models-of-cognition) frameworks to study basic cognition and psychopathology.
+
+<br>
+
+### We currently are investigating how [trait anxiety biases planning](https://www.sciencedirect.com/science/article/pii/S1364661324002924) [content](https://osf.io/preprints/psyarxiv/98ktg_v4), [meta-control](https://osf.io/preprints/psyarxiv/8ubct_v1), and [efficiency](https://doi.org/10.1038/s41562-024-01930-8).
 
 <br>
 
