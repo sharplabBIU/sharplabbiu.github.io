@@ -20,7 +20,7 @@ social: false # includes social icons at the bottom of the page
 
 <br>
 
-### We currently are investigating how [trait anxiety biases planning](https://www.sciencedirect.com/science/article/pii/S1364661324002924) [content](https://osf.io/preprints/psyarxiv/98ktg_v4), [meta-control](https://osf.io/preprints/psyarxiv/8ubct_v1), and [efficiency](https://doi.org/10.1038/s41562-024-01930-8).
+### We currently are investigating how trait anxiety biases planning [content](https://osf.io/preprints/psyarxiv/98ktg_v4), [meta-control](https://osf.io/preprints/psyarxiv/8ubct_v1), and [efficiency](https://doi.org/10.1038/s41562-024-01930-8).
 
 <br>
 
