@@ -1,10 +1,10 @@
 name: Update citation counts
 
 # Refreshes the Google Scholar citation counts shown on the papers page
-# (_data/citations.yml) every week, then rebuilds the site if any count changed.
+# (_data/citations.yml) every day, then rebuilds the site if any count changed.
 on:
   schedule:
-    - cron: "17 4 * * 1" # Mondays 04:17 UTC
+    - cron: "17 4 * * *" # daily at 04:17 UTC
   workflow_dispatch:
 
 permissions:

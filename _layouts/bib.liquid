@@ -285,7 +285,7 @@
             ></span>
           {% endif %}
           {% if site.enable_publication_badges.google_scholar and entry_has_google_scholar_badge %}
-            <!-- Citation count stored in _data/citations.yml (refreshed weekly by bin/update_citations.py) -->
+            <!-- Citation count stored in _data/citations.yml (refreshed daily by bin/update_citations.py) -->
             {% assign scholar_citations = site.data.citations.counts[entry.google_scholar_id] | default: 0 %}
             <a
               class="scholar-citations"

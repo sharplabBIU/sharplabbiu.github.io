@@ -5,7 +5,7 @@ Reads Paul Sharp's Google Scholar profile (scholar_userid in _config.yml) and re
 "Cited by" count for each article, keyed by its Scholar article id (the google_scholar_id
 field in the .bib files). The papers page shows these counts next to each entry.
 
-Run by .github/workflows/update-citations.yml every week, or by hand:  python3 bin/update_citations.py
+Run by .github/workflows/update-citations.yml every day, or by hand:  python3 bin/update_citations.py
 
 If Google Scholar can't be reached or blocks the request, the file is left unchanged, so the
 site keeps showing the last known counts. The file is only rewritten when a count changes.
