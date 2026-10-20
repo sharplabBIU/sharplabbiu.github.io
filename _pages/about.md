@@ -19,7 +19,3 @@ social: false # includes social icons at the bottom of the page
 ### Our lab uses [computational models](https://doi.org/10.1177/0963721418818441) to explain human learning, planning and how they are altered in [psychopathology](https://onlinelibrary.wiley.com/doi/full/10.1111/tops.70051). Located in Bar-Ilan's [brain center](https://gondabrain.biu.ac.il/en), we're investigating how trait anxiety biases planning [content](https://osf.io/preprints/psyarxiv/98ktg_v4), [meta-control](https://osf.io/preprints/psyarxiv/8ubct_v1), and [efficiency](https://doi.org/10.1038/s41562-024-01930-8). To do so, we use a range of methods, including behavioral tasks, advanced [virtual and augmented reality](https://somniumspace.com/somniumvr1), [eye-tracking](https://www.sr-research.com/solutions/fmri-meg-solutions/), and [MEG](https://psychology.biu.ac.il/en/node/636).
 
 <br>
-
-### The lab is part of the [Psychology Department](https://psychology.biu.ac.il/en) and the [Gonda Multidisciplinary Brain Research Center](https://gondabrain.biu.ac.il/en) at Bar-Ilan University near Tel Aviv. We welcome prospective trainees from psychology, neuroscience, computer science, and engineering.
-
-<br>
