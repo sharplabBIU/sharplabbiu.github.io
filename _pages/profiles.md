@@ -12,6 +12,10 @@ lab_photos:
   - { src: lab_4.jpg, alt: "Presenting a poster to visitors at a conference" }
   - { src: lab_5.jpg, alt: "Lab lunch outdoors with pizza" }
   - { src: lab_6.jpg, alt: "Explaining a poster at a conference" }
+dog_photos:
+  - { src: dina_1.jpg, alt: "Dina, a black curly-haired dog, sitting on the boardwalk at sunset" }
+  - { src: dina_2.jpg, alt: "Dina standing on her hind legs, holding paws with a lab member" }
+  - { src: dina_3.jpg, alt: "Dina stretched out between a couch and a bench" }
 ---
 
 <!-- Names only, grouped by role (photos of each person are on their own page); lab photo collage on the right -->
@@ -38,5 +42,12 @@ lab_photos:
         <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" alt="{{ photo.alt }}" loading="lazy">
       {% endfor %}
     </div>
+
+    <figure class="dog-collage">
+      {% for photo in page.dog_photos %}
+        <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" alt="{{ photo.alt }}" loading="lazy">
+      {% endfor %}
+      <figcaption>Our official lab dog, Dina!</figcaption>
+    </figure>
   </div>
 </div>
