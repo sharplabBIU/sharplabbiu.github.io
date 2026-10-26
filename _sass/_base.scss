@@ -38,9 +38,11 @@ a,
 table.table a {
   color: var(--global-theme-color);
 
-  &:hover {
+  // No underline when hovering any link
+  &:hover,
+  &:focus {
     color: var(--global-theme-color);
-    text-decoration: underline;
+    text-decoration: none;
   }
 
   &:hover:after :not(.nav-item.dropdown) {
@@ -1049,7 +1051,7 @@ body {
           vertical-align: middle;
 
           &:hover {
-            text-decoration: underline;
+            text-decoration: none;
           }
         }
       }
