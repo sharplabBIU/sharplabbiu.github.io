@@ -1428,9 +1428,20 @@ swiper-container {
   justify-content: center; // Center items horizontally
 }
 
-// Larger page links, centered on the page itself (not just in the space beside the logo)
+// Larger page links with more room between them, centered on the page itself
+// (not just in the space beside the logo); largest on wide screens, where they cannot reach the logo
 #navbar .navbar-nav .nav-link {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+}
+
+@media (min-width: 992px) {
+  #navbar .navbar-nav .nav-link {
+    font-size: 1.45rem;
+    padding-left: 1.1rem;
+    padding-right: 1.1rem;
+  }
 }
 
 // White header with the same dark blue text as the footer
@@ -1556,25 +1567,23 @@ body {
   margin-top: 2rem;
 }
 
-// Journal-style figure on a white panel; keeps a readable minimum width and scrolls sideways on narrow screens
-.agent-figure {
+// Home hero: the animated world model inside the brain (dark panel with rounded corners)
+.world-model-figure {
   margin: 0;
-  overflow-x: auto;
 
   svg {
     display: block;
     width: 100%;
-    min-width: 680px;
     height: auto;
-    background-color: $white-color;
-    border: 1px solid #d0d5dd;
-    border-radius: 8px;
+    border-radius: 12px;
   }
+}
 
-  figcaption {
-    font-size: 0.95rem;
-    color: $black-color;
-    margin-top: 0.6rem;
+@media (max-width: 575.98px) {
+  // The hero scales down on phones; its captions would be unreadably small, so hide them
+  .world-model-figure .wm-tag,
+  .world-model-figure .wm-lab {
+    display: none;
   }
 }
 
