@@ -748,8 +748,12 @@ body {
 .research-areas {
   .research-area {
     margin-top: 0;
-    margin-bottom: 1.75rem;
-    scroll-margin-top: 90px; // anchors from the header icons land below the fixed navbar
+    margin-bottom: 3rem;
+    scroll-margin-top: 90px; // anchor targets land below the fixed navbar
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   .research-intro {
@@ -1491,15 +1495,10 @@ swiper-container {
   color: #666;
 }
 
-// Page backdrop and content cards
-// A texture of decision trees in the logo colours (assets/img/backdrop.svg) over a dark gradient that
-// shifts from navy through sea green to red; text sits in white rounded cards for contrast.
+// Page backdrop and content box
+// Plain dark navy backdrop; each page's content sits in one light gray, slightly translucent rounded box
 body {
   background-color: $backdrop-color;
-  background-image: url("../img/backdrop.svg"), linear-gradient(160deg, #0a1736 0%, #0d2c3f 50%, #30142c 100%);
-  background-size: 720px auto, auto;
-  background-repeat: repeat, no-repeat;
-  background-position: center top;
 }
 
 // Main container: a tighter gap below the navbar (replaces Bootstrap's mt-5) and room above the fixed footer
@@ -1509,10 +1508,9 @@ body {
 }
 
 .content-card {
-  background-color: $white-color;
+  background-color: rgba(236, 239, 244, 0.92);
   border-radius: 16px;
   padding: 1.75rem 2rem;
-  margin-bottom: 1.75rem;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
 
   > :first-child {
@@ -1531,8 +1529,14 @@ body {
   }
 }
 
-// Home page cards
+// Home page sections inside the box
+.home-intro {
+  margin-bottom: 2rem;
+}
+
 .home-news {
+  margin-top: 2rem;
+
   h2 {
     margin-bottom: 0.75rem;
   }
@@ -1542,16 +1546,12 @@ body {
   }
 }
 
-// The worry graphic is a dark "screen" rather than a white card
-.worry-card {
-  padding: 0;
-  overflow: hidden;
-  background-color: #071026;
-  border: 1px solid rgba(30, 217, 164, 0.35);
+.home-video {
+  margin-top: 2rem;
 }
 
-// The illustration keeps a readable minimum width and scrolls sideways on narrow screens
-.worry-figure {
+// Journal-style figure on a white panel; keeps a readable minimum width and scrolls sideways on narrow screens
+.agent-figure {
   margin: 0;
   overflow-x: auto;
 
@@ -1560,10 +1560,19 @@ body {
     width: 100%;
     min-width: 680px;
     height: auto;
+    background-color: $white-color;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+  }
+
+  figcaption {
+    font-size: 0.95rem;
+    color: #4a5568;
+    margin-top: 0.6rem;
   }
 }
 
-// Team page: the names card sits right beside the photo card, both centered
+// Team page: the names column sits right beside the photos, both centered
 .team-layout {
   display: flex;
   flex-wrap: wrap;

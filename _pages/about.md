@@ -8,7 +8,7 @@ profile:
   image: lab_logo2.png
 
 news: true # includes a list of news items
-worry_figure: true # illustration between the description and the news
+agent_figure: true # agent–environment figure between the description and the news
 video: # embedded YouTube video, shown after the news
   youtube_id: kQJ5UU56xXA
   title: "Why Do We Worry? - Paul Sharp"

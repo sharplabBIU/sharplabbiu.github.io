@@ -6,9 +6,9 @@ nav: true
 nav_order: 5
 ---
 
-<!-- _pages/publications.md: preprints (unnumbered) followed by published papers numbered counting down, one card each -->
+<!-- _pages/publications.md: preprints (unnumbered) followed by published papers numbered counting down -->
 <div class="publications">
-  <div class="content-card">
+  <div>
     <p class="citation-note">
       Citation counts from <a href="https://scholar.google.com/citations?user={{ site.scholar_userid }}">Google Scholar</a>, updated
       {{ site.data.citations.updated | date: '%B %-d, %Y' }}.
@@ -19,7 +19,7 @@ nav_order: 5
     </div>
   </div>
 
-  <div class="content-card">
+  <div>
     <h2 id="peer-reviewed">Published</h2>
     {% capture publication_count %}{% bibliography_count %}{% endcapture %}
     <div style="counter-reset: publication {{ publication_count | strip | plus: 1 }}">

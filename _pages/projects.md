@@ -9,7 +9,7 @@ nav_order: 4
 <!-- Research areas: a diagram + equation beside the title and summary, then key figures from the papers below,
      each in an identical rectangular frame -->
 <div class="research-areas">
-  <div class="research-area content-card" id="planning-efficiency">
+  <div class="research-area" id="planning-efficiency">
     <div class="research-intro">
       <div class="research-diagram">
         <img src="/assets/img/diagrams/planning-efficiency.svg" alt="Decision tree with the planned route to the goal and the Bellman optimality equation">
@@ -48,7 +48,7 @@ nav_order: 4
     </div>
   </div>
 
-  <div class="research-area content-card" id="offline-learning">
+  <div class="research-area" id="offline-learning">
     <div class="research-intro">
       <div class="research-diagram">
         <img src="/assets/img/diagrams/offline-learning.svg" alt="Dyna architecture with the planning update from simulated experience">
@@ -87,7 +87,7 @@ nav_order: 4
     </div>
   </div>
 
-  <div class="research-area content-card" id="task-misconstrual">
+  <div class="research-area" id="task-misconstrual">
     <div class="research-intro">
       <div class="research-diagram">
         <img src="/assets/img/diagrams/task-representation.svg" alt="Task representation inferred from prior knowledge and task instructions">

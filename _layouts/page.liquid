@@ -2,16 +2,9 @@
 layout: default
 ---
 <div class="post">
-  {% if page.collection == 'projects' or page.permalink == '/404.html' %}
-    <!-- Member pages and the 404 page: all content in one card; other pages lay out their own cards -->
-    <article class="content-card">
-      {{ content }}
-    </article>
-  {% else %}
-    <article>
-      {{ content }}
-    </article>
-  {% endif %}
+  <article>
+    {{ content }}
+  </article>
 
   {% if page.related_publications %}
     <h2>References</h2>

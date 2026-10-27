@@ -10,7 +10,7 @@ layout: default
 
   <article>
     <!-- Lab description with the logo beside it -->
-    <div class="content-card home-intro clearfix">
+    <div class="home-intro clearfix">
       {% if page.profile %}
         <div class="profile float-{% if page.profile.align == 'left' %}left{% else %}right{% endif %}">
           {% if page.profile.image %}
@@ -36,16 +36,14 @@ layout: default
       {{ content }}
     </div>
 
-    <!-- Worry as computation: illustration between the description and the news -->
-    {% if page.worry_figure %}
-      <div class="content-card worry-card">
-        {% include worry_figure.liquid %}
-      </div>
+    <!-- Agent–environment figure between the description and the news -->
+    {% if page.agent_figure %}
+      {% include agent_figure.liquid %}
     {% endif %}
 
     <!-- News -->
     {% if page.news and site.announcements.enabled %}
-      <div class="content-card home-news">
+      <div class="home-news">
         <h2>lab news</h2>
         {% include news.liquid limit=true %}
       </div>
@@ -53,7 +51,7 @@ layout: default
 
     <!-- Embedded YouTube video (shown after the news) -->
     {% if page.video %}
-      <div class="content-card home-video">
+      <div class="home-video">
         {% if page.video.heading %}
           <h4>{{ page.video.heading }}</h4>
         {% endif %}
@@ -72,7 +70,7 @@ layout: default
 
     <!-- Selected papers -->
     {% if page.selected_papers %}
-      <div class="content-card">
+      <div>
         <h2>
           <a href="{{ '/publications/' | relative_url }}" style="color: inherit">selected publications</a>
         </h2>
@@ -82,7 +80,7 @@ layout: default
 
     <!-- Social -->
     {% if page.social %}
-      <div class="content-card social">
+      <div class="social">
         <div class="contact-icons">{% include social.liquid %}</div>
 
         <div class="contact-note">{{ site.contact_note }}</div>
