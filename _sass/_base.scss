@@ -1585,12 +1585,6 @@ body {
       color: $black-color;
     }
 
-    .wm-hint {
-      font-size: 0.95rem;
-      font-style: italic;
-      margin: 0;
-      color: $black-color;
-    }
   }
 
   .wm-graphic {
@@ -1602,6 +1596,14 @@ body {
       display: block;
       width: 100%;
       height: auto;
+    }
+
+    .wm-hint {
+      text-align: center;
+      font-size: 0.95rem;
+      font-style: italic;
+      margin: 0.4rem 0 0;
+      color: $black-color;
     }
   }
 
@@ -1659,11 +1661,11 @@ body {
     }
   }
 
-  .wm-pop[data-for="model"] { left: 52.8%; top: 22.6%; }
-  .wm-pop[data-for="self"] { left: 30%; top: 48.5%; }
-  .wm-pop[data-for="world"] { left: 52%; top: 48.5%; }
-  .wm-pop[data-for="goals"] { left: 74%; top: 48.5%; }
-  .wm-pop[data-for="tasks"] { left: 50%; top: 78.9%; }
+  .wm-pop[data-for="model"] { left: 52%; top: 16.8%; }
+  .wm-pop[data-for="self"] { left: 30%; top: 42.1%; }
+  .wm-pop[data-for="world"] { left: 52%; top: 42.1%; }
+  .wm-pop[data-for="goals"] { left: 74%; top: 42.1%; }
+  .wm-pop[data-for="tasks"] { left: 50%; top: 70.5%; }
 }
 
 @media (max-width: 767.98px) {
