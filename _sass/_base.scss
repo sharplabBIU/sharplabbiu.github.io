@@ -1567,7 +1567,7 @@ body {
   margin-top: 2rem;
 }
 
-// Home hero: the animated world model inside the brain (dark panel with rounded corners)
+// Home hero: the animated world model inside the brain, drawn straight onto the page's white box
 .world-model-figure {
   margin: 0;
 
@@ -1575,7 +1575,6 @@ body {
     display: block;
     width: 100%;
     height: auto;
-    border-radius: 12px;
   }
 }
 
