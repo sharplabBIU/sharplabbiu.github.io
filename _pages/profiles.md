@@ -18,9 +18,10 @@ dog_photos:
   - { src: dina_3.jpg, alt: "Dina stretched out between a couch and a bench" }
 ---
 
-<!-- Names only, grouped by role (photos of each person are on their own page); lab photo collage on the right -->
-<div class="row">
-  <div class="col-md-5 team">
+<!-- Names grouped by role, centered in a card, with the lab photo collages in a card beside it
+     (photos of each person are on their own page) -->
+<div class="team-layout">
+  <div class="content-card team">
     {% for category in page.display_categories %}
       {% assign members = site.projects | where: 'category', category | sort: 'importance' %}
       {% if members.size > 0 %}
@@ -36,7 +37,7 @@ dog_photos:
     {% endfor %}
   </div>
 
-  <div class="col-md-7">
+  <div class="content-card team-photos">
     <div class="lab-collage">
       {% for photo in page.lab_photos %}
         <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" alt="{{ photo.alt }}" loading="lazy">

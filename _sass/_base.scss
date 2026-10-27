@@ -702,7 +702,7 @@ footer .footer-content {
 
 .team {
   h2.team-category {
-    text-align: left;
+    text-align: center;
     font-size: 1.75rem;
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
@@ -727,7 +727,6 @@ body {
 
 // Embedded video on the home page (responsive 16:9)
 .home-video {
-  margin-top: 2rem;
 
   .video-embed {
     width: 100%;
@@ -748,8 +747,9 @@ body {
 // then key figures from the papers below in identical rectangular frames
 .research-areas {
   .research-area {
-    margin-top: 1.5rem;
-    margin-bottom: 4.5rem;
+    margin-top: 0;
+    margin-bottom: 1.75rem;
+    scroll-margin-top: 90px; // anchors from the header icons land below the fixed navbar
   }
 
   .research-intro {
@@ -844,7 +844,6 @@ body {
 .lab-collage {
   column-count: 2;
   column-gap: 0.5rem;
-  margin-top: 1.5rem;
 
   img {
     display: block;
@@ -1490,4 +1489,132 @@ swiper-container {
   margin-bottom: 0;
   font-size: 0.85rem;
   color: #666;
+}
+
+// Page backdrop and content cards
+// Dark navy backdrop with sparse, faint lab motifs (assets/img/backdrop.svg); text sits in white
+// rounded cards for contrast. The header and footer stay white.
+body {
+  background-color: $backdrop-color;
+  background-image: url("../img/backdrop.svg");
+  background-size: 1400px auto;
+  background-repeat: repeat;
+  background-position: center top;
+}
+
+// Main container: a tighter gap below the navbar (replaces Bootstrap's mt-5) and room above the fixed footer
+.main-content {
+  margin-top: 1.5rem;
+  padding-bottom: 4.5rem;
+}
+
+.content-card {
+  background-color: $white-color;
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .content-card {
+    padding: 1.25rem 1.1rem;
+    border-radius: 12px;
+  }
+}
+
+// Home page cards
+.home-news {
+  h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .news table {
+    margin-bottom: 0;
+  }
+}
+
+.worry-card {
+  padding: 1rem 1.25rem 0.9rem;
+}
+
+// The illustration keeps a readable minimum width and scrolls sideways on narrow screens
+.worry-figure {
+  margin: 0;
+  overflow-x: auto;
+
+  svg {
+    display: block;
+    width: 100%;
+    min-width: 680px;
+    max-width: 980px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  figcaption {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #5a6680;
+    margin-top: 0.5rem;
+  }
+}
+
+// Header: reinforcement learning, planning and brain icons on the right (wide screens only,
+// where they cannot collide with the centered page links)
+#navbar .navbar-icons {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  #navbar .navbar-icons {
+    display: flex;
+    gap: 1rem;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    a {
+      display: block;
+      line-height: 0;
+      color: $blue-color-dark;
+
+      &:hover {
+        opacity: 0.75;
+      }
+    }
+
+    svg {
+      height: 38px;
+      width: auto;
+    }
+  }
+}
+
+// Team page: the names card sits right beside the photo card, both centered
+.team-layout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.5rem;
+
+  .team {
+    flex: 0 1 300px;
+    text-align: center;
+  }
+
+  .team-photos {
+    flex: 0 1 560px;
+    max-width: 100%;
+  }
 }

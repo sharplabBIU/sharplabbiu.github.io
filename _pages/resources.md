@@ -7,15 +7,25 @@ nav: true
 nav_order: 6
 ---
 
+<div class="content-card" markdown="1">
+
 ### Code
 
 Our code and task materials are on the [Sharp Lab GitHub](https://github.com/sharplabbiu).
+
+</div>
+
+<div class="content-card" markdown="1">
 
 ### Statistics
 
 - [Experimentology](https://experimentology.io/), an open textbook on experimental methods in psychology
 - [Statistical Thinking for the 21st Century](https://statsthinking21.github.io/statsthinking21-core-site/) by Russell Poldrack
 - [Statistical Rethinking](https://www.youtube.com/watch?v=FdnMWdICdRs&list=PLDcUM9US4XdPz-KxHM4XHt7uUVGWWVSus), Richard McElreath's lecture series on YouTube
+
+</div>
+
+<div class="content-card" markdown="1">
 
 ### Paul's favorite books
 
@@ -24,3 +34,5 @@ Our code and task materials are on the [Sharp Lab GitHub](https://github.com/sha
 - [_Kafka on the Shore_](https://en.wikipedia.org/wiki/Kafka_on_the_Shore) by Haruki Murakami
 - [_The Neverending Story_](https://en.wikipedia.org/wiki/The_Neverending_Story) by Michael Ende
 - [_Nisim VeNifla'ot_ (ניסים ונפלאות)](https://www.goodreads.com/book/show/59013908) by Leah Goldberg
+
+</div>

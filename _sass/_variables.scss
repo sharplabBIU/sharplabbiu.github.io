@@ -17,6 +17,7 @@ $green-color-dark: #009f06 !default;
 $green-color-light: #ddffdd !default;
 $green-color-bright: #11d68b !default;
 $green-color-deep: #006400 !default; // matplotlib "darkgreen": links and highlighted text
+$backdrop-color: #121f3a !default; // page backdrop behind the white content cards
 $purple-color: #b509ac !default;
 $light-purple-color: lighten($purple-color, 25%);
 $pink-color: #f92080 !default;
