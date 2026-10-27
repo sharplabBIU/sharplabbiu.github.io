@@ -1492,13 +1492,13 @@ swiper-container {
 }
 
 // Page backdrop and content cards
-// Dark navy backdrop with sparse, faint lab motifs (assets/img/backdrop.svg); text sits in white
-// rounded cards for contrast. The header and footer stay white.
+// A texture of decision trees in the logo colours (assets/img/backdrop.svg) over a dark gradient that
+// shifts from navy through sea green to red; text sits in white rounded cards for contrast.
 body {
   background-color: $backdrop-color;
-  background-image: url("../img/backdrop.svg");
-  background-size: 1400px auto;
-  background-repeat: repeat;
+  background-image: url("../img/backdrop.svg"), linear-gradient(160deg, #0a1736 0%, #0d2c3f 50%, #30142c 100%);
+  background-size: 720px auto, auto;
+  background-repeat: repeat, no-repeat;
   background-position: center top;
 }
 
@@ -1542,8 +1542,12 @@ body {
   }
 }
 
+// The worry graphic is a dark "screen" rather than a white card
 .worry-card {
-  padding: 1rem 1.25rem 0.9rem;
+  padding: 0;
+  overflow: hidden;
+  background-color: #071026;
+  border: 1px solid rgba(30, 217, 164, 0.35);
 }
 
 // The illustration keeps a readable minimum width and scrolls sideways on narrow screens
@@ -1555,48 +1559,7 @@ body {
     display: block;
     width: 100%;
     min-width: 680px;
-    max-width: 980px;
     height: auto;
-    margin: 0 auto;
-  }
-
-  figcaption {
-    text-align: center;
-    font-size: 0.95rem;
-    color: #5a6680;
-    margin-top: 0.5rem;
-  }
-}
-
-// Header: reinforcement learning, planning and brain icons on the right (wide screens only,
-// where they cannot collide with the centered page links)
-#navbar .navbar-icons {
-  display: none;
-}
-
-@media (min-width: 992px) {
-  #navbar .navbar-icons {
-    display: flex;
-    gap: 1rem;
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-
-    a {
-      display: block;
-      line-height: 0;
-      color: $blue-color-dark;
-
-      &:hover {
-        opacity: 0.75;
-      }
-    }
-
-    svg {
-      height: 38px;
-      width: auto;
-    }
   }
 }
 
