@@ -39,6 +39,7 @@ layout: default
     <!-- Animated world-model hero between the description and the news -->
     {% if page.world_model_figure %}
       {% include world_model.liquid %}
+      <script src="{{ '/assets/js/world-model.js' | relative_url | bust_file_cache }}" defer></script>
     {% endif %}
 
     <!-- News -->

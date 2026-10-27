@@ -1567,14 +1567,118 @@ body {
   margin-top: 2rem;
 }
 
-// Home hero: the animated world model inside the brain, drawn straight onto the page's white box
-.world-model-figure {
-  margin: 0;
+// Home hero: a text pane beside a clickable world-model diagram inside a brain (_includes/world_model.liquid)
+.wm-hero {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 0.5rem 0 1rem;
 
-  svg {
-    display: block;
-    width: 100%;
-    height: auto;
+  .wm-text {
+    flex: 0 0 31%;
+
+    h2 {
+      font-size: 2.35rem;
+      font-weight: 700;
+      line-height: 1.12;
+      margin: 0 0 0.9rem;
+      color: $black-color;
+    }
+
+    .wm-hint {
+      font-size: 0.95rem;
+      font-style: italic;
+      margin: 0;
+      color: $black-color;
+    }
+  }
+
+  .wm-graphic {
+    flex: 1 1 auto;
+    position: relative;
+    min-width: 0;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  // Explanation bubbles, anchored just below the part they describe (positions are percentages of the graphic)
+  .wm-pop {
+    position: absolute;
+    z-index: 5;
+    width: 300px;
+    max-width: 92%;
+    transform: translate(-50%, 14px);
+    padding: 0.9rem 2.2rem 0.9rem 1rem;
+    background-color: $white-color;
+    color: $black-color;
+    border: 1px solid #c9d2e3;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    font-size: 0.95rem;
+    line-height: 1.4;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      width: 14px;
+      height: 14px;
+      margin-left: -7px;
+      background-color: $white-color;
+      border-left: 1px solid #c9d2e3;
+      border-top: 1px solid #c9d2e3;
+      transform: rotate(45deg);
+    }
+
+    strong {
+      display: block;
+      margin-bottom: 0.3rem;
+      color: $black-color;
+    }
+
+    p {
+      margin: 0;
+      color: $black-color;
+    }
+
+    .wm-close {
+      position: absolute;
+      top: 0.35rem;
+      right: 0.5rem;
+      border: 0;
+      background: none;
+      font-size: 1.3rem;
+      line-height: 1;
+      cursor: pointer;
+      color: $black-color;
+    }
+  }
+
+  .wm-pop[data-for="model"] { left: 52.8%; top: 22.6%; }
+  .wm-pop[data-for="self"] { left: 30%; top: 48.5%; }
+  .wm-pop[data-for="world"] { left: 52%; top: 48.5%; }
+  .wm-pop[data-for="goals"] { left: 74%; top: 48.5%; }
+  .wm-pop[data-for="tasks"] { left: 50%; top: 78.9%; }
+}
+
+@media (max-width: 767.98px) {
+  // Stack the text above the graphic on small screens
+  .wm-hero {
+    flex-direction: column;
+    align-items: stretch;
+
+    .wm-text {
+      flex: 0 0 auto;
+
+      h2 {
+        font-size: 1.7rem;
+      }
+    }
   }
 }
 
