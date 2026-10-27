@@ -1578,14 +1578,6 @@ body {
   }
 }
 
-@media (max-width: 575.98px) {
-  // The hero scales down on phones; its captions would be unreadably small, so hide them
-  .world-model-figure .wm-tag,
-  .world-model-figure .wm-lab {
-    display: none;
-  }
-}
-
 // Team page: the names column sits right beside the photos, both centered
 .team-layout {
   display: flex;
