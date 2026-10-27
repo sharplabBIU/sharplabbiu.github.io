@@ -6,9 +6,9 @@
   --global-bg-color: #{$white-color};
   --global-code-bg-color: #{$code-bg-color-light};
   --global-text-color: #{$black-color};
-  --global-text-color-light: #{$blue-color};
-  --global-theme-color: #{$blue-color-dark};
-  --global-hover-color: #{$blue-color-dark};
+  --global-text-color-light: #{$black-color};
+  --global-theme-color: #{$black-color}; // links are black like the rest of the text
+  --global-hover-color: #{$black-color};
   --global-hover-text-color: #{$white-color};
   // White footer with dark blue text and icons (matches the header)
   --global-footer-bg-color: #{$white-color};

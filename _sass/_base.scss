@@ -38,11 +38,12 @@ a,
 table.table a {
   color: var(--global-theme-color);
 
-  // No underline when hovering any link
+  // No underline when hovering any link; links are black, so hovering just dims them a little
   &:hover,
   &:focus {
     color: var(--global-theme-color);
     text-decoration: none;
+    opacity: 0.65;
   }
 
   &:hover:after :not(.nav-item.dropdown) {
@@ -1492,13 +1493,18 @@ swiper-container {
 .publications p.citation-note {
   margin-bottom: 0;
   font-size: 0.85rem;
-  color: #666;
+  color: $black-color;
 }
 
 // Page backdrop and content box
-// Plain dark navy backdrop; each page's content sits in one light gray, slightly translucent rounded box
+// Dark navy backdrop with a faint computational-neuroscience texture (assets/img/backdrop.svg);
+// each page's content sits in one white, slightly translucent rounded box
 body {
   background-color: $backdrop-color;
+  background-image: url("../img/backdrop.svg");
+  background-size: 600px auto;
+  background-repeat: repeat;
+  background-position: center top;
 }
 
 // Main container: a tighter gap below the navbar (replaces Bootstrap's mt-5) and room above the fixed footer
@@ -1508,7 +1514,7 @@ body {
 }
 
 .content-card {
-  background-color: rgba(236, 239, 244, 0.92);
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 16px;
   padding: 1.75rem 2rem;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
@@ -1567,7 +1573,7 @@ body {
 
   figcaption {
     font-size: 0.95rem;
-    color: #4a5568;
+    color: $black-color;
     margin-top: 0.6rem;
   }
 }
