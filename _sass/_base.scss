@@ -1508,8 +1508,8 @@ swiper-container {
 }
 
 // Page backdrop and content box
-// Navajowhite backdrop with faint dark slate gray RL equations (assets/img/backdrop.svg);
-// each page's content sits in one opaque steelblue rounded box with white text
+// Bisque backdrop with faint dark slate gray RL equations (assets/img/backdrop.svg);
+// each page's content sits in one opaque steelblue rounded box with bisque text
 body {
   background-color: $backdrop-color;
   background-image: url("../img/backdrop.svg");
@@ -1526,12 +1526,12 @@ body {
 
 .content-card {
   background-color: $steel-color; // steelblue
-  // Everything inside the box is white, links included (the site's colour variables are re-pointed here)
-  --global-text-color: #{$white-color};
-  --global-text-color-light: #{$white-color};
-  --global-theme-color: #{$white-color};
-  --global-hover-color: #{$white-color};
-  color: $white-color;
+  // All text inside the box is bisque, links included (the site's colour variables are re-pointed here)
+  --global-text-color: #{$bisque-color};
+  --global-text-color-light: #{$bisque-color};
+  --global-theme-color: #{$bisque-color};
+  --global-hover-color: #{$bisque-color};
+  color: $bisque-color;
   border-radius: 16px;
   padding: 1.75rem 2rem;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
