@@ -1509,7 +1509,7 @@ swiper-container {
 
 // Page backdrop and content box
 // Aquamarine backdrop with a faint navy computational-neuroscience texture (assets/img/backdrop.svg);
-// each page's content sits in one opaque aliceblue rounded box
+// each page's content sits in one opaque honeydew rounded box
 body {
   background-color: $backdrop-color;
   background-image: url("../img/backdrop.svg");
@@ -1525,7 +1525,7 @@ body {
 }
 
 .content-card {
-  background-color: #f0f8ff; // aliceblue
+  background-color: #f0fff0; // honeydew
   border-radius: 16px;
   padding: 1.75rem 2rem;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
