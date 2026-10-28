@@ -929,7 +929,7 @@ body {
   h2#preprints,
   h2#peer-reviewed {
     margin-top: 1.5rem;
-    color: $blue-color-dark;
+    color: var(--global-text-color); // white inside the box
   }
 
   ol.bibliography {
@@ -945,7 +945,7 @@ body {
       // Number each publication at the start of its title
       .title::before {
         content: counter(publication) ". ";
-        color: $blue-color-dark;
+        color: var(--global-text-color);
       }
 
       .preview {
