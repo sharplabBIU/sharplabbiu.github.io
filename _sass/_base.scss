@@ -807,6 +807,12 @@ body {
     border: 1px solid #e1e7f2;
     border-radius: 10px;
     background: $white-color;
+    // White card, so its caption text and links are black (the box around it re-points these to white)
+    --global-text-color: #{$black-color};
+    --global-text-color-light: #{$black-color};
+    --global-theme-color: #{$black-color};
+    --global-hover-color: #{$black-color};
+    color: $black-color;
   }
 
   // Every figure gets the same 16:9 frame; the image is scaled to fit inside it
