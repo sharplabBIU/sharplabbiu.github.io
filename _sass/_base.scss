@@ -468,7 +468,7 @@ footer.sticky-bottom {
 }
 
 // Footer contents: social icons centered in the bar, copyright at the right
-// (stacked and centered on small screens). Icons are always midnight blue.
+// (stacked and centered on small screens). Icons are always dark slate gray.
 footer .footer-content {
   display: grid;
   grid-template-columns: 1fr;
@@ -488,7 +488,7 @@ footer .footer-content {
     a,
     a:hover {
       margin: 0 0.5rem;
-      color: $midnight-color;
+      color: $slate-color;
     }
 
     a:hover {
@@ -1445,7 +1445,7 @@ swiper-container {
   }
 }
 
-// White header with the same midnight blue text as the footer
+// White header with the same dark slate gray text as the footer
 #navbar {
   background-color: $white-color;
   opacity: 1;
@@ -1453,7 +1453,7 @@ swiper-container {
   .navbar-brand,
   .navbar-nav .nav-item .nav-link,
   .navbar-nav .nav-item .nav-link:hover {
-    color: $midnight-color;
+    color: $slate-color;
   }
 
   .navbar-nav .nav-item .nav-link:hover {
@@ -1461,14 +1461,14 @@ swiper-container {
   }
 
   .navbar-nav .nav-item.active > .nav-link {
-    color: $midnight-color;
+    color: $slate-color;
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-underline-offset: 6px;
   }
 
   .navbar-toggler .icon-bar {
-    background-color: $midnight-color;
+    background-color: $slate-color;
   }
 }
 
@@ -1509,7 +1509,7 @@ swiper-container {
 
 // Page backdrop and content box
 // Aquamarine backdrop with a faint navy computational-neuroscience texture (assets/img/backdrop.svg);
-// each page's content sits in one opaque midnight blue rounded box with white text
+// each page's content sits in one opaque dark slate gray rounded box with white text
 body {
   background-color: $backdrop-color;
   background-image: url("../img/backdrop.svg");
@@ -1525,7 +1525,7 @@ body {
 }
 
 .content-card {
-  background-color: $midnight-color; // midnightblue
+  background-color: $slate-color; // darkslategray
   // Everything inside the box is white, links included (the site's colour variables are re-pointed here)
   --global-text-color: #{$white-color};
   --global-text-color-light: #{$white-color};
