@@ -22,7 +22,7 @@
 
 
     <!-- Content -->
-    <div class="container main-content" role="main">
+    <div class="container main-content{% if page.permalink == '/' %} main-content-wide{% endif %}" role="main">
       {% if page.toc and page.toc.sidebar %}
         {% if page.toc.sidebar == 'right' %}
           <div class="row">

@@ -726,8 +726,9 @@ body {
   font-size: 1.15rem;
 }
 
-// Embedded video on the home page (responsive 16:9)
-.home-video {
+// Embedded talk video (home page when set, and the projects page), responsive 16:9
+.home-video,
+.talk-video {
 
   .video-embed {
     width: 100%;
@@ -1591,8 +1592,6 @@ body {
 
   .wm-graphic {
     position: relative;
-    max-width: 700px;
-    margin: 0 auto;
 
     svg {
       display: block;
@@ -1664,11 +1663,12 @@ body {
     }
   }
 
-  .wm-pop[data-for="model"] { left: 48%; top: 18.2%; }
-  .wm-pop[data-for="self"] { left: 26%; top: 45.6%; }
-  .wm-pop[data-for="world"] { left: 48%; top: 45.6%; }
-  .wm-pop[data-for="goals"] { left: 70%; top: 45.6%; }
-  .wm-pop[data-for="tasks"] { left: 46%; top: 76.4%; }
+  // (the graphic's viewBox starts at x = 50 and is 880 wide)
+  .wm-pop[data-for="model"] { left: 48.9%; top: 18.2%; }
+  .wm-pop[data-for="self"] { left: 23.9%; top: 45.6%; }
+  .wm-pop[data-for="world"] { left: 48.9%; top: 45.6%; }
+  .wm-pop[data-for="goals"] { left: 73.9%; top: 45.6%; }
+  .wm-pop[data-for="tasks"] { left: 46.6%; top: 76.4%; }
 }
 
 // Team page: the names column sits right beside the photos, both centered
@@ -1687,5 +1687,65 @@ body {
   .team-photos {
     flex: 0 1 560px;
     max-width: 100%;
+  }
+}
+
+// Home page: a wider content box for the larger graphic
+@media (min-width: 992px) {
+  .main-content.main-content-wide {
+    max-width: 1400px;
+  }
+}
+
+// Home top row: the world-model graphic and the logo side by side. The graphic is 880 x 572 and the logo
+// square, so 880:572 columns give both the same height
+.home-top {
+  display: grid;
+  grid-template-columns: 880fr 572fr;
+  gap: 1.5rem;
+  align-items: start;
+  margin-bottom: 1.75rem;
+
+  .wm-hero {
+    margin: 0;
+  }
+
+  .home-logo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  // Stack on phones: graphic first, then a smaller logo
+  .home-top {
+    grid-template-columns: 1fr;
+
+    .home-logo img {
+      max-width: 220px;
+      margin: 0 auto;
+    }
+  }
+}
+
+// News page heading
+.news-heading {
+  margin-bottom: 1rem;
+}
+
+// Projects page: the talk video below the research areas
+.talk-video {
+  margin-top: 3rem;
+
+  .research-title {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .talk-link {
+    text-align: center;
+    margin: 0.6rem 0 0;
   }
 }

@@ -9,38 +9,21 @@ layout: default
   {% endif %}
 
   <article>
-    <!-- Lab description with the logo beside it -->
-    <div class="home-intro clearfix">
-      {% if page.profile %}
-        <div class="profile float-{% if page.profile.align == 'left' %}left{% else %}right{% endif %}">
-          {% if page.profile.image %}
-            {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
-            {% if page.profile.image_circular %}
-              {% assign profile_image_class = 'img-fluid z-depth-1 rounded-circle' %}
-            {% else %}
-              {% assign profile_image_class = 'img-fluid z-depth-1
-        rounded' %}
-            {% endif %}
-            {% capture sizes %}(min-width: {{site.max_width}}) {{ site.max_width | minus: 30 | times: 0.3}}px, (min-width: 576px)
-        30vw, 95vw"{% endcapture %}
-            {%
-              include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes=sizes alt=page.profile.image
-              cache_bust=true
-            %}
-          {% endif %}
-          {% if page.profile.more_info %}
-            <div class="more-info">{{ page.profile.more_info }}</div>
-          {% endif %}
+    <!-- Top row: the clickable world-model graphic, with the lab logo beside it at the same height -->
+    <div class="home-top">
+      {% if page.world_model_figure %}
+        {% include world_model.liquid %}
+        <script src="{{ '/assets/js/world-model.js' | relative_url | bust_file_cache }}" defer></script>
+      {% endif %}
+      {% if page.profile.image %}
+        <div class="home-logo">
+          <img src="{{ page.profile.image | prepend: '/assets/img/' | relative_url | bust_file_cache }}" alt="Sharp Lab logo">
         </div>
       {% endif %}
-      {{ content }}
     </div>
 
-    <!-- Animated world-model hero between the description and the news -->
-    {% if page.world_model_figure %}
-      {% include world_model.liquid %}
-      <script src="{{ '/assets/js/world-model.js' | relative_url | bust_file_cache }}" defer></script>
-    {% endif %}
+    <!-- Lab description -->
+    <div class="home-intro">{{ content }}</div>
 
     <!-- News -->
     {% if page.news and site.announcements.enabled %}
