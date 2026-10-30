@@ -1487,7 +1487,7 @@ swiper-container {
   }
 }
 
-// Floating header and footer bars: rounded bars (indian red header, dark red footer) exactly as wide as the page's content box.
+// Floating header and footer bars: rounded indian red bars as wide as the page's content box (the header a little wider).
 // Each bar is drawn behind its container, inset by the 15px side padding that the content box sits in
 #navbar > .container,
 footer.fixed-bottom > .container {
@@ -1503,7 +1503,7 @@ footer.fixed-bottom > .container {
     left: 15px;
     right: 15px;
     z-index: -1;
-    background-color: $footer-bar-color;
+    background-color: $bar-color;
     border-radius: 16px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
   }
@@ -1517,7 +1517,6 @@ footer.fixed-bottom > .container {
   &::before {
     left: 3px;
     right: 3px;
-    background-color: $header-bar-color;
   }
 }
 
