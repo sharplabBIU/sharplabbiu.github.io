@@ -1697,45 +1697,41 @@ body {
   }
 }
 
-// Home top row: the world-model graphic large and centered, with a small logo in the top-right corner.
-// Three columns: equal side columns keep the graphic exactly centered; the right one holds the logo
-.home-top {
+// Home top: the first paragraph with the lab logo to its right; the graphic and the second paragraph follow
+.home-lead {
   display: grid;
-  grid-template-columns: minmax(90px, 1fr) minmax(0, 1080px) minmax(90px, 1fr);
-  gap: 1rem;
-  align-items: start;
-  margin-bottom: 1.75rem;
+  grid-template-columns: minmax(0, 1fr) 150px;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
 
-  .wm-hero {
-    margin: 0;
+  .home-intro {
+    margin-bottom: 0;
   }
 
-  .home-logo {
-    justify-self: end;
+  .home-logo img {
+    display: block;
     width: 100%;
-    max-width: 120px;
-
-    img {
-      display: block;
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
+    height: auto;
+    border-radius: 8px;
   }
 }
 
-@media (max-width: 767.98px) {
-  // Phones: the logo sits small above the graphic, which takes the full width
-  .home-top {
-    grid-template-columns: 1fr;
+.wm-hero {
+  max-width: 880px;
+  margin: 0 auto 1.75rem;
+}
 
-    .home-top-spacer {
-      display: none;
-    }
+@media (max-width: 767.98px) {
+  // Phones: the logo sits above the first paragraph
+  .home-lead {
+    grid-template-columns: 1fr;
+    gap: 1rem;
 
     .home-logo {
       order: -1;
-      max-width: 80px;
+      justify-self: center;
+      width: 110px;
     }
   }
 }
