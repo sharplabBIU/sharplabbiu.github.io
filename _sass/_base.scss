@@ -455,11 +455,10 @@ footer.fixed-bottom {
   }
 }
 
-// The footer: a full-width bar at the end of the page, a little below the content box
+// The footer: a full-width bar at the end of the page, right below the content box
 footer.sticky-bottom {
   background-color: var(--global-footer-bg-color);
   font-size: 0.86rem;
-  margin-top: 1.5rem;
 
   .container {
     color: var(--global-footer-text-color);
@@ -1544,7 +1543,7 @@ footer > .container {
 
 // Page backdrop and content box
 // Bisque backdrop with faint dark slate gray RL equations (assets/img/backdrop.svg);
-// each page's content sits in one opaque steelblue rounded box with white text
+// each page's content sits in one opaque steelblue box with white text
 // The backdrop stays still while the page scrolls; scrolling past the top or bottom of the page
 // shows the header and footer bar colour, not the backdrop
 html {
@@ -1560,9 +1559,15 @@ body {
   background-attachment: fixed;
 }
 
-// Main container: a clear gap of backdrop below the header bar (replaces Bootstrap's mt-5)
+// Main container: the content box runs from the header bar down to the footer bar, filling short pages
 .main-content {
-  margin-top: 3rem;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+
+  > .content-card {
+    flex: 1 0 auto;
+  }
 }
 
 .content-card {
@@ -1573,8 +1578,7 @@ body {
   --global-theme-color: #{$white-color};
   --global-hover-color: #{$white-color};
   color: $white-color;
-  border-radius: 16px;
-  padding: 1.75rem 2rem;
+  padding: 3rem 2rem; // room between the header bar and the first line
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
 
   > :first-child {
@@ -1593,8 +1597,7 @@ body {
 
 @media (max-width: 575.98px) {
   .content-card {
-    padding: 1.25rem 1.1rem;
-    border-radius: 12px;
+    padding: 2rem 1.1rem;
   }
 }
 
@@ -1754,7 +1757,7 @@ body {
   // Laptops and desktops: the graphic shrinks with the window height so that it and its tagline fit in the window
   // below the first paragraph (e.g. a 14-inch MacBook Pro in Chrome); the graphic is 880 x 572
   .wm-hero .wm-graphic {
-    max-width: unquote("clamp(480px, calc((100vh - 375px) * 1.53), 880px)");
+    max-width: unquote("clamp(480px, calc((100vh - 355px) * 1.53), 880px)");
   }
 }
 
