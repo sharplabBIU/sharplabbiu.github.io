@@ -475,7 +475,7 @@ footer.sticky-bottom {
 }
 
 // Footer contents: social icons centered in the bar, copyright at the right
-// (stacked and centered on small screens). Icons are white.
+// (stacked and centered on small screens). Icons are steelblue.
 footer .footer-content {
   display: grid;
   grid-template-columns: 1fr;
@@ -483,7 +483,7 @@ footer .footer-content {
   align-items: center;
   gap: 0.25rem;
 
-  // A site-wide rule colors every div with the body text color; keep the footer text white
+  // A site-wide rule colors every div with the body text color; keep the footer text steelblue
   .footer-copyright {
     color: var(--global-footer-text-color);
   }
@@ -495,7 +495,7 @@ footer .footer-content {
     a,
     a:hover {
       margin: 0 0.5rem;
-      color: $white-color;
+      color: $bar-text-color;
     }
 
     a:hover {
@@ -1466,7 +1466,7 @@ swiper-container {
   }
 }
 
-// Header: a floating indian red bar (drawn below) with white text, over the backdrop (see body below)
+// Header: a floating aliceblue bar (drawn below) with steelblue text, over the backdrop (see body below)
 #navbar {
   border-bottom: 0;
   opacity: 1;
@@ -1475,7 +1475,7 @@ swiper-container {
   .navbar-brand,
   .navbar-nav .nav-item .nav-link,
   .navbar-nav .nav-item .nav-link:hover {
-    color: $white-color;
+    color: $bar-text-color;
   }
 
   .navbar-nav .nav-item .nav-link:hover {
@@ -1483,18 +1483,18 @@ swiper-container {
   }
 
   .navbar-nav .nav-item.active > .nav-link {
-    color: $white-color;
+    color: $bar-text-color;
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-underline-offset: 6px;
   }
 
   .navbar-toggler .icon-bar {
-    background-color: $white-color;
+    background-color: $bar-text-color;
   }
 }
 
-// Header and footer bars: rounded indian red bars as wide as the page's content box (the header a little wider).
+// Header and footer bars: rounded aliceblue bars as wide as the page's content box (the header a little wider).
 // Each bar is drawn behind its container, inset by the 15px side padding that the content box sits in
 #navbar > .container,
 footer > .container {
