@@ -10,8 +10,8 @@
   --global-theme-color: #{$black-color}; // links are black like the rest of the text
   --global-hover-color: #{$black-color};
   --global-hover-text-color: #{$white-color};
-  // Footer: a floating light cyan bar (drawn in _base.scss) with black text and icons, like the header
-  --global-footer-bg-color: transparent;
+  // Footer: a floating mistyrose bar (drawn in _base.scss) with black text and icons, like the header
+  --global-footer-bg-color: #{$backdrop-color};
   --global-footer-text-color: #{$black-color};
   --global-footer-link-color: #{$black-color};
   --global-distill-app-color: #{$grey-color};

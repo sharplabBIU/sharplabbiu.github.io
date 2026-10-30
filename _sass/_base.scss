@@ -1459,9 +1459,8 @@ swiper-container {
   }
 }
 
-// Header: a floating light cyan bar (drawn below) with black text
+// Header: a floating mistyrose bar (drawn below) with black text, over the backdrop (see body below)
 #navbar {
-  background-color: transparent;
   border-bottom: 0;
   opacity: 1;
   padding: 14px 0 0; // bisque space above the floating bar
@@ -1488,7 +1487,7 @@ swiper-container {
   }
 }
 
-// Floating header and footer bars: rounded light cyan bars exactly as wide as the page's content box.
+// Floating header and footer bars: rounded mistyrose bars exactly as wide as the page's content box.
 // Each bar is drawn behind its container, inset by the 15px side padding that the content box sits in
 #navbar > .container,
 footer.fixed-bottom > .container {
@@ -1504,7 +1503,7 @@ footer.fixed-bottom > .container {
     left: 15px;
     right: 15px;
     z-index: -1;
-    background-color: $lightcyan-color;
+    background-color: $bar-color;
     border-radius: 16px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
   }
@@ -1560,12 +1559,17 @@ footer.fixed-bottom > .container {
 // Page backdrop and content box
 // Bisque backdrop with faint dark slate gray RL equations (assets/img/backdrop.svg);
 // each page's content sits in one opaque steelblue rounded box with white text
-body {
+// The backdrop stays still while the page scrolls, and the header and footer areas repeat it exactly,
+// so content scrolling past is never seen above the header bar or below the footer bar
+body,
+#navbar,
+footer.fixed-bottom {
   background-color: $backdrop-color;
   background-image: url("../img/backdrop.svg");
   background-size: 600px auto;
   background-repeat: repeat;
   background-position: center top;
+  background-attachment: fixed;
 }
 
 // Main container: a tighter gap below the navbar (replaces Bootstrap's mt-5) and room above the fixed footer
