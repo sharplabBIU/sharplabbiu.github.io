@@ -1542,7 +1542,7 @@ footer > .container {
 }
 
 @media (min-width: 768px) {
-  // Same navbar height on every page (the home page has no logo in the navbar)
+  // Fixed navbar height (78px), matching the body padding-top
   #navbar .container {
     position: relative;
     min-height: 78px;
