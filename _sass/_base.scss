@@ -1592,21 +1592,23 @@ body {
 
   .wm-graphic {
     position: relative;
+    max-width: 880px;
+    margin: 0 auto;
 
     svg {
       display: block;
       width: 100%;
       height: auto;
     }
+  }
 
-    .wm-tagline {
-      text-align: center;
-      font-size: 1.3rem;
-      font-weight: 700;
-      line-height: 1.3;
-      margin: 0.2rem 0 0;
-      color: $bisque-color; // bisque like the "world model" title in the brain
-    }
+  .wm-tagline {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0.2rem 0 0;
+    color: $bisque-color; // bisque like the "world model" title in the brain
   }
 
   // Explanation bubbles, anchored just below the part they describe (positions are percentages of the graphic)
@@ -1703,7 +1705,7 @@ body {
   grid-template-columns: minmax(0, 1fr) 150px;
   gap: 2rem;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.75rem;
 
   .home-intro {
     margin-bottom: 0;
@@ -1718,8 +1720,15 @@ body {
 }
 
 .wm-hero {
-  max-width: 880px;
-  margin: 0 auto 1.75rem;
+  margin: 0 0 1.75rem;
+}
+
+@media (min-width: 768px) {
+  // Laptops and desktops: the graphic shrinks with the window height so that it and its tagline fit on screen
+  // below the first paragraph (e.g. a 14-inch MacBook Pro in Chrome); the graphic is 880 x 572
+  .wm-hero .wm-graphic {
+    max-width: unquote("clamp(480px, calc((100vh - 385px) * 1.53), 880px)");
+  }
 }
 
 @media (max-width: 767.98px) {
