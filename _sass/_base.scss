@@ -1459,7 +1459,7 @@ swiper-container {
   }
 }
 
-// Header: a floating dark red bar (drawn below) with white text, over the backdrop (see body below)
+// Header: a floating indian red bar (drawn below) with white text, over the backdrop (see body below)
 #navbar {
   border-bottom: 0;
   opacity: 1;
@@ -1487,7 +1487,7 @@ swiper-container {
   }
 }
 
-// Floating header and footer bars: rounded dark red bars exactly as wide as the page's content box.
+// Floating header and footer bars: rounded bars (indian red header, dark red footer) exactly as wide as the page's content box.
 // Each bar is drawn behind its container, inset by the 15px side padding that the content box sits in
 #navbar > .container,
 footer.fixed-bottom > .container {
@@ -1503,7 +1503,7 @@ footer.fixed-bottom > .container {
     left: 15px;
     right: 15px;
     z-index: -1;
-    background-color: $bar-color;
+    background-color: $footer-bar-color;
     border-radius: 16px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
   }
@@ -1512,6 +1512,10 @@ footer.fixed-bottom > .container {
 #navbar > .container {
   padding-top: 4px;
   padding-bottom: 4px;
+
+  &::before {
+    background-color: $header-bar-color;
+  }
 }
 
 @media (max-width: 575.98px) {
@@ -1572,9 +1576,9 @@ footer.fixed-bottom {
   background-attachment: fixed;
 }
 
-// Main container: a tighter gap below the navbar (replaces Bootstrap's mt-5) and room above the fixed footer
+// Main container: a clear gap of backdrop below the header bar (replaces Bootstrap's mt-5) and room above the fixed footer
 .main-content {
-  margin-top: 1.5rem;
+  margin-top: 3rem;
   padding-bottom: 4.5rem;
 }
 
