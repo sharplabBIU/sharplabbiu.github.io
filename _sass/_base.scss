@@ -436,8 +436,8 @@ ul.task-list input[type="checkbox"] {
 // Footer
 footer.fixed-bottom {
   background-color: var(--global-footer-bg-color);
-  border-top: 1px solid var(--global-divider-color);
   font-size: 0.86rem;
+  padding-bottom: 14px; // bisque space below the floating bar
 
   .container {
     color: var(--global-footer-text-color);
@@ -468,7 +468,7 @@ footer.sticky-bottom {
 }
 
 // Footer contents: social icons centered in the bar, copyright at the right
-// (stacked and centered on small screens). Icons are always steelblue.
+// (stacked and centered on small screens). Icons are black.
 footer .footer-content {
   display: grid;
   grid-template-columns: 1fr;
@@ -476,7 +476,7 @@ footer .footer-content {
   align-items: center;
   gap: 0.25rem;
 
-  // A site-wide rule colors every div with the body text color; keep the footer dark blue
+  // A site-wide rule colors every div with the body text color; keep the footer text black
   .footer-copyright {
     color: var(--global-footer-text-color);
   }
@@ -488,7 +488,7 @@ footer .footer-content {
     a,
     a:hover {
       margin: 0 0.5rem;
-      color: $steel-color;
+      color: $black-color;
     }
 
     a:hover {
@@ -699,23 +699,30 @@ footer .footer-content {
   }
 }
 
-// Team
+// Team: each role on the left with its members to its right, all in one font size (roles in bold)
 
 .team {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: 1.5rem;
+  row-gap: 1.1rem;
+  align-items: baseline;
+
   h2.team-category {
-    text-align: center;
-    font-size: 2.4rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
+    margin: 0;
+    font-size: 1.7rem;
+    font-weight: 700;
+    line-height: 1.3;
   }
 
   ul.team-list {
     list-style: none;
     padding-left: 0;
-    margin-bottom: 0.5rem;
+    margin: 0;
 
     li {
       font-size: 1.7rem;
+      line-height: 1.3;
       margin-bottom: 0.3rem;
     }
   }
@@ -1452,30 +1459,66 @@ swiper-container {
   }
 }
 
-// White header with the same steelblue text as the footer
+// Header: a floating light cyan bar (drawn below) with black text
 #navbar {
-  background-color: $white-color;
+  background-color: transparent;
+  border-bottom: 0;
   opacity: 1;
+  padding: 14px 0 0; // bisque space above the floating bar
 
   .navbar-brand,
   .navbar-nav .nav-item .nav-link,
   .navbar-nav .nav-item .nav-link:hover {
-    color: $steel-color;
+    color: $black-color;
   }
 
   .navbar-nav .nav-item .nav-link:hover {
-    opacity: 0.75;
+    opacity: 0.65;
   }
 
   .navbar-nav .nav-item.active > .nav-link {
-    color: $steel-color;
+    color: $black-color;
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-underline-offset: 6px;
   }
 
   .navbar-toggler .icon-bar {
-    background-color: $steel-color;
+    background-color: $black-color;
+  }
+}
+
+// Floating header and footer bars: rounded light cyan bars exactly as wide as the page's content box.
+// Each bar is drawn behind its container, inset by the 15px side padding that the content box sits in
+#navbar > .container,
+footer.fixed-bottom > .container {
+  position: relative;
+  padding-left: calc(15px + 1.25rem);
+  padding-right: calc(15px + 1.25rem);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 15px;
+    right: 15px;
+    z-index: -1;
+    background-color: $lightcyan-color;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  }
+}
+
+#navbar > .container {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+@media (max-width: 575.98px) {
+  #navbar > .container::before,
+  footer.fixed-bottom > .container::before {
+    border-radius: 12px;
   }
 }
 
@@ -1682,8 +1725,8 @@ body {
   gap: 1.5rem;
 
   .team {
-    flex: 0 1 380px;
-    text-align: center;
+    flex: 0 1 520px;
+    text-align: left;
   }
 
   .team-photos {
@@ -1694,7 +1737,8 @@ body {
 
 // Home page: a wider content box for the larger graphic
 @media (min-width: 992px) {
-  .main-content.main-content-wide {
+  .main-content.main-content-wide,
+  .container.bar-wide {
     max-width: 1400px;
   }
 }
@@ -1741,6 +1785,19 @@ body {
       order: -1;
       justify-self: center;
       width: 110px;
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  // Phones: each role above its members, centered
+  .team-layout .team {
+    grid-template-columns: 1fr;
+    row-gap: 0.2rem;
+    text-align: center;
+
+    ul.team-list {
+      margin-bottom: 1rem;
     }
   }
 }
