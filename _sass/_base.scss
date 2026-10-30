@@ -437,7 +437,6 @@ ul.task-list input[type="checkbox"] {
 footer.fixed-bottom {
   background-color: var(--global-footer-bg-color);
   font-size: 0.86rem;
-  padding-bottom: 14px; // bisque space below the floating bar
 
   .container {
     color: var(--global-footer-text-color);
@@ -456,11 +455,11 @@ footer.fixed-bottom {
   }
 }
 
-// The footer at the end of the page, a little below the content box
+// The footer: a full-width bar at the end of the page, a little below the content box
 footer.sticky-bottom {
+  background-color: var(--global-footer-bg-color);
   font-size: 0.86rem;
   margin-top: 1.5rem;
-  padding-bottom: 14px; // backdrop below the bar
 
   .container {
     color: var(--global-footer-text-color);
@@ -1466,11 +1465,12 @@ swiper-container {
   }
 }
 
-// Header: a floating lightskyblue bar (drawn below) with black text, over the backdrop (see body below)
+// Header: a full-width lightskyblue bar with black text, fixed to the top of the window
 #navbar {
+  background-color: $bar-color;
   border-bottom: 0;
   opacity: 1;
-  padding: 14px 0 0; // bisque space above the floating bar
+  padding: 0;
 
   .navbar-brand,
   .navbar-nav .nav-item .nav-link,
@@ -1494,55 +1494,21 @@ swiper-container {
   }
 }
 
-// Header and footer bars: rounded lightskyblue bars as wide as the page's content box (the header a little wider).
-// Each bar is drawn behind its container, inset by the 15px side padding that the content box sits in
+// Header and footer text lines up with the text inside the content box
 #navbar > .container,
 footer > .container {
-  position: relative;
   padding-left: calc(15px + 1.25rem);
   padding-right: calc(15px + 1.25rem);
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 15px;
-    right: 15px;
-    z-index: -1;
-    background-color: $bar-color;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-  }
 }
 
-// The header bar reaches 12px further out on each side than the content box (8px on phones), so it is a little wider
+// Fixed header height (56px on phones, 78px wider), matching the body padding-top
 #navbar > .container {
+  min-height: 56px;
   padding-top: 4px;
   padding-bottom: 4px;
-
-  &::before {
-    left: 3px;
-    right: 3px;
-  }
-}
-
-@media (max-width: 575.98px) {
-  #navbar > .container::before {
-    left: 7px;
-    right: 7px;
-  }
-}
-
-@media (max-width: 575.98px) {
-  #navbar > .container::before,
-  footer > .container::before {
-    border-radius: 12px;
-  }
 }
 
 @media (min-width: 768px) {
-  // Fixed navbar height (78px), matching the body padding-top
   #navbar .container {
     position: relative;
     min-height: 78px;
@@ -1579,11 +1545,13 @@ footer > .container {
 // Page backdrop and content box
 // Bisque backdrop with faint dark slate gray RL equations (assets/img/backdrop.svg);
 // each page's content sits in one opaque steelblue rounded box with white text
-// The backdrop stays still while the page scrolls, and the header and footer areas repeat it exactly,
-// so content scrolling past is never seen above the header bar or below the footer bar
-body,
-#navbar,
-footer.fixed-bottom {
+// The backdrop stays still while the page scrolls; scrolling past the top or bottom of the page
+// shows the header and footer bar colour, not the backdrop
+html {
+  background-color: $bar-color;
+}
+
+body {
   background-color: $backdrop-color;
   background-image: url("../img/backdrop.svg");
   background-size: 600px auto;
@@ -1755,14 +1723,6 @@ footer.fixed-bottom {
   .team-photos {
     flex: 0 1 420px;
     max-width: 100%;
-  }
-}
-
-// Home page: a wider content box for the larger graphic
-@media (min-width: 992px) {
-  .main-content.main-content-wide,
-  .container.bar-wide {
-    max-width: 1400px;
   }
 }
 

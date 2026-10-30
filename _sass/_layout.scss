@@ -18,8 +18,12 @@ body {
 }
 
 body.fixed-top-nav {
-  // Room for the fixed header: 14px of backdrop above the bar plus the 78px bar
-  padding-top: 92px;
+  // Room for the fixed header bar: 78px tall, 56px on phones
+  padding-top: 78px;
+
+  @media (max-width: 767.98px) {
+    padding-top: 56px;
+  }
 }
 
 body.sticky-bottom-footer {
