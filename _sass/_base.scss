@@ -1509,12 +1509,22 @@ footer.fixed-bottom > .container {
   }
 }
 
+// The header bar reaches 12px further out on each side than the content box (8px on phones), so it is a little wider
 #navbar > .container {
   padding-top: 4px;
   padding-bottom: 4px;
 
   &::before {
+    left: 3px;
+    right: 3px;
     background-color: $header-bar-color;
+  }
+}
+
+@media (max-width: 575.98px) {
+  #navbar > .container::before {
+    left: 7px;
+    right: 7px;
   }
 }
 
