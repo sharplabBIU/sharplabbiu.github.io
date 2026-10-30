@@ -441,8 +441,8 @@ footer.fixed-bottom {
 
   .container {
     color: var(--global-footer-text-color);
-    padding-top: 9px;
-    padding-bottom: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     text-align: center;
   }
 
@@ -468,7 +468,7 @@ footer.sticky-bottom {
 }
 
 // Footer contents: social icons centered in the bar, copyright at the right
-// (stacked and centered on small screens). Icons are black.
+// (stacked and centered on small screens). Icons are white.
 footer .footer-content {
   display: grid;
   grid-template-columns: 1fr;
@@ -476,19 +476,19 @@ footer .footer-content {
   align-items: center;
   gap: 0.25rem;
 
-  // A site-wide rule colors every div with the body text color; keep the footer text black
+  // A site-wide rule colors every div with the body text color; keep the footer text white
   .footer-copyright {
     color: var(--global-footer-text-color);
   }
 
   .footer-social {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     line-height: 1;
 
     a,
     a:hover {
       margin: 0 0.5rem;
-      color: $black-color;
+      color: $white-color;
     }
 
     a:hover {
@@ -1459,7 +1459,7 @@ swiper-container {
   }
 }
 
-// Header: a floating mistyrose bar (drawn below) with black text, over the backdrop (see body below)
+// Header: a floating dark red bar (drawn below) with white text, over the backdrop (see body below)
 #navbar {
   border-bottom: 0;
   opacity: 1;
@@ -1468,7 +1468,7 @@ swiper-container {
   .navbar-brand,
   .navbar-nav .nav-item .nav-link,
   .navbar-nav .nav-item .nav-link:hover {
-    color: $black-color;
+    color: $white-color;
   }
 
   .navbar-nav .nav-item .nav-link:hover {
@@ -1476,18 +1476,18 @@ swiper-container {
   }
 
   .navbar-nav .nav-item.active > .nav-link {
-    color: $black-color;
+    color: $white-color;
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-underline-offset: 6px;
   }
 
   .navbar-toggler .icon-bar {
-    background-color: $black-color;
+    background-color: $white-color;
   }
 }
 
-// Floating header and footer bars: rounded mistyrose bars exactly as wide as the page's content box.
+// Floating header and footer bars: rounded dark red bars exactly as wide as the page's content box.
 // Each bar is drawn behind its container, inset by the 15px side padding that the content box sits in
 #navbar > .container,
 footer.fixed-bottom > .container {
@@ -1775,7 +1775,7 @@ footer.fixed-bottom {
   // Laptops and desktops: the graphic shrinks with the window height so that it and its tagline fit on screen
   // below the first paragraph (e.g. a 14-inch MacBook Pro in Chrome); the graphic is 880 x 572
   .wm-hero .wm-graphic {
-    max-width: unquote("clamp(480px, calc((100vh - 405px) * 1.53), 880px)");
+    max-width: unquote("clamp(480px, calc((100vh - 390px) * 1.53), 880px)");
   }
 }
 

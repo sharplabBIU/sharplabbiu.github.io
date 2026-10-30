@@ -10,10 +10,10 @@
   --global-theme-color: #{$black-color}; // links are black like the rest of the text
   --global-hover-color: #{$black-color};
   --global-hover-text-color: #{$white-color};
-  // Footer: a floating mistyrose bar (drawn in _base.scss) with black text and icons, like the header
+  // Footer: a floating dark red bar (drawn in _base.scss) with white text and icons, like the header
   --global-footer-bg-color: #{$backdrop-color};
-  --global-footer-text-color: #{$black-color};
-  --global-footer-link-color: #{$black-color};
+  --global-footer-text-color: #{$white-color};
+  --global-footer-link-color: #{$white-color};
   --global-distill-app-color: #{$grey-color};
   --global-divider-color: rgba(0, 0, 0, 0.1);
   --global-card-bg-color: #{$white-color};
