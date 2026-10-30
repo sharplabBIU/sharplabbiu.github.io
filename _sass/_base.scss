@@ -1749,3 +1749,8 @@ body {
     margin: 0.6rem 0 0;
   }
 }
+
+// Space between the paragraphs of the home description
+.home-intro h3 + h3 {
+  margin-top: 1.4rem;
+}
