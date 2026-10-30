@@ -9,8 +9,9 @@ layout: default
   {% endif %}
 
   <article>
-    <!-- Top row: the clickable world-model graphic, with the lab logo beside it at the same height -->
+    <!-- Top row: the clickable world-model graphic centered, with a small lab logo in the top-right corner -->
     <div class="home-top">
+      <div class="home-top-spacer" aria-hidden="true"></div>
       {% if page.world_model_figure %}
         {% include world_model.liquid %}
         <script src="{{ '/assets/js/world-model.js' | relative_url | bust_file_cache }}" defer></script>

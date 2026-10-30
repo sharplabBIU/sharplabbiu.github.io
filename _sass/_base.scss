@@ -1697,12 +1697,12 @@ body {
   }
 }
 
-// Home top row: the world-model graphic and the logo side by side. The graphic is 880 x 572 and the logo
-// square, so 880:572 columns give both the same height
+// Home top row: the world-model graphic large and centered, with a small logo in the top-right corner.
+// Three columns: equal side columns keep the graphic exactly centered; the right one holds the logo
 .home-top {
   display: grid;
-  grid-template-columns: 880fr 572fr;
-  gap: 1.5rem;
+  grid-template-columns: minmax(90px, 1fr) minmax(0, 1080px) minmax(90px, 1fr);
+  gap: 1rem;
   align-items: start;
   margin-bottom: 1.75rem;
 
@@ -1710,22 +1710,32 @@ body {
     margin: 0;
   }
 
-  .home-logo img {
-    display: block;
+  .home-logo {
+    justify-self: end;
     width: 100%;
-    height: auto;
-    border-radius: 10px;
+    max-width: 120px;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
   }
 }
 
 @media (max-width: 767.98px) {
-  // Stack on phones: graphic first, then a smaller logo
+  // Phones: the logo sits small above the graphic, which takes the full width
   .home-top {
     grid-template-columns: 1fr;
 
-    .home-logo img {
-      max-width: 220px;
-      margin: 0 auto;
+    .home-top-spacer {
+      display: none;
+    }
+
+    .home-logo {
+      order: -1;
+      max-width: 80px;
     }
   }
 }
