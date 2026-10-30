@@ -456,14 +456,21 @@ footer.fixed-bottom {
   }
 }
 
+// The footer at the end of the page, a little below the content box
 footer.sticky-bottom {
-  border-top: 1px solid var(--global-divider-color);
-  padding-top: 40px;
-  padding-bottom: 40px;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
+  margin-top: 1.5rem;
+  padding-bottom: 14px; // backdrop below the bar
 
   .container {
+    color: var(--global-footer-text-color);
+    padding-top: 4px;
+    padding-bottom: 4px;
     text-align: center;
+  }
+
+  a {
+    color: var(--global-footer-link-color);
   }
 }
 
@@ -1487,10 +1494,10 @@ swiper-container {
   }
 }
 
-// Floating header and footer bars: rounded indian red bars as wide as the page's content box (the header a little wider).
+// Header and footer bars: rounded indian red bars as wide as the page's content box (the header a little wider).
 // Each bar is drawn behind its container, inset by the 15px side padding that the content box sits in
 #navbar > .container,
-footer.fixed-bottom > .container {
+footer > .container {
   position: relative;
   padding-left: calc(15px + 1.25rem);
   padding-right: calc(15px + 1.25rem);
@@ -1529,7 +1536,7 @@ footer.fixed-bottom > .container {
 
 @media (max-width: 575.98px) {
   #navbar > .container::before,
-  footer.fixed-bottom > .container::before {
+  footer > .container::before {
     border-radius: 12px;
   }
 }
@@ -1585,10 +1592,9 @@ footer.fixed-bottom {
   background-attachment: fixed;
 }
 
-// Main container: a clear gap of backdrop below the header bar (replaces Bootstrap's mt-5) and room above the fixed footer
+// Main container: a clear gap of backdrop below the header bar (replaces Bootstrap's mt-5)
 .main-content {
   margin-top: 3rem;
-  padding-bottom: 4.5rem;
 }
 
 .content-card {
@@ -1785,10 +1791,10 @@ footer.fixed-bottom {
 }
 
 @media (min-width: 768px) {
-  // Laptops and desktops: the graphic shrinks with the window height so that it and its tagline fit on screen
+  // Laptops and desktops: the graphic shrinks with the window height so that it and its tagline fit in the window
   // below the first paragraph (e.g. a 14-inch MacBook Pro in Chrome); the graphic is 880 x 572
   .wm-hero .wm-graphic {
-    max-width: unquote("clamp(480px, calc((100vh - 418px) * 1.53), 880px)");
+    max-width: unquote("clamp(480px, calc((100vh - 375px) * 1.53), 880px)");
   }
 }
 

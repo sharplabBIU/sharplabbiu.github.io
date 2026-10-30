@@ -18,8 +18,8 @@
     </div>
   </footer>
 {% else %}
-  <footer class="sticky-bottom mt-5" role="contentinfo">
-    <div class="container footer-content">
+  <footer class="sticky-bottom" role="contentinfo">
+    <div class="container footer-content{% if page.permalink == '/' %} bar-wide{% endif %}">
       <!-- Social icons, shown on every page -->
       <div class="footer-social">{% include social.liquid %}</div>
       <div class="footer-copyright">
