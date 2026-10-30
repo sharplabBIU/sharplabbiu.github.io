@@ -475,7 +475,7 @@ footer.sticky-bottom {
 }
 
 // Footer contents: social icons centered in the bar, copyright at the right
-// (stacked and centered on small screens). Icons are white.
+// (stacked and centered on small screens). Icons are black.
 footer .footer-content {
   display: grid;
   grid-template-columns: 1fr;
@@ -483,7 +483,7 @@ footer .footer-content {
   align-items: center;
   gap: 0.25rem;
 
-  // A site-wide rule colors every div with the body text color; keep the footer text white
+  // A site-wide rule colors every div with the body text color; keep the footer text black
   .footer-copyright {
     color: var(--global-footer-text-color);
   }
@@ -1466,7 +1466,7 @@ swiper-container {
   }
 }
 
-// Header: a floating peru bar (drawn below) with white text, over the backdrop (see body below)
+// Header: a floating lightskyblue bar (drawn below) with black text, over the backdrop (see body below)
 #navbar {
   border-bottom: 0;
   opacity: 1;
@@ -1494,7 +1494,7 @@ swiper-container {
   }
 }
 
-// Header and footer bars: rounded peru bars as wide as the page's content box (the header a little wider).
+// Header and footer bars: rounded lightskyblue bars as wide as the page's content box (the header a little wider).
 // Each bar is drawn behind its container, inset by the 15px side padding that the content box sits in
 #navbar > .container,
 footer > .container {
