@@ -23,7 +23,7 @@ $green-color-bright: #11d68b !default;
 $backdrop-color: #000000 !default; // black page backdrop, under the animated circuit board (assets/js/circuit-bg.js)
 $card-text-color: #2f4f4f !default; // darkslategray: text in the content boxes and the home-page brain graphic
 $sans-font: "Inter", "Helvetica Neue", Arial, sans-serif !default; // header, footer and titles
-$serif-font: "Source Serif 4", Georgia, "Times New Roman", serif !default; // all other text
+$body-font: "Roboto", "Helvetica Neue", Arial, sans-serif !default; // all other text, in Roboto Medium
 $purple-color: #b509ac !default;
 $light-purple-color: lighten($purple-color, 25%);
 $pink-color: #f92080 !default;

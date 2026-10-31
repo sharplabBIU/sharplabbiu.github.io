@@ -784,7 +784,7 @@ body {
       display: block;
       width: 100%;
       height: auto;
-      font-weight: 600;
+      font-weight: 500;
     }
   }
 
@@ -1512,7 +1512,7 @@ body,
 }
 
 // Typefaces (loaded by the Google Fonts link in _config.yml): Inter for the header, footer and titles,
-// Source Serif 4 for all other text (the home description's paragraphs are h3s, so they get the serif too)
+// Roboto Medium for all other text (the home description's paragraphs are h3s, so they get it too)
 body,
 button,
 input,
@@ -1520,7 +1520,12 @@ select,
 textarea,
 .btn,
 .home-intro h3 {
-  font-family: $serif-font;
+  font-family: $body-font;
+}
+
+.content-card,
+.home-intro h3 {
+  font-weight: 500;
 }
 
 h1,

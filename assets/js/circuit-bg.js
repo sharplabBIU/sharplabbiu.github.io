@@ -15,7 +15,7 @@
     f: { rgb: '255,46,214', core: '#82206f', halo: '#2e0a28', pad: '#c0349f', chip: '#b0318f', label: '#ff6fe2', val: '#ffd1f5' },
     o: { rgb: '255,122,26', core: '#83420f', halo: '#2e1606', pad: '#c8621c', chip: '#b8581a', label: '#ff9a4a', val: '#ffe0c2' }
   };
-  var FONT = '"Source Serif 4", Georgia, serif';
+  var FONT = 'Roboto, "Helvetica Neue", Arial, sans-serif';
   var CHIP_DEFS = [
     { label: 'V(s)', kind: 'value' },
     { label: 'R(s,a)', kind: 'reward' },
@@ -198,7 +198,7 @@
     var zoneCells = zones.reduce(function (s, z) { return s + (z[1] - z[0]); }, 0) * rows;
     var maxChips = Math.max(3, Math.floor(zoneCells / 85));
 
-    ctx.font = '600 13px ' + FONT;
+    ctx.font = '500 13px ' + FONT;
     for (var k = 0; k < CHIP_DEFS.length && chips.length < maxChips; k++) {
       var def = CHIP_DEFS[k];
       var cw = Math.max(4, Math.ceil((ctx.measureText(def.label).width + 18) / G));
@@ -314,7 +314,7 @@
       g.fillStyle = pal.chip;
       g.fill();
       g.fillStyle = pal.label;
-      g.font = '600 13px ' + FONT;
+      g.font = '500 13px ' + FONT;
       g.textAlign = 'center';
       g.textBaseline = 'middle';
       g.fillText(c.def.label, c.px + c.pw / 2, c.py + c.ph * 0.33);
@@ -511,7 +511,7 @@
   requestAnimationFrame(frame);
 
   // Redraw the board once the web font has loaded, so the chip labels are set in it
-  if (document.fonts && document.fonts.load) document.fonts.load('600 13px "Source Serif 4"').then(rebuild);
+  if (document.fonts && document.fonts.load) document.fonts.load('500 13px Roboto').then(rebuild);
 
   var resizeTimer;
   window.addEventListener('resize', function () {
