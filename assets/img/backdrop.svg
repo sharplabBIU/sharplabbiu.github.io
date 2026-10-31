@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
-<!-- Page backdrop: reinforcement-learning equations in dark slate gray -->
+<!-- Page backdrop: reinforcement-learning equations in steelblue -->
 <style>.t{font-family:Georgia,"Times New Roman",serif;font-style:italic}</style>
-<g class="t" fill="#2f4f4f" opacity="0.22">
+<g class="t" fill="#4682b4" opacity="0.3">
 <text x="30" y="60" font-size="17">V(s) = maxₐ [ r(s,a) + γ Σ P(s′|s,a) V(s′) ]</text>
 <text x="360" y="150" font-size="18">δ = r + γ V(s′) − V(s)</text>
 <text x="40" y="225" font-size="18">Q(s,a) ← Q(s,a) + α δ</text>
