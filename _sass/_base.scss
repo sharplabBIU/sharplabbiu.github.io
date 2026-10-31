@@ -462,8 +462,8 @@ footer.sticky-bottom {
 
   .container {
     color: var(--global-footer-text-color);
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     text-align: center;
   }
 
@@ -1492,7 +1492,7 @@ swiper-container {
   }
 }
 
-// Header and footer bars: as wide as the content box, their text lined up with the text inside it.
+// Header and footer bars: as wide as the content box and outlined like it, their text lined up with the text inside it.
 // Each bar is drawn behind its container, inset by the 15px side padding that the content box sits in
 #navbar > .container,
 footer > .container {
@@ -1510,6 +1510,7 @@ footer > .container {
     right: 15px;
     z-index: -1;
     background-color: $bar-color;
+    border: 1px solid $black-color;
   }
 }
 
@@ -1555,7 +1556,7 @@ footer > .container {
 }
 
 // Page backdrop and content box
-// Honeydew backdrop with faint steelblue RL equations (assets/img/backdrop.svg);
+// Papayawhip backdrop with faint steelblue RL equations (assets/img/backdrop.svg);
 // each page's content sits in one opaque steelblue box with white text and a thin black outline
 // The backdrop stays still while the page scrolls, and the header area repeats it exactly,
 // so content scrolling past is never seen above or beside the header bar
