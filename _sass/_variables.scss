@@ -22,7 +22,8 @@ $green-color-light: #ddffdd !default;
 $green-color-bright: #11d68b !default;
 $backdrop-color: #000000 !default; // black page backdrop, under the animated circuit board (assets/js/circuit-bg.js)
 $card-text-color: #2f4f4f !default; // darkslategray: text in the content boxes and the home-page brain graphic
-$para-color: #ffe0f9 !default; // pale fuchsia: the box behind each paragraph, and the home-page brain
+$sans-font: "Inter", "Helvetica Neue", Arial, sans-serif !default; // header, footer and titles
+$serif-font: "Source Serif 4", Georgia, "Times New Roman", serif !default; // all other text
 $purple-color: #b509ac !default;
 $light-purple-color: lighten($purple-color, 25%);
 $pink-color: #f92080 !default;

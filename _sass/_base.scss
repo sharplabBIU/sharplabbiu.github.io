@@ -1511,38 +1511,28 @@ body,
   background-color: $backdrop-color;
 }
 
-// Typeface: Nunito everywhere (loaded by the Google Fonts link in _config.yml)
+// Typefaces (loaded by the Google Fonts link in _config.yml): Inter for the header, footer and titles,
+// Source Serif 4 for all other text (the home description's paragraphs are h3s, so they get the serif too)
 body,
+button,
+input,
+select,
+textarea,
+.btn,
+.home-intro h3 {
+  font-family: $serif-font;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6,
-button,
-input,
-select,
-textarea,
-.btn {
-  font-family: "Nunito", "Helvetica Neue", Arial, sans-serif;
-}
-
-// Each paragraph in a content box sits in its own square pale fuchsia box
-// (the home description's paragraphs are h3s; captions, the brain's pop-ups, the talk's links and photos are left plain)
-.content-card {
-  p,
-  .home-intro h3 {
-    background-color: $para-color;
-    padding: 0.9rem 1.1rem;
-  }
-
-  .wm-pop p,
-  .wm-tagline,
-  .talk-video p,
-  p:has(img:only-child) {
-    background-color: transparent;
-    padding: 0;
-  }
+#navbar,
+footer,
+.wm-pop strong {
+  font-family: $sans-font;
 }
 
 // Main container: the content box fills short pages, so the footer stays at the bottom of the window
