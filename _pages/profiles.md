@@ -4,6 +4,7 @@ title: team
 permalink: /team/
 description: Our Team
 nav: true
+nav_order: 3
 display_categories: [Director, Post-Doc, PhD, MA, BA, Collaborators, Alumni]
 lab_photos:
   - { src: lab_1.jpg, alt: "Lab members together at a conference" }

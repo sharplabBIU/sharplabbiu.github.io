@@ -3,7 +3,7 @@ layout: page
 title: news
 permalink: /news/
 nav: true
-nav_order: 6
+nav_order: 2
 ---
 
 <!-- _pages/news.md: all lab news, newest first (items live in _news/) -->

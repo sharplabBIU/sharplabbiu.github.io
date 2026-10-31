@@ -10,7 +10,7 @@ $orange-color: #f29105 !default;
 $blue-color: #0076df !default;
 $blue-color-dark: #00369f !default;
 $steel-color: #4682b4 !default; // steelblue: content boxes
-$bar-color: #87cefa !default; // lightskyblue: the header and footer bars
+$bar-color: #b0e0e6 !default; // powderblue: the header and footer bars
 $bar-text-color: #000000 !default; // black: header and footer text
 $cyan-color: #2698ba !default;
 $light-cyan-color: lighten($cyan-color, 25%);
@@ -19,7 +19,7 @@ $green-color-lime: #b7d12a !default;
 $green-color-dark: #009f06 !default;
 $green-color-light: #ddffdd !default;
 $green-color-bright: #11d68b !default;
-$backdrop-color: #ffe4c4 !default; // bisque page backdrop behind the steelblue content boxes
+$backdrop-color: #f0fff0 !default; // honeydew page backdrop behind the steelblue content boxes
 $bisque-color: #ffe4c4 !default; // bisque: page backdrop, the brain's "world model" title and the line under it
 $purple-color: #b509ac !default;
 $light-purple-color: lighten($purple-color, 25%);

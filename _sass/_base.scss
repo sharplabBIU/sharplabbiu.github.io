@@ -455,10 +455,10 @@ footer.fixed-bottom {
   }
 }
 
-// The footer: a full-width bar at the end of the page, right below the content box
+// The footer: a bar at the end of the page, a little below the content box
 footer.sticky-bottom {
-  background-color: var(--global-footer-bg-color);
   font-size: 0.86rem;
+  margin-top: 1.5rem;
 
   .container {
     color: var(--global-footer-text-color);
@@ -1464,12 +1464,11 @@ swiper-container {
   }
 }
 
-// Header: a full-width lightskyblue bar with black text, fixed to the top of the window
+// Header: a powderblue bar (drawn below) with black text, fixed to the top of the window, over the backdrop (see body below)
 #navbar {
-  background-color: $bar-color;
   border-bottom: 0;
   opacity: 1;
-  padding: 0;
+  padding: 0 0 1.5rem; // backdrop between the bar and the content box; content scrolling up disappears below it
 
   .navbar-brand,
   .navbar-nav .nav-item .nav-link,
@@ -1493,11 +1492,25 @@ swiper-container {
   }
 }
 
-// Header and footer text lines up with the text inside the content box
+// Header and footer bars: as wide as the content box, their text lined up with the text inside it.
+// Each bar is drawn behind its container, inset by the 15px side padding that the content box sits in
 #navbar > .container,
 footer > .container {
+  position: relative;
+  z-index: 0;
   padding-left: calc(15px + 1.25rem);
   padding-right: calc(15px + 1.25rem);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 15px;
+    right: 15px;
+    z-index: -1;
+    background-color: $bar-color;
+  }
 }
 
 // Fixed header height (56px on phones, 78px wider), matching the body padding-top
@@ -1542,15 +1555,12 @@ footer > .container {
 }
 
 // Page backdrop and content box
-// Bisque backdrop with faint dark slate gray RL equations (assets/img/backdrop.svg);
-// each page's content sits in one opaque steelblue box with white text
-// The backdrop stays still while the page scrolls; scrolling past the top or bottom of the page
-// shows the header and footer bar colour, not the backdrop
-html {
-  background-color: $bar-color;
-}
-
-body {
+// Honeydew backdrop with faint steelblue RL equations (assets/img/backdrop.svg);
+// each page's content sits in one opaque steelblue box with white text and a thin black outline
+// The backdrop stays still while the page scrolls, and the header area repeats it exactly,
+// so content scrolling past is never seen above or beside the header bar
+body,
+#navbar {
   background-color: $backdrop-color;
   background-image: url("../img/backdrop.svg");
   background-size: 600px auto;
@@ -1559,7 +1569,7 @@ body {
   background-attachment: fixed;
 }
 
-// Main container: the content box runs from the header bar down to the footer bar, filling short pages
+// Main container: the content box fills short pages, so the footer stays at the bottom of the window
 .main-content {
   margin-top: 0;
   display: flex;
@@ -1578,7 +1588,8 @@ body {
   --global-theme-color: #{$white-color};
   --global-hover-color: #{$white-color};
   color: $white-color;
-  padding: 3rem 2rem; // room between the header bar and the first line
+  border: 1px solid $black-color;
+  padding: 2rem;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
 
   > :first-child {
@@ -1597,7 +1608,7 @@ body {
 
 @media (max-width: 575.98px) {
   .content-card {
-    padding: 2rem 1.1rem;
+    padding: 1.5rem 1.1rem;
   }
 }
 
@@ -1757,7 +1768,7 @@ body {
   // Laptops and desktops: the graphic shrinks with the window height so that it and its tagline fit in the window
   // below the first paragraph (e.g. a 14-inch MacBook Pro in Chrome); the graphic is 880 x 572
   .wm-hero .wm-graphic {
-    max-width: unquote("clamp(480px, calc((100vh - 355px) * 1.53), 880px)");
+    max-width: unquote("clamp(480px, calc((100vh - 365px) * 1.53), 880px)");
   }
 }
 
