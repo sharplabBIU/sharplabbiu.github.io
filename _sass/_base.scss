@@ -1776,7 +1776,7 @@ textarea,
   // Laptops and desktops: the graphic shrinks with the window height so that it and its tagline fit in the window
   // below the first paragraph (e.g. a 14-inch MacBook Pro in Chrome); the graphic is 880 x 572
   .wm-hero .wm-graphic {
-    max-width: unquote("clamp(480px, calc((100vh - 328px) * 1.53), 880px)");
+    max-width: unquote("clamp(480px, calc((100vh - 292px) * 1.53), 880px)");
   }
 }
 
