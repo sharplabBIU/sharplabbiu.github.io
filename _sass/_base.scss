@@ -703,8 +703,8 @@ footer .footer-content {
   }
 }
 
-// Team: each role on the left with its members to its right, all in one font size (roles in bold);
-// collaborators and alumni in smaller type, set apart below the core team
+// Team: each role on the left with its members to its right (roles in bold). Core lab members each have a small
+// photo with their name and bio beside it; collaborators and alumni are a list in smaller type, set apart below
 
 .team {
   display: grid;
@@ -718,6 +718,62 @@ footer .footer-content {
     font-size: 1.7rem;
     font-weight: 700;
     line-height: 1.3;
+  }
+
+  // Core roles line up with the top of their first member's photo
+  h2.team-category.team-core {
+    align-self: start;
+    font-size: 1.5rem;
+  }
+
+  .team-members {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .member {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.1rem;
+    text-align: left;
+  }
+
+  .member-photo {
+    flex: 0 0 110px;
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    object-position: 50% 25%;
+  }
+
+  .member-text {
+    min-width: 0;
+  }
+
+  h3.member-name {
+    margin: 0 0 0.35rem;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .member-bio {
+    p {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    // The bio page's own photo is shown beside the bio instead
+    img.z-depth-1,
+    p:has(img.z-depth-1) {
+      display: none;
+    }
   }
 
   ul.team-list {
@@ -1709,12 +1765,13 @@ textarea,
   gap: 1.5rem;
 
   .team {
-    flex: 0 1 520px;
+    flex: 1 1 560px;
+    min-width: 0;
     text-align: left;
   }
 
   .team-photos {
-    flex: 0 1 420px;
+    flex: 0 1 320px;
     max-width: 100%;
   }
 }
@@ -1781,14 +1838,21 @@ textarea,
 }
 
 @media (max-width: 575.98px) {
-  // Phones: each role above its members, centered
+  // Phones: each role above its members, centered (core members' photo and bio stay side by side, smaller)
   .team-layout .team {
     grid-template-columns: 1fr;
     row-gap: 0.2rem;
     text-align: center;
 
-    ul.team-list {
+    ul.team-list,
+    .team-members {
       margin-bottom: 1rem;
+    }
+
+    .member-photo {
+      flex-basis: 80px;
+      width: 80px;
+      height: 80px;
     }
   }
 }

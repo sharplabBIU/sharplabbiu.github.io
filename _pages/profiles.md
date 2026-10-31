@@ -20,8 +20,8 @@ dog_photos:
   - { src: dina_3.jpg, alt: "Dina stretched out between a couch and a bench" }
 ---
 
-<!-- Names grouped by role, centered, with the lab photo collages beside them
-     (photos of each person are on their own page) -->
+<!-- Names grouped by role, with the lab photo collages beside them: each core lab member with a small photo and their
+     bio beside it (the photo in the bio itself is hidden here); collaborators and alumni as a list -->
 <div class="team-layout">
   <div class="team">
     {% assign minor_started = false %}
@@ -33,18 +33,30 @@ dog_photos:
             <div class="team-gap" aria-hidden="true"></div>
             {% assign minor_started = true %}
           {% endunless %}
-          {% assign minor_class = ' team-minor' %}
+          <h2 class="team-category team-minor" id="{{ category }}">{{ category }}</h2>
+          <ul class="team-list team-minor">
+            {% for member in members %}
+              <li>
+                <a href="{% if member.redirect %}{{ member.redirect }}{% else %}{{ member.url | relative_url }}{% endif %}">{{ member.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
         {% else %}
-          {% assign minor_class = '' %}
+          <h2 class="team-category team-core" id="{{ category }}">{{ category }}</h2>
+          <div class="team-members">
+            {% for member in members %}
+              <div class="member">
+                {% if member.img %}
+                  <img class="member-photo" src="{{ member.img | relative_url }}" alt="{{ member.title }}" loading="lazy">
+                {% endif %}
+                <div class="member-text">
+                  <h3 class="member-name">{{ member.title }}</h3>
+                  <div class="member-bio">{{ member.content }}</div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
         {% endif %}
-        <h2 class="team-category{{ minor_class }}" id="{{ category }}">{{ category }}</h2>
-        <ul class="team-list{{ minor_class }}">
-          {% for member in members %}
-            <li>
-              <a href="{% if member.redirect %}{{ member.redirect }}{% else %}{{ member.url | relative_url }}{% endif %}">{{ member.title }}</a>
-            </li>
-          {% endfor %}
-        </ul>
       {% endif %}
     {% endfor %}
   </div>
