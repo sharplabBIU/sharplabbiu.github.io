@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="136" height="82" viewBox="0 0 136 82" role="img" aria-label="Decision tree with the planned route to the goal">
+  <!-- Planning: a decision tree with the planned route to the goal (teal); drawn for the lightcyan content boxes -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" transform="translate(-4 -10)">
+    <path stroke="#2f4f4f" d="M72 18 L40 48 M72 18 L104 48 M40 48 L22 80 M40 48 L58 80 M104 48 L86 80 M104 48 L122 80" />
+    <path stroke="#008080" stroke-width="3" d="M72 18 L40 48 L22 80" />
+    <circle cx="72" cy="18" r="5" fill="#008080" stroke="#008080" />
+    <circle cx="40" cy="48" r="5" fill="#e0ffff" stroke="#008080" />
+    <circle cx="104" cy="48" r="5" fill="#e0ffff" stroke="#2f4f4f" />
+    <rect x="18" y="80" width="8" height="8" fill="#008080" stroke="#008080" />
+    <rect x="54" y="80" width="8" height="8" fill="#e0ffff" stroke="#2f4f4f" />
+    <rect x="82" y="80" width="8" height="8" fill="#e0ffff" stroke="#2f4f4f" />
+    <rect x="118" y="80" width="8" height="8" fill="#e0ffff" stroke="#2f4f4f" />
+  </g>
+</svg>

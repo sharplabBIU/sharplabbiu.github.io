@@ -11,7 +11,7 @@ nav_order: 4
   <div class="research-area" id="planning-efficiency">
     <div class="research-intro">
       <div class="research-diagram">
-        <img src="/assets/img/diagrams/planning-efficiency.svg" alt="Decision tree with the planned route to the goal and the Bellman optimality equation">
+        {% include diagrams/planning-efficiency.svg %}
       </div>
       <div class="research-text">
         <h2 class="research-title">Planning Efficiency</h2>
@@ -30,7 +30,7 @@ nav_order: 4
   <div class="research-area" id="offline-learning">
     <div class="research-intro">
       <div class="research-diagram">
-        <img src="/assets/img/diagrams/offline-learning.svg" alt="Dyna architecture with the planning update from simulated experience">
+        {% include diagrams/offline-learning.svg %}
       </div>
       <div class="research-text">
         <h2 class="research-title">Offline Learning</h2>
@@ -49,7 +49,7 @@ nav_order: 4
   <div class="research-area" id="task-misconstrual">
     <div class="research-intro">
       <div class="research-diagram">
-        <img src="/assets/img/diagrams/task-representation.svg" alt="Task representation inferred from prior knowledge and task instructions">
+        {% include diagrams/task-representation.svg %}
       </div>
       <div class="research-text">
         <h2 class="research-title">Task (Mis)construal</h2>

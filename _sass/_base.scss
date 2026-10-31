@@ -455,10 +455,9 @@ footer.fixed-bottom {
   }
 }
 
-// The footer: a bar at the end of the page, a little below the content box
+// The footer: a bar at the end of the page, right below the content box
 footer.sticky-bottom {
   font-size: 0.86rem;
-  margin-top: 1.5rem;
 
   .container {
     color: var(--global-footer-text-color);
@@ -778,14 +777,14 @@ body {
   .research-diagram {
     flex: 0 0 150px;
     padding: 8px;
-    border: 1px solid #e1e7f2;
-    border-radius: 10px;
-    background: $white-color;
+    border: 1px solid $outline-color;
+    background: $card-color;
 
-    img {
+    svg {
       display: block;
       width: 100%;
       height: auto;
+      font-weight: 600;
     }
   }
 
@@ -1411,11 +1410,11 @@ swiper-container {
   }
 }
 
-// Header: a pale orange bar (drawn below) with black text, fixed to the top of the window, over the backdrop (see body below)
+// Header: a pale orange bar (drawn below) with black text, fixed to the top of the window, with the content box right below it
 #navbar {
   border-bottom: 0;
   opacity: 1;
-  padding: 0 0 1.5rem; // backdrop between the bar and the content box; content scrolling up disappears below it
+  padding: 0;
 
   .navbar-brand,
   .navbar-nav .nav-item .nav-link,
@@ -1512,6 +1511,39 @@ body,
   background-color: $backdrop-color;
 }
 
+// Typeface: Nunito everywhere (loaded by the Google Fonts link in _config.yml)
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+input,
+select,
+textarea,
+.btn {
+  font-family: "Nunito", "Helvetica Neue", Arial, sans-serif;
+}
+
+// Each paragraph in a content box sits in its own square pale fuchsia box
+// (the home description's paragraphs are h3s; captions, the brain's pop-ups and the talk's links are left plain)
+.content-card {
+  p,
+  .home-intro h3 {
+    background-color: $para-color;
+    padding: 0.9rem 1.1rem;
+  }
+
+  .wm-pop p,
+  .wm-tagline,
+  .talk-video p {
+    background-color: transparent;
+    padding: 0;
+  }
+}
+
 // Main container: the content box fills short pages, so the footer stays at the bottom of the window
 .main-content {
   margin-top: 0;
@@ -1599,7 +1631,7 @@ body,
     font-weight: 700;
     line-height: 1.3;
     margin: 0.2rem 0 0;
-    color: $wm-title-color; // darkred like the "world model" title in the brain
+    color: $card-text-color; // darkslategray like the "world model" title in the brain
   }
 
   // Explanation bubbles, anchored just below the part they describe (positions are percentages of the graphic)
@@ -1755,7 +1787,12 @@ body,
   }
 }
 
-// Space between the paragraphs of the home description
+// Home description: slightly smaller than the theme's h3, with space between the paragraphs
+.home-intro h3 {
+  font-size: 1.55rem;
+  line-height: 1.25;
+}
+
 .home-intro h3 + h3 {
   margin-top: 1.4rem;
 }

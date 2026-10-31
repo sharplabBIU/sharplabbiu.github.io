@@ -18,11 +18,11 @@ body {
 }
 
 body.fixed-top-nav {
-  // Room for the fixed header: the 78px bar (56px on phones) and the 1.5rem of backdrop below it
-  padding-top: calc(78px + 1.5rem);
+  // Room for the fixed header bar: 78px tall, 56px on phones (the content box starts right below it)
+  padding-top: 78px;
 
   @media (max-width: 767.98px) {
-    padding-top: calc(56px + 1.5rem);
+    padding-top: 56px;
   }
 }
 
