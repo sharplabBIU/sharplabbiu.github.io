@@ -61,18 +61,19 @@ dog_photos:
     {% endfor %}
   </div>
 
-  <!-- Photo album: a vertical strip that scrolls a photo at a time, or flips with the arrows -->
+  <!-- Photo album: a vertical strip that scrolls a photo at a time, or flips with the arrows
+       (not lazy-loaded: lazy images inside the sticky scrolling strip never load) -->
   <div class="team-album" role="region" aria-label="Lab photo album">
     <button type="button" class="album-btn album-prev" aria-label="Previous photo">&#9650;</button>
     <div class="album-strip" tabindex="0">
       {% for photo in page.lab_photos %}
         <figure class="album-item">
-          <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" width="{{ photo.w }}" height="{{ photo.h }}" alt="{{ photo.alt }}" loading="lazy">
+          <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" width="{{ photo.w }}" height="{{ photo.h }}" alt="{{ photo.alt }}">
         </figure>
       {% endfor %}
       {% for photo in page.dog_photos %}
         <figure class="album-item">
-          <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" width="{{ photo.w }}" height="{{ photo.h }}" alt="{{ photo.alt }}" loading="lazy">
+          <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" width="{{ photo.w }}" height="{{ photo.h }}" alt="{{ photo.alt }}">
           <figcaption>Our official lab dog, Dina!</figcaption>
         </figure>
       {% endfor %}
