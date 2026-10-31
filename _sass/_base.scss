@@ -726,10 +726,12 @@ footer .footer-content {
     font-size: 1.5rem;
   }
 
+  // Extra space below each core role's members, so the roles stand further apart
   .team-members {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    margin-bottom: 1.75rem;
   }
 
   .member {
@@ -1830,8 +1832,12 @@ textarea,
   margin-bottom: 1rem;
 }
 
-// Resources page: the talk video, with its title above and a YouTube link below
+// Resources page: the talk video (480px wide at most), with its title above and a YouTube link below
 .talk-video {
+  .video-embed {
+    max-width: 480px;
+  }
+
   .talk-link {
     text-align: center;
     margin: 0.6rem 0 0;
