@@ -1528,7 +1528,7 @@ textarea,
 }
 
 // Each paragraph in a content box sits in its own square pale fuchsia box
-// (the home description's paragraphs are h3s; captions, the brain's pop-ups and the talk's links are left plain)
+// (the home description's paragraphs are h3s; captions, the brain's pop-ups, the talk's links and photos are left plain)
 .content-card {
   p,
   .home-intro h3 {
@@ -1538,7 +1538,8 @@ textarea,
 
   .wm-pop p,
   .wm-tagline,
-  .talk-video p {
+  .talk-video p,
+  p:has(img:only-child) {
     background-color: transparent;
     padding: 0;
   }
