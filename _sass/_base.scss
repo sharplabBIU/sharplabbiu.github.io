@@ -1510,7 +1510,7 @@ footer > .container {
     right: 15px;
     z-index: -1;
     background-color: $bar-color;
-    border: 1px solid $black-color;
+    border: 1px solid $outline-color;
   }
 }
 
@@ -1557,7 +1557,7 @@ footer > .container {
 
 // Page backdrop and content box
 // Black backdrop with an animated circuit board drawn over it (assets/js/circuit-bg.js);
-// each page's content sits in one opaque powderblue box (like the header and footer) with darkslategray text and a thin black outline
+// each page's content sits in one opaque lightcyan box with darkslategray text and a thin teal outline, like the header and footer
 // The circuit board stays still while the page scrolls, and the header area repeats it exactly,
 // so content scrolling past is never seen above or beside the header bar
 body,
@@ -1577,14 +1577,14 @@ body,
 }
 
 .content-card {
-  background-color: $bar-color; // powderblue, like the header and footer
+  background-color: $card-color; // lightcyan
   // All text inside the box is darkslategray, links included (the site's colour variables are re-pointed here)
   --global-text-color: #{$card-text-color};
   --global-text-color-light: #{$card-text-color};
   --global-theme-color: #{$card-text-color};
   --global-hover-color: #{$card-text-color};
   color: $card-text-color;
-  border: 1px solid $black-color;
+  border: 1px solid $outline-color;
   padding: 2rem;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
 
