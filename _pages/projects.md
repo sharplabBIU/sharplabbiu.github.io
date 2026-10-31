@@ -6,8 +6,7 @@ nav: true
 nav_order: 4
 ---
 
-<!-- Research areas: a diagram + equation beside the title and summary, then key figures from the papers below,
-     each in an identical rectangular frame -->
+<!-- Research areas: a diagram + equation beside the title and summary -->
 <div class="research-areas">
   <div class="research-area" id="planning-efficiency">
     <div class="research-intro">
@@ -25,26 +24,6 @@ nav_order: 4
           extends this to healthy aging and anxiety.
         </p>
       </div>
-    </div>
-    <div class="project-figures">
-      <figure class="paper-fig">
-        <div class="fig-frame">
-          <img src="/assets/img/projects/planning_delayed.png" alt="Optimal and observed control choices across planning depths" data-zoomable>
-        </div>
-        <figcaption>
-          People learn to delay planning until it is needed: their control choices (right) follow the optimal pattern (left) across planning
-          depths (<a href="https://osf.io/preprints/psyarxiv/8ubct_v1">Sharp &amp; Eldar</a>).
-        </figcaption>
-      </figure>
-      <figure class="paper-fig">
-        <div class="fig-frame">
-          <img src="/assets/img/projects/planning_forward_backward.png" alt="Evidence of backward prediction in a divergent environment and forward prediction in a convergent one" data-zoomable>
-        </div>
-        <figcaption>
-          People favor backward prediction in divergent environments (top) and forward prediction in convergent ones (bottom)
-          (<a href="https://doi.org/10.1038/s41562-024-01930-8">Sharp &amp; Eldar, <em>Nature Human Behaviour</em> 2024</a>).
-        </figcaption>
-      </figure>
     </div>
   </div>
 
@@ -64,26 +43,6 @@ nav_order: 4
           Sharp, in preparation).
         </p>
       </div>
-    </div>
-    <div class="project-figures">
-      <figure class="paper-fig">
-        <div class="fig-frame">
-          <img src="/assets/img/projects/offline_iti_effect.png" alt="Probability of switching after a 1 s or 4 s inter-trial interval, after a win and after a loss, in two studies" data-zoomable>
-        </div>
-        <figcaption>
-          After a win, people switch more often following a 4 s than a 1 s inter-trial interval, in Study 1 (left, n = 96) and the preregistered
-          replication (right, n = 439) (Yadid, Linkovski &amp; Sharp, in preparation).
-        </figcaption>
-      </figure>
-      <figure class="paper-fig">
-        <div class="fig-frame">
-          <img src="/assets/img/projects/offline_iti_generalization.png" alt="Switching by the interval before the choice in an independent dataset" data-zoomable>
-        </div>
-        <figcaption>
-          The effect generalizes to an independent dataset with jittered intervals (Tomov et al., 2020): switching rises with the interval before
-          the choice (Yadid, Linkovski &amp; Sharp, in preparation).
-        </figcaption>
-      </figure>
     </div>
   </div>
 
@@ -105,43 +64,5 @@ nav_order: 4
         </p>
       </div>
     </div>
-    <div class="project-figures">
-      <figure class="paper-fig">
-        <div class="fig-frame">
-          <img src="/assets/img/projects/topics_worry_undergeneralization.png" alt="Worry score against undergeneralization in threat contexts" data-zoomable>
-        </div>
-        <figcaption>
-          Higher worry predicts undergeneralizing actions learned under social threat
-          (<a href="https://onlinelibrary.wiley.com/doi/full/10.1111/tops.70051">Schiff &amp; Sharp, <em>Topics in Cognitive Science</em> 2026</a>).
-        </figcaption>
-      </figure>
-      <figure class="paper-fig">
-        <div class="fig-frame">
-          <img src="/assets/img/projects/elife_goal_perseveration.png" alt="Goal perseveration weights for reward and punishment" data-zoomable>
-        </div>
-        <figcaption>
-          People perseverate on punishment-avoidance goals: goal perseveration is stronger for punishment than for reward
-          (<a href="https://doi.org/10.7554/eLife.74402">Sharp et al., <em>eLife</em> 2022</a>).
-        </figcaption>
-      </figure>
-    </div>
   </div>
-</div>
-
-<!-- Paul's Azrieli talk, below the research areas -->
-<div class="talk-video">
-  <h2 class="research-title">
-    <a href="https://www.youtube.com/watch?v=kQJ5UU56xXA">Why do we worry? Paul's Azrieli talk</a>
-  </h2>
-  <div class="video-embed">
-    <iframe
-      src="https://www.youtube-nocookie.com/embed/kQJ5UU56xXA"
-      title="Why Do We Worry? - Paul Sharp"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
-      loading="lazy"
-      allowfullscreen
-    ></iframe>
-  </div>
-  <p class="talk-link"><a href="https://www.youtube.com/watch?v=kQJ5UU56xXA">Watch on YouTube</a></p>
 </div>

@@ -17,6 +17,23 @@ Our code and task materials are on the [Sharp Lab GitHub](https://github.com/sha
 - [Statistical Thinking for the 21st Century](https://statsthinking21.github.io/statsthinking21-core-site/) by Russell Poldrack
 - [Statistical Rethinking](https://www.youtube.com/watch?v=FdnMWdICdRs&list=PLDcUM9US4XdPz-KxHM4XHt7uUVGWWVSus), Richard McElreath's lecture series on YouTube
 
+### Talks
+
+<div class="talk-video">
+  <p><a href="https://www.youtube.com/watch?v=kQJ5UU56xXA">Why do we worry? Paul's Azrieli talk</a></p>
+  <div class="video-embed">
+    <iframe
+      src="https://www.youtube-nocookie.com/embed/kQJ5UU56xXA"
+      title="Why Do We Worry? - Paul Sharp"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      loading="lazy"
+      allowfullscreen
+    ></iframe>
+  </div>
+  <p class="talk-link"><a href="https://www.youtube.com/watch?v=kQJ5UU56xXA">Watch on YouTube</a></p>
+</div>
+
 ### Paul's favorite books
 
 - [_Demian_](https://en.wikipedia.org/wiki/Demian) by Hermann Hesse

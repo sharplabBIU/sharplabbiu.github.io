@@ -738,7 +738,7 @@ body {
   font-size: 1.15rem;
 }
 
-// Embedded talk video (home page when set, and the projects page), responsive 16:9
+// Embedded talk video (home page when set, and the resources page), responsive 16:9
 .home-video,
 .talk-video {
 
@@ -757,8 +757,7 @@ body {
   }
 }
 
-// Projects page: each research area has its diagram + equation beside the title and summary,
-// then key figures from the papers below in identical rectangular frames
+// Projects page: each research area has its diagram + equation beside the title and summary
 .research-areas {
   .research-area {
     margin-top: 0;
@@ -806,62 +805,10 @@ body {
   }
 }
 
-.project-figures {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 1.25rem;
-
-  figure.paper-fig {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    padding: 10px;
-    border: 1px solid #e1e7f2;
-    border-radius: 10px;
-    background: $white-color;
-    // White card, so its caption text and links are black (the box around it re-points these to darkslategray)
-    --global-text-color: #{$black-color};
-    --global-text-color-light: #{$black-color};
-    --global-theme-color: #{$black-color};
-    --global-hover-color: #{$black-color};
-    color: $black-color;
-  }
-
-  // Every figure gets the same 16:9 frame; the image is scaled to fit inside it
-  .fig-frame {
-    position: relative;
-    width: 100%;
-    aspect-ratio: unquote("16 / 9");
-    overflow: hidden;
-    background-color: $white-color;
-    border-radius: 6px;
-
-    // Pin the image to the frame so tall images can't stretch it
-    img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-  }
-
-  figcaption {
-    margin-top: 8px;
-    font-size: 0.85rem;
-    line-height: 1.35;
-  }
-}
-
 @media (max-width: 767.98px) {
   .research-areas .research-intro {
     flex-direction: column;
     align-items: center;
-  }
-
-  .project-figures {
-    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -1800,15 +1747,8 @@ body,
   margin-bottom: 1rem;
 }
 
-// Projects page: the talk video below the research areas
+// Resources page: the talk video, with its title above and a YouTube link below
 .talk-video {
-  margin-top: 3rem;
-
-  .research-title {
-    font-size: 1.75rem;
-    margin-bottom: 1rem;
-  }
-
   .talk-link {
     text-align: center;
     margin: 0.6rem 0 0;
