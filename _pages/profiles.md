@@ -20,8 +20,8 @@ dog_photos:
   - { src: dina_3.jpg, alt: "Dina stretched out between a couch and a bench" }
 ---
 
-<!-- Names grouped by role, with the lab photo collages beside them: each core lab member with a small photo and their
-     bio beside it (the photo in the bio itself is hidden here); collaborators and alumni as a list -->
+<!-- Names grouped by role: each core lab member with a small photo and their bio beside it (the photo in the bio itself
+     is hidden here); collaborators and alumni as a list. The lab photos are a thin album on the far right -->
 <div class="team-layout">
   <div class="team">
     {% assign minor_started = false %}
@@ -61,18 +61,24 @@ dog_photos:
     {% endfor %}
   </div>
 
-  <div class="team-photos">
-    <div class="lab-collage">
+  <!-- Photo album: a vertical strip that scrolls a photo at a time, or flips with the arrows -->
+  <div class="team-album" role="region" aria-label="Lab photo album">
+    <button type="button" class="album-btn album-prev" aria-label="Previous photo">&#9650;</button>
+    <div class="album-strip" tabindex="0">
       {% for photo in page.lab_photos %}
-        <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" alt="{{ photo.alt }}" loading="lazy">
+        <figure class="album-item">
+          <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" alt="{{ photo.alt }}" loading="lazy">
+        </figure>
+      {% endfor %}
+      {% for photo in page.dog_photos %}
+        <figure class="album-item">
+          <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" alt="{{ photo.alt }}" loading="lazy">
+          <figcaption>Our official lab dog, Dina!</figcaption>
+        </figure>
       {% endfor %}
     </div>
-
-    <figure class="dog-collage">
-      {% for photo in page.dog_photos %}
-        <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" alt="{{ photo.alt }}" loading="lazy">
-      {% endfor %}
-      <figcaption>Our official lab dog, Dina!</figcaption>
-    </figure>
+    <button type="button" class="album-btn album-next" aria-label="Next photo">&#9660;</button>
   </div>
 </div>
+
+<script src="{{ '/assets/js/team-album.js' | relative_url | bust_file_cache }}" defer></script>

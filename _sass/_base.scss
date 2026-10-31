@@ -882,44 +882,58 @@ body {
   }
 }
 
-// Lab photo collage beside the team list (stacks below it on small screens)
-.lab-collage {
-  column-count: 2;
-  column-gap: 0.5rem;
+// Team page photo album: a thin vertical strip on the far right of the content box that scrolls a photo at a
+// time (or flips with the arrow buttons), staying in view beside the team list
+.team-album {
+  flex: 0 0 220px;
+  position: sticky;
+  top: calc(78px + 1rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 
-  img {
-    display: block;
-    width: 100%;
-    margin-bottom: 0.5rem;
-    border-radius: 6px;
-    break-inside: avoid;
-  }
-}
-
-// Lab dog collage below the lab photos: two portraits side by side, one wide photo underneath
-.dog-collage {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-  margin: 2rem 0 0;
-
-  img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 6px;
+  .album-strip {
+    position: relative; // so each photo's offsetTop is measured within the strip (assets/js/team-album.js)
+    height: 470px;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: thin;
+    border: 1px solid $outline-color;
   }
 
-  img:nth-of-type(3) {
-    grid-column: 1 / -1;
+  .album-item {
+    margin: 0;
+    padding: 6px;
+    scroll-snap-align: start;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    figcaption {
+      margin-top: 0.3rem;
+      font-size: 0.85rem;
+      font-style: italic;
+      text-align: center;
+    }
   }
 
-  figcaption {
-    grid-column: 1 / -1;
-    text-align: center;
-    font-style: italic;
-    color: var(--global-text-color-light);
-    margin-top: 0.25rem;
+  .album-btn {
+    padding: 0.2rem 0;
+    border: 1px solid $outline-color;
+    background-color: $card-color;
+    color: $card-text-color;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      background-color: $outline-color;
+      color: $white-color;
+    }
   }
 }
 
@@ -1760,19 +1774,26 @@ textarea,
 .team-layout {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-start;
-  gap: 1.5rem;
+  gap: 2rem;
 
   .team {
     flex: 1 1 560px;
     min-width: 0;
     text-align: left;
   }
+}
 
-  .team-photos {
-    flex: 0 1 320px;
-    max-width: 100%;
+@media (max-width: 991.98px) {
+  // Narrower windows: the album goes below the team list, full width
+  .team-album {
+    flex: 1 1 100%;
+    position: static;
+
+    .album-strip {
+      height: 380px;
+    }
   }
 }
 
