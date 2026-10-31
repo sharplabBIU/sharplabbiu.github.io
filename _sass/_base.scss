@@ -1556,18 +1556,13 @@ footer > .container {
 }
 
 // Page backdrop and content box
-// Mediumaquamarine backdrop with faint azure RL equations (assets/img/backdrop.svg);
+// Black backdrop with an animated circuit board drawn over it (assets/js/circuit-bg.js);
 // each page's content sits in one opaque steelblue box with white text and a thin black outline
-// The backdrop stays still while the page scrolls, and the header area repeats it exactly,
+// The circuit board stays still while the page scrolls, and the header area repeats it exactly,
 // so content scrolling past is never seen above or beside the header bar
 body,
 #navbar {
   background-color: $backdrop-color;
-  background-image: url("../img/backdrop.svg");
-  background-size: 600px auto;
-  background-repeat: repeat;
-  background-position: center top;
-  background-attachment: fixed;
 }
 
 // Main container: the content box fills short pages, so the footer stays at the bottom of the window
