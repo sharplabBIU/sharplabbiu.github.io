@@ -8,16 +8,16 @@ nav_order: 3
 display_categories: [Director, Post-Doc, PhD, MA, BA, Collaborators, Alumni]
 minor_categories: [Collaborators, Alumni] # in smaller type, set apart below the core team
 lab_photos:
-  - { src: lab_1.jpg, alt: "Lab members together at a conference" }
-  - { src: lab_2.jpg, alt: "Lab celebration with cake" }
-  - { src: lab_3.jpg, alt: "Poster presentation at a conference" }
-  - { src: lab_4.jpg, alt: "Presenting a poster to visitors at a conference" }
-  - { src: lab_5.jpg, alt: "Lab lunch outdoors with pizza" }
-  - { src: lab_6.jpg, alt: "Explaining a poster at a conference" }
+  - { src: lab_1.jpg, w: 1050, h: 1400, alt: "Lab members together at a conference" }
+  - { src: lab_2.jpg, w: 1400, h: 1050, alt: "Lab celebration with cake" }
+  - { src: lab_3.jpg, w: 1400, h: 1050, alt: "Poster presentation at a conference" }
+  - { src: lab_4.jpg, w: 1400, h: 1050, alt: "Presenting a poster to visitors at a conference" }
+  - { src: lab_5.jpg, w: 1400, h: 1330, alt: "Lab lunch outdoors with pizza" }
+  - { src: lab_6.jpg, w: 1400, h: 1050, alt: "Explaining a poster at a conference" }
 dog_photos:
-  - { src: dina_1.jpg, alt: "Dina, a black curly-haired dog, sitting on the boardwalk at sunset" }
-  - { src: dina_2.jpg, alt: "Dina standing on her hind legs, holding paws with a lab member" }
-  - { src: dina_3.jpg, alt: "Dina stretched out between a couch and a bench" }
+  - { src: dina_1.jpg, w: 900, h: 1200, alt: "Dina, a black curly-haired dog, sitting on the boardwalk at sunset" }
+  - { src: dina_2.jpg, w: 901, h: 1200, alt: "Dina standing on her hind legs, holding paws with a lab member" }
+  - { src: dina_3.jpg, w: 1600, h: 899, alt: "Dina stretched out between a couch and a bench" }
 ---
 
 <!-- Names grouped by role: each core lab member with a small photo and their bio beside it (the photo in the bio itself
@@ -67,12 +67,12 @@ dog_photos:
     <div class="album-strip" tabindex="0">
       {% for photo in page.lab_photos %}
         <figure class="album-item">
-          <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" alt="{{ photo.alt }}" loading="lazy">
+          <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" width="{{ photo.w }}" height="{{ photo.h }}" alt="{{ photo.alt }}" loading="lazy">
         </figure>
       {% endfor %}
       {% for photo in page.dog_photos %}
         <figure class="album-item">
-          <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" alt="{{ photo.alt }}" loading="lazy">
+          <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" width="{{ photo.w }}" height="{{ photo.h }}" alt="{{ photo.alt }}" loading="lazy">
           <figcaption>Our official lab dog, Dina!</figcaption>
         </figure>
       {% endfor %}
