@@ -1729,20 +1729,20 @@ textarea,
 }
 
 // Lab logo at the top right of every page, centred in the black margin to the right of the content box,
-// above the fixed header; hidden where that margin is too narrow for it
+// above the fixed header; hidden where that margin is too narrow for it.
+// With the 1100px content width the margin is 50vw - 535px wide, so a logo of width w sits
+// (50vw - 535px - w) / 2 from the window's right edge
 .side-logo {
   display: none;
 }
 
 @media (min-width: 1300px) {
   .side-logo {
-    --margin: calc((100vw - #{$max-content-width}) / 2 + 15px); // from the window's right edge to the content box
-    --size: clamp(80px, calc(var(--margin) - 30px), 140px);
     display: block;
     position: fixed;
     top: 14px;
-    right: calc((var(--margin) - var(--size)) / 2);
-    width: var(--size);
+    right: unquote("calc(25vw - 307.5px)");
+    width: 80px;
     z-index: 1031;
 
     img {
@@ -1751,6 +1751,20 @@ textarea,
       height: auto;
       border-radius: 8px;
     }
+  }
+}
+
+@media (min-width: 1360px) {
+  .side-logo {
+    right: unquote("calc(25vw - 322.5px)");
+    width: 110px;
+  }
+}
+
+@media (min-width: 1420px) {
+  .side-logo {
+    right: unquote("calc(25vw - 337.5px)");
+    width: 140px;
   }
 }
 
