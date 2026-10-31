@@ -6,6 +6,7 @@ description: Our Team
 nav: true
 nav_order: 3
 display_categories: [Director, Post-Doc, PhD, MA, BA, Collaborators, Alumni]
+minor_categories: [Collaborators, Alumni] # in smaller type, set apart below the core team
 lab_photos:
   - { src: lab_1.jpg, alt: "Lab members together at a conference" }
   - { src: lab_2.jpg, alt: "Lab celebration with cake" }
@@ -23,11 +24,21 @@ dog_photos:
      (photos of each person are on their own page) -->
 <div class="team-layout">
   <div class="team">
+    {% assign minor_started = false %}
     {% for category in page.display_categories %}
       {% assign members = site.projects | where: 'category', category | sort: 'importance' %}
       {% if members.size > 0 %}
-        <h2 class="team-category" id="{{ category }}">{{ category }}</h2>
-        <ul class="team-list">
+        {% if page.minor_categories contains category %}
+          {% unless minor_started %}
+            <div class="team-gap" aria-hidden="true"></div>
+            {% assign minor_started = true %}
+          {% endunless %}
+          {% assign minor_class = ' team-minor' %}
+        {% else %}
+          {% assign minor_class = '' %}
+        {% endif %}
+        <h2 class="team-category{{ minor_class }}" id="{{ category }}">{{ category }}</h2>
+        <ul class="team-list{{ minor_class }}">
           {% for member in members %}
             <li>
               <a href="{% if member.redirect %}{{ member.redirect }}{% else %}{{ member.url | relative_url }}{% endif %}">{{ member.title }}</a>

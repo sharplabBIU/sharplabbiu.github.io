@@ -121,6 +121,10 @@
       </div>
     </div>
   </nav>
+  <!-- Lab logo at the top right, in the black margin beside the content box (wide windows only) -->
+  <a class="side-logo" href="{{ '/' | relative_url }}" aria-label="Sharp Lab home">
+    <img src="{{ site.icon | prepend: '/assets/img/' | relative_url | bust_file_cache }}" alt="Sharp Lab logo">
+  </a>
   {% if site.enable_progressbar %}
     <!-- Scrolling Progress Bar -->
     <progress id="progress" value="0">
