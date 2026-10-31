@@ -5,9 +5,9 @@
     <rect x="74" y="4" width="60" height="36" rx="6" fill="#e0ffff" stroke="#008080" stroke-width="1.6" />
     <g stroke="none" text-anchor="middle">
       <text x="32" y="23" font-size="15" font-style="italic" fill="#2f4f4f">K</text>
-      <text x="32" y="35" font-size="8" fill="#2f4f4f">prior knowledge</text>
+      <text x="32" y="35" font-size="7" fill="#2f4f4f">prior knowledge</text>
       <text x="104" y="23" font-size="15" font-style="italic" fill="#008080">I</text>
-      <text x="104" y="35" font-size="8" fill="#008080">instructions</text>
+      <text x="104" y="35" font-size="7" fill="#008080">instructions</text>
     </g>
     <path stroke="#2f4f4f" stroke-width="1.6" d="M32 40 L59.8 73.9 M58.3 67.4 L59.8 73.9 L53.7 71.2" />
     <path stroke="#008080" stroke-width="1.6" d="M104 40 L76.2 73.9 M82.3 71.2 L76.2 73.9 L77.7 67.4" />
