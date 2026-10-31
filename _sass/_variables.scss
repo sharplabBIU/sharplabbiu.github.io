@@ -9,7 +9,6 @@ $red-color-dark: #b71c1c !default;
 $orange-color: #f29105 !default;
 $blue-color: #0076df !default;
 $blue-color-dark: #00369f !default;
-$steel-color: #4682b4 !default; // steelblue: content boxes
 $bar-color: #b0e0e6 !default; // powderblue: the header and footer bars
 $bar-text-color: #000000 !default; // black: header and footer text
 $cyan-color: #2698ba !default;
@@ -20,7 +19,8 @@ $green-color-dark: #009f06 !default;
 $green-color-light: #ddffdd !default;
 $green-color-bright: #11d68b !default;
 $backdrop-color: #000000 !default; // black page backdrop, under the animated circuit board (assets/js/circuit-bg.js)
-$bisque-color: #ffe4c4 !default; // bisque: page backdrop, the brain's "world model" title and the line under it
+$card-text-color: #2f4f4f !default; // darkslategray: text in the content boxes and the home-page brain graphic
+$wm-title-color: #8b0000 !default; // darkred: the brain's "world model" title and the line under it
 $purple-color: #b509ac !default;
 $light-purple-color: lighten($purple-color, 25%);
 $pink-color: #f92080 !default;
