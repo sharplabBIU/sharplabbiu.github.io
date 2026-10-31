@@ -788,9 +788,38 @@ footer .footer-content {
     }
   }
 
-  .team-gap {
+  // Lab Adventures: the photo collage between the core team and the collaborators, across both columns
+  .lab-adventures {
     grid-column: 1 / -1;
-    height: 1.5rem;
+    margin: 1rem 0 1.5rem;
+
+    h2 {
+      margin: 0 0 1rem;
+      font-size: 1.7rem;
+      font-weight: 700;
+    }
+
+    .adventures-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      img {
+        display: block;
+        min-width: 0;
+        height: auto;
+      }
+    }
+
+    .adventures-dog {
+      margin: 8px 0 0;
+
+      figcaption {
+        margin-top: 0.4rem;
+        font-style: italic;
+        text-align: center;
+      }
+    }
   }
 
   h2.team-category.team-minor,
@@ -879,61 +908,6 @@ body {
   .research-areas .research-intro {
     flex-direction: column;
     align-items: center;
-  }
-}
-
-// Team page photo album: a thin vertical strip on the far right of the content box that scrolls a photo at a
-// time (or flips with the arrow buttons), staying in view beside the team list
-.team-album {
-  flex: 0 0 220px;
-  position: sticky;
-  top: calc(78px + 1rem);
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-
-  .album-strip {
-    position: relative; // so each photo's offsetTop is measured within the strip (assets/js/team-album.js)
-    height: 470px;
-    overflow-y: auto;
-    scroll-snap-type: y mandatory;
-    scrollbar-width: thin;
-    border: 1px solid $outline-color;
-  }
-
-  .album-item {
-    margin: 0;
-    padding: 6px;
-    scroll-snap-align: start;
-
-    img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    figcaption {
-      margin-top: 0.3rem;
-      font-size: 0.85rem;
-      font-style: italic;
-      text-align: center;
-    }
-  }
-
-  .album-btn {
-    padding: 0.2rem 0;
-    border: 1px solid $outline-color;
-    background-color: $card-color;
-    color: $card-text-color;
-    font-size: 0.8rem;
-    line-height: 1.2;
-    cursor: pointer;
-
-    &:hover,
-    &:focus-visible {
-      background-color: $outline-color;
-      color: $white-color;
-    }
   }
 }
 
@@ -1770,33 +1744,6 @@ textarea,
   .wm-pop[data-for="tasks"] { left: 46.6%; top: 76.4%; }
 }
 
-// Team page: the names column sits right beside the photos, both centered
-.team-layout {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 2rem;
-
-  .team {
-    flex: 1 1 560px;
-    min-width: 0;
-    text-align: left;
-  }
-}
-
-@media (max-width: 991.98px) {
-  // Narrower windows: the album goes below the team list, full width
-  .team-album {
-    flex: 1 1 100%;
-    position: static;
-
-    .album-strip {
-      height: 380px;
-    }
-  }
-}
-
 // Home top: the first paragraph; the graphic and the second paragraph follow
 .home-lead {
   margin-bottom: 0.75rem;
@@ -1860,7 +1807,7 @@ textarea,
 
 @media (max-width: 575.98px) {
   // Phones: each role above its members, centered (core members' photo and bio stay side by side, smaller)
-  .team-layout .team {
+  .team {
     grid-template-columns: 1fr;
     row-gap: 0.2rem;
     text-align: center;
