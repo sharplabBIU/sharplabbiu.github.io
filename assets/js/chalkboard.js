@@ -1,12 +1,12 @@
 // Page backdrop: a chalkboard with reinforcement-learning notes in chalk, drawn once onto a fixed canvas behind the
 // page and redrawn when the window is resized. The notes sit in the margins beside the content box, slightly tilted,
-// over a grainy green board with eraser smudges and faint ghosts of erased work. A copy of the top of the canvas fills
+// over a grainy black board with eraser smudges and faint ghosts of erased work. A copy of the top of the canvas fills
 // the strip behind the fixed header, so content scrolling up still disappears below the header bar.
 (function () {
   'use strict';
 
   var FONT = '"Klee One", "Comic Sans MS", cursive';
-  var BOARD = '#24382d';
+  var BOARD = '#1c1e1d'; // blackboard
   var WHITE = '#f3f3ec';
   var COLOURS = ['#f6e48c', '#f4a9c6', '#9fd4f3']; // yellow, pink and blue chalk for the odd highlight
 
@@ -247,7 +247,7 @@
     var rand = rng(20261102);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    // Board: green, unevenly worn, with a fine grain and darker edges
+    // Board: black, unevenly worn, with a fine grain and darker edges
     ctx.fillStyle = BOARD;
     ctx.fillRect(0, 0, W, H);
     for (var b = 0; b < 14; b++) {
