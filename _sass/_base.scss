@@ -1531,7 +1531,7 @@ footer > .container {
     width: unquote("calc(100% - 50vw + 550px)");
     max-width: none;
     margin-left: 0;
-    margin-right: 0;
+    margin-right: auto; // also against the left edge inside the header's flex row
   }
 
   .container.main-content {
