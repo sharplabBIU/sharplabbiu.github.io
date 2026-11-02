@@ -1521,6 +1521,33 @@ footer > .container {
   }
 }
 
+// Wide windows: the header, content box and footer sit against the window's left edge, and the chalkboard shows
+// only in the strip on the right, as wide as each side's margin was when they were centred (50vw - 535px with the
+// 1100px content width); each container drops its left gutter and fills the rest of the width
+@media (min-width: 1100px) {
+  #navbar > .container,
+  .container.main-content,
+  footer > .container {
+    width: unquote("calc(100% - 50vw + 550px)");
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .container.main-content {
+    padding-left: 0;
+  }
+
+  #navbar > .container,
+  footer > .container {
+    padding-left: 1.25rem;
+
+    &::before {
+      left: 0;
+    }
+  }
+}
+
 // Fixed header height (56px on phones, 78px wider), matching the body padding-top
 #navbar > .container {
   min-height: 56px;
