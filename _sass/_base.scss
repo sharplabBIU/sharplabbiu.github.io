@@ -1563,9 +1563,9 @@ footer > .container {
 }
 
 // Page backdrop and content box
-// Black backdrop with an animated circuit board drawn over it (assets/js/circuit-bg.js);
+// Chalkboard backdrop with reinforcement-learning notes in chalk drawn over it (assets/js/chalkboard.js);
 // each page's content sits in one opaque lightcyan box with darkslategray text and a thin teal outline, like the header and footer
-// The circuit board stays still while the page scrolls, and the header area repeats it exactly,
+// The chalkboard stays still while the page scrolls, and the header area repeats it exactly,
 // so content scrolling past is never seen above or beside the header bar
 body,
 #navbar {
