@@ -12,7 +12,7 @@ $blue-color-dark: #00369f !default;
 $bar-color: #000000 !default; // black: the header and footer bars
 $bar-text-color: #e0ffff !default; // lightcyan, like the content boxes: header and footer text
 $card-color: #e0ffff !default; // lightcyan: the content boxes
-$outline-color: #008080 !default; // teal: the thin line around the header, footer and content boxes
+$outline-color: #000000 !default; // black: the thin line around the header, footer, content boxes and project diagrams
 $cyan-color: #2698ba !default;
 $light-cyan-color: lighten($cyan-color, 25%);
 $green-color: #00ab37 !default;

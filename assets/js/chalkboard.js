@@ -1,7 +1,7 @@
 // Page backdrop: a chalkboard with reinforcement-learning notes in chalk, drawn once onto a fixed canvas behind the
 // page and redrawn when the window is resized. The notes sit in the margins beside the content box, slightly tilted,
 // over a grainy black board, in the site's colours: the content boxes' light cyan, with highlights in pale orange,
-// the brain's pale fuchsia and the outlines' teal. A copy of the top of the canvas fills the strip behind the fixed
+// the brain's pale fuchsia and teal. A copy of the top of the canvas fills the strip behind the fixed
 // header, so content scrolling up still disappears below the header bar.
 (function () {
   'use strict';
@@ -9,7 +9,7 @@
   var FONT = '"Klee One", "Comic Sans MS", cursive';
   var BOARD = '#1c1e1d'; // blackboard
   var WHITE = '#e0ffff'; // light cyan, as in the content boxes
-  var COLOURS = ['#ffe2cc', '#ffebfb', '#008080']; // pale orange, the brain's pale fuchsia, outline teal
+  var COLOURS = ['#ffe2cc', '#ffebfb', '#008080']; // pale orange, the brain's pale fuchsia, teal
 
   // Notes: lines of text (_{} subscript, ^{} superscript) or drawings, each with an optional chalk highlight
   var NOTES = [
