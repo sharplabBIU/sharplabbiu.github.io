@@ -1452,11 +1452,22 @@ swiper-container {
 .navbar .navbar-nav {
   display: flex; // Ensures the navbar items are laid out flexibly
   flex-direction: row; // Aligns the navbar items in a row
-  justify-content: center; // Center items horizontally
+  justify-content: center; // Center items horizontally (in the phone menu)
 }
 
-// Larger page links with more room between them, centered on the page itself
-// (not just in the space beside the logo); largest on wide screens, where they cannot reach the logo
+// Wider than phones, the header links run left to right from the start of the header bar
+@media (min-width: 576px) {
+  .navbar-nav {
+    margin-left: 0;
+  }
+
+  .navbar .navbar-nav {
+    justify-content: flex-start;
+  }
+}
+
+// Larger page links with more room between them, running left to right from the start of the header bar;
+// largest on wide screens
 #navbar .navbar-nav .nav-link {
   font-size: 1.3rem;
   padding-left: 0.8rem;
@@ -1559,13 +1570,6 @@ footer > .container {
   #navbar .container {
     position: relative;
     min-height: 78px;
-  }
-
-  #navbar .navbar-nav {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
 }
 
