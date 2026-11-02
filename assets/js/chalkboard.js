@@ -1,37 +1,164 @@
 // Page backdrop: a chalkboard with reinforcement-learning notes in chalk, drawn once onto a fixed canvas behind the
 // page and redrawn when the window is resized. The notes sit in the margins beside the content box, slightly tilted,
-// over a grainy black board with eraser smudges and faint ghosts of erased work. A copy of the top of the canvas fills
+// over a grainy black board, in the site's colours: the content boxes' light cyan, with highlights in the header's
+// pale orange, the brain's pale fuchsia and the outlines' teal. A copy of the top of the canvas fills
 // the strip behind the fixed header, so content scrolling up still disappears below the header bar.
 (function () {
   'use strict';
 
   var FONT = '"Klee One", "Comic Sans MS", cursive';
   var BOARD = '#1c1e1d'; // blackboard
-  var WHITE = '#f3f3ec';
-  var COLOURS = ['#f6e48c', '#f4a9c6', '#9fd4f3']; // yellow, pink and blue chalk for the odd highlight
+  var WHITE = '#e0ffff'; // light cyan, as in the content boxes
+  var COLOURS = ['#ffe2cc', '#ffebfb', '#008080']; // header and footer pale orange, the brain's pale fuchsia, outline teal
 
-  // Notes: lines of text (_{} subscript, ^{} superscript) or drawings, each with an optional chalk highlight
-  var NOTES = [
-    { lines: ['V(s) = max_{a} { r(s,a)', '   + γ Σ_{s′} P(s′|s,a) V(s′) }'], mark: 'box' },
-    { lines: ['δ_{t} = r_{t+1} + γV(s_{t+1}) − V(s_{t})'], mark: 'underline' },
-    { lines: ['Q(s,a) ← Q(s,a) + α δ'] },
-    { draw: 'mdp' },
-    { lines: ['π(a|s) ∝ e^{β Q(s,a)}'], mark: 'underline' },
-    { draw: 'grid' },
-    { lines: ['G_{t} = Σ_{k} γ^{k} r_{t+k+1}'] },
-    { draw: 'curve' },
-    { lines: ['∇_{θ} J = E[ ∇ log π_{θ}(a|s) G_{t} ]'] },
-    { lines: ['TD(λ)'], mark: 'circle' },
-    { draw: 'tree' },
-    { lines: ['ε-greedy:', '  explore w.p. ε', '  exploit w.p. 1 − ε'] },
-    { lines: ['Q*(s,a) = r + γ max_{a′} Q*(s′,a′)'] },
-    { draw: 'discount' },
-    { lines: ['P(s′ | s, a)'], mark: 'box' },
-    { lines: ['γ = 0.9  →  horizon ≈ 10'] },
-    { lines: ['model-based', 'vs. model-free?'], mark: 'underline' },
-    { draw: 'dyna' }
-  ];
-  var GHOSTS = ['V^{π}(s) = E_{π}[G_{t}]', 'argmax_{a} Q(s,a)', 'α = 0.1', 'R(s,a)', 'T(s′|s,a)', 'max_{a′}', 'β → ∞', 'γ^{t}'];
+  // Notes: lines of text (_{} subscript, ^{} superscript) or drawings, each with an optional chalk highlight.
+  // Each page has its own board
+  var SETS = {
+    // Home: the basics
+    '/': [
+      { lines: ['V(s) = max_{a} { r(s,a)', '   + γ Σ_{s′} P(s′|s,a) V(s′) }'], mark: 'box' },
+      { lines: ['δ_{t} = r_{t+1} + γV(s_{t+1}) − V(s_{t})'], mark: 'underline' },
+      { lines: ['Q(s,a) ← Q(s,a) + α δ'] },
+      { draw: 'mdp' },
+      { lines: ['π(a|s) ∝ e^{β Q(s,a)}'], mark: 'underline' },
+      { draw: 'grid' },
+      { lines: ['G_{t} = Σ_{k} γ^{k} r_{t+k+1}'] },
+      { draw: 'curve' },
+      { lines: ['TD(λ)'], mark: 'circle' },
+      { draw: 'tree' },
+      { lines: ['ε-greedy:', '  explore w.p. ε', '  exploit w.p. 1 − ε'] },
+      { lines: ['Q*(s,a) = r + γ max_{a′} Q*(s′,a′)'] },
+      { draw: 'discount' },
+      { lines: ['P(s′ | s, a)'], mark: 'box' },
+      { lines: ['model-based', 'vs. model-free?'], mark: 'underline' },
+      { draw: 'dyna' },
+      { lines: ['V^{π}(s) = Σ_{a} π(a|s) Q(s,a)'] },
+      { lines: ['α = learning rate'], mark: 'underline' }
+    ],
+    // Team: exploring, and learning with and about others
+    '/team/': [
+      { draw: 'bandit' },
+      { lines: ['UCB: Q(a) + c √(ln t / N(a))'], mark: 'box' },
+      { lines: ['explore ↔ exploit'], mark: 'circle' },
+      { lines: ['θ_{a} ~ Beta(α, β)'] },
+      { lines: ['regret = Σ_{t} (μ* − μ_{a_t})'], mark: 'underline' },
+      { draw: 'curve' },
+      { lines: ['Q_{i}(s, a_{i}, a_{−i})'] },
+      { lines: ['π_{i} = BR(π_{−i})'], mark: 'underline' },
+      { draw: 'grid' },
+      { lines: ['P(goal | actions)', '  ∝ P(actions | goal) P(goal)'], mark: 'box' },
+      { lines: ['r_{social} = r + w · r_{other}'] },
+      { draw: 'tree' },
+      { lines: ['lab = Σ_{i} agent_{i} + 1 dog'], mark: 'underline' },
+      { lines: ['β = inverse temperature'] },
+      { lines: ['theory of mind', '  = inverse RL?'], mark: 'circle' },
+      { lines: ['w_{other} > 0 : prosocial'] },
+      { draw: 'mdp' }
+    ],
+    // Projects: planning, offline learning and task representations
+    '/projects/': [
+      { lines: ['M = (I − γT)^{−1}'], mark: 'box' },
+      { lines: ['V = M r'] },
+      { draw: 'replay' },
+      { lines: ['plan when', '  E[gain] > cost'], mark: 'underline' },
+      { draw: 'tree' },
+      { lines: ['P(τ | I, K) ∝ P(I | τ) P(τ | K)'], mark: 'box' },
+      { draw: 'dyna' },
+      { lines: ['VOI = E[V_{after}] − V_{before}'] },
+      { draw: 'mdp' },
+      { lines: ['forward or backward?'], mark: 'circle' },
+      { lines: ['longer ITI → more replay?'], mark: 'underline' },
+      { draw: 'discount' },
+      { lines: ['T(s′|s,a) learned offline'] },
+      { draw: 'curve' },
+      { lines: ['Dyna-Q: n planning steps'], mark: 'underline' },
+      { draw: 'grid' },
+      { lines: ['SR: M(s, s′)'] }
+    ],
+    // Papers: policy gradients, actor-critic, and fitting models to data
+    '/publications/': [
+      { lines: ['∇_{θ} J = E[ ∇ log π_{θ}(a|s) G_{t} ]'], mark: 'underline' },
+      { lines: ['A(s,a) = Q(s,a) − V(s)'], mark: 'box' },
+      { draw: 'actorcritic' },
+      { lines: ['L(θ) = Σ_{t} log π_{θ}(a_{t} | s_{t})'] },
+      { lines: ['θ̂ = argmax_{θ} L(θ)'], mark: 'underline' },
+      { draw: 'bayes' },
+      { lines: ['BIC = k ln n − 2 ln L̂'] },
+      { lines: ['H(π) = −Σ_{a} π(a) log π(a)'] },
+      { draw: 'curve' },
+      { lines: ['KL(p ‖ q)'], mark: 'circle' },
+      { draw: 'tree' },
+      { lines: ['p < .05 ?'], mark: 'circle' },
+      { draw: 'grid' },
+      { lines: ['parameter recovery ✓'] },
+      { draw: 'discount' },
+      { lines: ['V(s) ≈ θ^{⊤} φ(s)'], mark: 'underline' },
+      { lines: ['n = 120, d = 0.5'] }
+    ],
+    // News: prediction errors, dopamine and eligibility traces
+    '/news/': [
+      { draw: 'rpe' },
+      { lines: ['δ = r + γV(s′) − V(s)'], mark: 'box' },
+      { lines: ['dopamine ≈ δ ?'], mark: 'underline' },
+      { lines: ['e_{t}(s) = γλ e_{t−1}(s) + 1[s_{t} = s]'] },
+      { lines: ['V ← V + α δ e'] },
+      { draw: 'mdp' },
+      { lines: ['TD(λ)'], mark: 'circle' },
+      { lines: ['ΔV = α (λ − ΣV)', '  (Rescorla–Wagner)'] },
+      { draw: 'curve' },
+      { lines: ['V = r / (1 + kD)'], mark: 'underline' },
+      { draw: 'discount' },
+      { lines: ['surprise!'], mark: 'circle' },
+      { draw: 'grid' },
+      { draw: 'tree' },
+      { draw: 'actorcritic' },
+      { lines: ['Q ← Q + α δ'], mark: 'underline' },
+      { lines: ['cue → reward'] }
+    ],
+    // Resources: Bayesian statistics and a little code
+    '/resources/': [
+      { lines: ['P(θ | D) ∝ P(D | θ) P(θ)'], mark: 'box' },
+      { draw: 'bayes' },
+      { lines: ['y ~ Normal(μ, σ)', 'μ = α + β x'] },
+      { lines: ['θ ~ Beta(1, 1)'], mark: 'underline' },
+      { lines: ['for t in range(T):', '    a = policy(s)', '    s, r = env.step(a)'] },
+      { lines: ['R̂ < 1.01'], mark: 'circle' },
+      { lines: ['E[x] = Σ_{x} x p(x)'] },
+      { draw: 'curve' },
+      { lines: ['Var(x) = E[x^{2}] − E[x]^{2}'] },
+      { lines: ['git commit -m "fit"'], mark: 'underline' },
+      { draw: 'discount' },
+      { lines: ['BIC = k ln n − 2 ln L̂'] },
+      { draw: 'grid' },
+      { draw: 'tree' },
+      { lines: ['import numpy as np'], mark: 'underline' },
+      { lines: ['σ^{2}_{post} < σ^{2}_{prior}'] }
+    ],
+    // Join: a welcome
+    '/join/': [
+      { lines: ['join = argmax_{lab} E[fun]'], mark: 'box' },
+      { lines: ['math + code + psychology'], mark: 'underline' },
+      { draw: 'mdp' },
+      { lines: ['r_{t} = curiosity'] },
+      { draw: 'curve' },
+      { lines: ['explore!'], mark: 'circle' },
+      { lines: ['V(PhD) = Σ_{t} γ^{t} r_{t}'] },
+      { draw: 'tree' },
+      { lines: ['P(s′ | s, a)'], mark: 'box' },
+      { draw: 'dyna' },
+      { lines: ['Q(you, join) = high'], mark: 'underline' },
+      { draw: 'grid' },
+      { draw: 'discount' },
+      { draw: 'bandit' },
+      { lines: ['Σ_{t} γ^{t} (learning)'], mark: 'underline' },
+      { draw: 'replay' }
+    ]
+  };
+  var path = location.pathname.replace(/index\.html$/, '');
+  // Team members' own pages share the team board
+  var NOTES = SETS[path] || (/^\/projects\/.+/.test(path) ? SETS['/team/'] : SETS['/']);
+  var SEED = 20261102;
+  for (var c = 0; c < path.length; c++) SEED = (Math.imul(SEED, 31) + path.charCodeAt(c)) | 0;
 
   var canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
@@ -223,6 +350,80 @@
       write(g, rand, 'γ^{t}', 120 * s, 22 * s, size * 0.9);
       return [170 * s, h + 4 * s];
     },
+    bandit: function (g, rand, s, size) {
+      g.lineWidth = 2.2;
+      for (var i = 0; i < 3; i++) {
+        var x = i * 58 * s;
+        stroke(g, rand, [[x, 14 * s], [x + 40 * s, 14 * s], [x + 40 * s, 70 * s], [x, 70 * s]], true);
+        stroke(g, rand, [[x + 8 * s, 26 * s], [x + 32 * s, 26 * s], [x + 32 * s, 46 * s], [x + 8 * s, 46 * s]], true);
+        write(g, rand, '?', x + 15 * s, 43 * s, size * 0.8);
+        stroke(g, rand, [[x + 40 * s, 42 * s], [x + 48 * s, 42 * s], [x + 48 * s, 20 * s]]);
+        ellipse(g, rand, x + 48 * s, 15 * s, 4 * s, 4 * s);
+        write(g, rand, 'Q_{' + (i + 1) + '}', x + 10 * s, 92 * s, size * 0.75);
+      }
+      return [172 * s, 98 * s];
+    },
+    replay: function (g, rand, s, size) {
+      g.lineWidth = 2.2;
+      for (var i = 0; i < 4; i++) {
+        ellipse(g, rand, (14 + i * 48) * s, 22 * s, 11 * s, 11 * s);
+        if (i < 3) arrow(g, rand, (27 + i * 48) * s, 22 * s, (49 + i * 48) * s, 22 * s);
+      }
+      var pts = [];
+      for (var k = 0; k <= 16; k++) {
+        var u = k / 16;
+        pts.push([(158 - u * 140) * s, (44 + Math.sin(u * Math.PI) * 18) * s]);
+      }
+      stroke(g, rand, pts);
+      stroke(g, rand, [[27 * s, 40 * s], [18 * s, 44 * s], [25 * s, 51 * s]]);
+      write(g, rand, 'replay', 64 * s, 84 * s, size * 0.75);
+      return [172 * s, 90 * s];
+    },
+    actorcritic: function (g, rand, s, size) {
+      g.lineWidth = 2.2;
+      stroke(g, rand, [[0, 0], [66 * s, 0], [66 * s, 30 * s], [0, 30 * s]], true);
+      stroke(g, rand, [[104 * s, 0], [170 * s, 0], [170 * s, 30 * s], [104 * s, 30 * s]], true);
+      write(g, rand, 'actor', 10 * s, 21 * s, size * 0.75);
+      write(g, rand, 'critic', 112 * s, 21 * s, size * 0.75);
+      arrow(g, rand, 102 * s, 15 * s, 70 * s, 15 * s);
+      write(g, rand, 'δ', 82 * s, 10 * s, size * 0.8);
+      write(g, rand, 'env', 70 * s, 98 * s, size * 0.8);
+      arrow(g, rand, 33 * s, 34 * s, 66 * s, 80 * s);
+      arrow(g, rand, 104 * s, 80 * s, 137 * s, 34 * s);
+      write(g, rand, 'a', 34 * s, 66 * s, size * 0.7);
+      write(g, rand, 's, r', 126 * s, 70 * s, size * 0.7);
+      return [172 * s, 104 * s];
+    },
+    bayes: function (g, rand, s, size) {
+      var h = 92 * s;
+      g.lineWidth = 2.2;
+      stroke(g, rand, [[0, h], [172 * s, h]]);
+      function bump(mu, sd, peak) {
+        var pts = [];
+        for (var k = 0; k <= 30; k++) {
+          var x = k / 30 * 172;
+          pts.push([x * s, h - peak * Math.exp(-0.5 * Math.pow((x - mu) / sd, 2)) * s]);
+        }
+        stroke(g, rand, pts);
+      }
+      bump(70, 30, 34);
+      bump(104, 13, 70);
+      write(g, rand, 'prior', 4 * s, 52 * s, size * 0.65);
+      write(g, rand, 'posterior', 118 * s, 18 * s, size * 0.65);
+      return [172 * s, h + 4 * s];
+    },
+    rpe: function (g, rand, s, size) {
+      g.lineWidth = 2.2;
+      [[34, 128, 'early'], [84, 42, 'late']].forEach(function (row) {
+        var y = row[0] * s;
+        var x = row[1] * s;
+        stroke(g, rand, [[0, y], [x - 7 * s, y], [x, y - 24 * s], [x + 7 * s, y], [172 * s, y]]);
+        write(g, rand, row[2], 0, y - 10 * s, size * 0.65);
+      });
+      write(g, rand, 'cue', 32 * s, 104 * s, size * 0.65);
+      write(g, rand, 'reward', 110 * s, 104 * s, size * 0.65);
+      return [172 * s, 108 * s];
+    },
     dyna: function (g, rand, s, size) {
       g.lineWidth = 2.2;
       write(g, rand, 'experience', 0, 16 * s, size * 0.8);
@@ -244,10 +445,10 @@
     H = window.innerHeight;
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
-    var rand = rng(20261102);
+    var rand = rng(SEED);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    // Board: black, unevenly worn, with a fine grain and darker edges
+    // Board: black, a little uneven, with a fine grain and darker edges
     ctx.fillStyle = BOARD;
     ctx.fillRect(0, 0, W, H);
     for (var b = 0; b < 14; b++) {
@@ -255,8 +456,7 @@
       var by = rand() * H;
       var br = 120 + rand() * 360;
       var gr = ctx.createRadialGradient(bx, by, 0, bx, by, br);
-      var light = rand() < 0.5;
-      gr.addColorStop(0, light ? 'rgba(255,255,255,0.035)' : 'rgba(0,0,0,0.08)');
+      gr.addColorStop(0, 'rgba(0,0,0,0.08)');
       gr.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = gr;
       ctx.fillRect(bx - br, by - br, br * 2, br * 2);
@@ -285,25 +485,6 @@
     if (!zones.length) zones.push([12, W - 12]);
     var logo = document.querySelector('.side-logo');
     var logoBottom = logo && getComputedStyle(logo).display !== 'none' ? logo.getBoundingClientRect().bottom + 10 : 0;
-
-    // Eraser swipes: broad, faint smears of chalk dust
-    zones.forEach(function (z) {
-      for (var e = 0; e < 3; e++) {
-        var y0 = rand() * H;
-        ctx.save();
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = 'rgba(235,240,235,0.022)';
-        for (var p = 0; p < 9; p++) {
-          ctx.lineWidth = 30 + rand() * 50;
-          ctx.beginPath();
-          var yy = y0 + (rand() - 0.5) * 60;
-          ctx.moveTo(z[0] - 30, yy);
-          ctx.bezierCurveTo(z[0] + (z[1] - z[0]) * 0.3, yy - 40 + rand() * 80, z[0] + (z[1] - z[0]) * 0.7, yy - 40 + rand() * 80, z[1] + 30, yy + (rand() - 0.5) * 50);
-          ctx.stroke();
-        }
-        ctx.restore();
-      }
-    });
 
     var holes = speckles(rand, 128, function (d, i, u) {
       d[i] = d[i + 1] = d[i + 2] = 0;
@@ -344,23 +525,6 @@
       ctx.restore();
     }
 
-    // Ghosts of erased work: big, faint and smeared
-    zones.forEach(function (z) {
-      for (var k = 0; k < 4; k++) {
-        var text = GHOSTS[(rand() * GHOSTS.length) | 0];
-        var size = 26 + rand() * 12;
-        var tw = measure(ctx, text, size);
-        var gx = z[0] + rand() * Math.max(0, z[1] - z[0] - tw);
-        var gy = rand() * (H - size * 2);
-        for (var smear = 0; smear < 3; smear++) {
-          chalk(tw, size * 1.4, function (g) {
-            g.fillStyle = WHITE;
-            write(g, rand, text, 0, size, size);
-          }, gx + smear * (2 + rand() * 6), gy + smear * (rand() * 3), (rand() - 0.5) * 0.08, 0.045, false);
-        }
-      }
-    });
-
     // The notes, stacked down each margin
     var order = NOTES.map(function (n, i) { return i; });
     for (var i = order.length - 1; i > 0; i--) {
@@ -374,13 +538,11 @@
       var zw = z[1] - z[0];
       var size = Math.max(15, Math.min(24, zw / 10));
       var y = 18 + (zi === zones.length - 1 && logoBottom ? logoBottom : 0);
-      var tries = 0;
-      while (y < H - 40 && tries < NOTES.length * 2) {
-        var note = NOTES[order[next % order.length]];
+      while (y < H - 40 && next < order.length) {
+        var note = NOTES[order[next]];
         next++;
-        tries++;
-        var colour = note.mark && rand() < 0.75 ? COLOURS[(rand() * COLOURS.length) | 0] : WHITE;
-        var ink = rand() < 0.15 ? COLOURS[(rand() * COLOURS.length) | 0] : WHITE; // now and then a note in coloured chalk
+        var colour = COLOURS[(rand() * COLOURS.length) | 0];
+        var ink = rand() < 0.3 ? COLOURS[(rand() * COLOURS.length) | 0] : WHITE; // some notes in coloured chalk
         var w;
         var h;
         var paint;
