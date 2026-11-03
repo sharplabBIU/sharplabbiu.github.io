@@ -1444,7 +1444,7 @@ swiper-container {
 }
 
 // Larger page links with more room between them, centred in the header bar; largest on wide screens
-// (on tablets they are closer together, so they stay clear of the logo)
+// (closer together on smaller laptops, so they stay clear of the logo)
 #navbar .navbar-nav .nav-link {
   font-size: 1.3rem;
   padding-left: 0.6rem;
@@ -1454,6 +1454,13 @@ swiper-container {
 @media (min-width: 992px) {
   #navbar .navbar-nav .nav-link {
     font-size: 1.45rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  #navbar .navbar-nav .nav-link {
     padding-left: 1.1rem;
     padding-right: 1.1rem;
   }
@@ -1488,9 +1495,9 @@ swiper-container {
   }
 }
 
-// Phones and small tablets (narrower than 768px): the page links drop down from the menu button at the left end of
-// the header, one under another, centred
-@media (max-width: 767.98px) {
+// Phones and tablets (narrower than 992px): the page links drop down below the header from the menu button at its
+// right end, one under another, centred
+@media (max-width: 991.98px) {
   .navbar .navbar-nav {
     flex-direction: column;
   }
@@ -1501,6 +1508,27 @@ swiper-container {
 
   #navbar .navbar-toggler {
     height: $header-height-phone - 8px;
+    margin-left: auto;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  #navbar .navbar-toggler {
+    height: $header-height - 8px;
+  }
+}
+
+// Wider windows: the page links are centred in the bar, or as near the centre as the logo at its left end allows
+// (the first of the three columns keeps the logo's room)
+@media (min-width: 992px) {
+  #navbar .navbar-collapse {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr;
+
+    &::before {
+      content: "";
+      width: $header-logo-width;
+    }
   }
 }
 
@@ -1539,15 +1567,19 @@ footer > .container {
   }
 }
 
-// Lab logo at the right end of the header on every page, as it looks on white: on a white tile as tall as the black
-// bar. It is taken out of the row, so the page links are centred in the whole bar
-.navbar-logo {
+// Lab logo at the left end of the header on every page: the brain from the lab's emblem and "Sharp Lab" in black on a
+// lightcyan tile (the colour of the page links) as tall as the black bar. It is taken out of the row, and the page
+// links are centred in the bar beside it
+#navbar .navbar-logo {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
   height: $header-height-phone;
-  padding: 4px 6px;
-  background-color: $white-color;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 5px 1rem 5px 0.75rem;
+  background-color: $bar-text-color;
   transition: none;
 
   img {
@@ -1556,15 +1588,29 @@ footer > .container {
     width: auto;
   }
 
+  span {
+    color: $black-color;
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
   &:hover {
+    text-decoration: none;
     opacity: 0.85;
   }
 }
 
 @media (min-width: 768px) {
-  .navbar-logo {
+  #navbar .navbar-logo {
     height: $header-height;
-    padding: 5px 9px;
+    gap: 0.75rem;
+    padding: 7px 1.4rem 7px 1rem;
+
+    span {
+      font-size: 2.1rem;
+    }
   }
 }
 

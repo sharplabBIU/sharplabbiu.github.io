@@ -1,29 +1,29 @@
-// Decision trees in the open space on either side of the text column (wider windows only), drawn on two canvases
-// fixed behind the content, below the header. Each side has a column of trees, one under another, linked by the
-// transitions from one tree's leaves to the next tree's root (s₀, s₁, ...); each branch from a root has its own colour.
+// Decision trees in the open space on either side of the text column (wider windows only), in dark slate gray and
+// dark red, drawn on two canvases fixed behind the content, below the header. Each side has a column of narrow trees,
+// one under another, linked by the transitions from one tree's leaves to the next tree's root (s₀, s₁, ...). The trees
+// keep their shape; what changes is on them.
 // Value: the reward at each leaf, how full each node is (its backed-up value) and V beside each root.
 // Sampling: a dot runs down a sampled path, lighting it up (the arrows on the edges give the direction of sampling),
 // then carries the leaf's reward back up; from the leaf linked to the next tree it also runs on down the link.
-// Causal strength: the width of each edge, which grows on the paths sampled and fades on the others.
-// The trees also restructure as they go: weak branches are pruned, new ones grow and subtrees move to other parents.
+// Causal strength: the width of each edge, which grows on the paths sampled and fades on the others, settling back
+// over time. Now and then a leaf's reward changes, and the values and the links to the next tree follow it.
 (function () {
   'use strict';
 
-  var COLORS = ['#008080', '#e2661b', '#c51f98', '#5b4fd6', '#3a9a2e']; // teal, orange, fuchsia, indigo, green
-  var INK = '#1f3333'; // dark slate, like the text
-  var FONT = '600 10px Inter, "Helvetica Neue", Arial, sans-serif';
+  var COLORS = ['#2f4f4f', '#8b0000']; // dark slate gray and dark red, one for each branch from a root
+  var INK = '#2f4f4f'; // dark slate gray: roots and labels
+  var FONT = '600 9.5px Inter, "Helvetica Neue", Arial, sans-serif';
   var SUB = '₀₁₂₃₄₅₆₇₈₉';
   var DEPTH = 3; // levels below the root
   var GAP = 16; // between the trees and the text column
   var MIN_SIDE = 120; // the narrowest open space that gets trees
-  var MAX_SPAN = 300; // the widest a tree gets
+  var MAX_SPAN = 120; // the widest a tree gets
   var REWARDS = [-2, -1, 0, 1, 2, 3, 4, 5];
   var VMIN = -2;
   var VMAX = 5;
 
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
-  var uid = 0;
 
   function rand(a, b) {
     return a + Math.random() * (b - a);
@@ -124,30 +124,23 @@
     g.restore();
   }
 
-  // Tree nodes. A new node starts unseen at its parent's place and grows out from there
+  // Tree nodes; a node fades in where it stands
   function Node(parent, color) {
     this.parent = parent;
     this.kids = [];
     this.depth = parent ? parent.depth + 1 : 0;
     this.color = color;
-    this.w = rand(0.3, 1); // causal strength of the edge from the parent
-    this.r = pick(REWARDS); // reward, shown while the node is a leaf
+    this.w0 = rand(0.3, 0.9); // causal strength of the edge from the parent, at rest
+    this.w = this.w0; // and as it is now
+    this.r = pick(REWARDS); // reward, at a leaf
     this.v = this.r; // value, backed up from the leaves
-    this.vs = parent ? parent.vs : this.r; // value as drawn, easing to v
-    this.x = this.tx = parent ? parent.x : 0;
-    this.y = this.ty = parent ? parent.y : 0;
-    this.a = parent ? 0 : 1; // opacity as drawn
-    this.ta = 1; // opacity aimed for: 0 once pruned
-    this.la = 0; // opacity of the reward label, shown on leaves
+    this.vs = this.r; // value as drawn, easing to v
+    this.x = this.tx = 0;
+    this.y = this.ty = 0;
+    this.a = 0; // opacity
     this.hot = 0; // highlight of the edge from the parent, after a sample runs down it
     if (parent) parent.kids.push(this);
   }
-
-  Node.prototype.live = function () {
-    return this.kids.filter(function (k) {
-      return k.ta > 0;
-    });
-  };
 
   Node.prototype.each = function (fn) {
     fn(this);
@@ -156,32 +149,31 @@
     });
   };
 
-  Node.prototype.die = function () {
-    this.each(function (n) {
-      n.ta = 0;
-    });
-  };
-
-  // One tree: a root with two or three branches, each in its own colour, as many leaves as the width allows
+  // One tree: a root with a dark slate gray branch and a dark red one, and as many leaves as the width allows
   function Tree(forest, k, now) {
     this.forest = forest;
     this.k = k;
     this.root = new Node(null, INK);
     this.walking = false;
     this.nextSample = now + rand(0.4, 3.5);
-    this.nextChange = now + rand(2.5, 7);
+    this.nextShift = now + rand(5, 12);
     this.lx = this.ly = this.mx = this.my = null; // where the links to the next tree start, easing to the leaves
     var max = forest.maxLeaves;
-    var hue = Math.floor(Math.random() * COLORS.length);
-    var branches = max >= 6 && Math.random() < 0.5 ? 3 : 2;
-    for (var i = 0; i < branches; i++) new Node(this.root, COLORS[(hue + i) % COLORS.length]);
-    var want = Math.round(rand(Math.max(branches, max * 0.6), max));
+    var first = Math.floor(Math.random() * COLORS.length);
+    for (var i = 0; i < 2; i++) new Node(this.root, COLORS[(first + i) % COLORS.length]);
+    var want = Math.round(rand(Math.max(3, max * 0.7), max));
     for (var tries = 0; tries < 40 && this.leaves().length < want; tries++) {
       var open = this.leaves().filter(function (n) {
         return n.depth < DEPTH;
       });
       if (!open.length) break;
-      var n = open[choose(open.map(function (m) { return 4 - m.depth; }))];
+      var n = open[
+        choose(
+          open.map(function (m) {
+            return 4 - m.depth;
+          })
+        )
+      ];
       new Node(n, n.color);
       new Node(n, n.color);
     }
@@ -191,37 +183,29 @@
   Tree.prototype.leaves = function () {
     var out = [];
     this.root.each(function (n) {
-      if (n.ta > 0 && n.depth > 0 && !n.live().length) out.push(n);
+      if (n.depth > 0 && !n.kids.length) out.push(n);
     });
     return out;
   };
 
   // Values from the leaves up: a leaf's reward, or the best of the node's children
   Tree.prototype.backup = function (n) {
-    var live = n.live();
-    if (!live.length) {
-      n.v = n.r;
-    } else {
-      n.v = Math.max.apply(
-        null,
-        live.map(function (k) {
-          return this.backup(k);
-        }, this)
-      );
-    }
+    n.v = n.kids.length
+      ? Math.max.apply(
+          null,
+          n.kids.map(function (k) {
+            return this.backup(k);
+          }, this)
+        )
+      : n.r;
     n.vs = n.v;
     return n.v;
   };
 
-  // Leaves evenly spaced across the span (pruned ones keep their place while they fade), each parent centred over
-  // its children
+  // Leaves evenly spaced across the span, each parent centred over its children
   Tree.prototype.layout = function (cx, span, y0, gy) {
-    var order = [];
-    (function walk(n) {
-      if (!n.kids.length) order.push(n);
-      n.kids.forEach(walk);
-    })(this.root);
-    var step = Math.min(span / Math.max(order.length, 1), 46);
+    var order = this.leaves();
+    var step = Math.min(span / Math.max(order.length, 1), 26);
     var x0 = cx - (step * (order.length - 1)) / 2;
     order.forEach(function (n, i) {
       n.tx = x0 + i * step;
@@ -239,11 +223,10 @@
   Tree.prototype.sample = function () {
     var path = [this.root];
     var n = this.root;
-    var live;
-    while ((live = n.live()).length) {
-      n = live[
+    while (n.kids.length) {
+      n = n.kids[
         choose(
-          live.map(function (k) {
+          n.kids.map(function (k) {
             return k.w * Math.exp(0.45 * k.v);
           })
         )
@@ -255,141 +238,48 @@
 
   // The leaves the links to the next tree start from: the best leaf, and the second best
   Tree.prototype.exits = function () {
-    return this.leaves()
-      .slice()
-      .sort(function (a, b) {
-        return b.v - a.v;
-      });
-  };
-
-  // Restructuring: prune a weak branch, grow from a promising leaf, or move a subtree to another parent
-  Tree.prototype.restructure = function () {
-    var count = this.leaves().length;
-    var max = this.forest.maxLeaves;
-    var u = Math.random();
-    var done = false;
-    if (count > 3 && (count >= max || u < 0.35)) done = this.prune(count);
-    else if (count < max && u < 0.75) done = this.grow(count, max);
-    if (!done) done = this.rewire() || (count < max && this.grow(count, max)) || (count > 3 && this.prune(count));
-    if (done) this.forest.place(this);
-  };
-
-  Tree.prototype.prune = function (count) {
-    var root = this.root;
-    var options = [];
-    root.each(function (n) {
-      if (n === root || n.ta === 0 || n.parent.live().length < 2) return;
-      if (n.depth === 1 && root.live().length < 3) return;
-      var gone = 0;
-      n.each(function (m) {
-        if (m.ta > 0 && !m.live().length) gone++;
-      });
-      if (count - gone >= 3) options.push(n);
+    return this.leaves().sort(function (a, b) {
+      return b.v - a.v;
     });
-    if (!options.length) return false;
-    options[
-      choose(
-        options.map(function (n) {
-          return Math.pow(1.1 - n.w, 2);
-        })
-      )
-    ].die();
-    return true;
-  };
-
-  Tree.prototype.grow = function (count, max) {
-    var root = this.root;
-    var options = this.leaves().filter(function (n) {
-      return n.depth < DEPTH;
-    });
-    if (root.live().length < 3) options.push(root);
-    if (!options.length) return false;
-    var n = options[
-      choose(
-        options.map(function (m) {
-          return Math.exp(0.35 * m.v);
-        })
-      )
-    ];
-    if (n === root) {
-      // a new branch from the root, in a colour the tree is not using
-      var used = root.live().map(function (k) {
-        return k.color;
-      });
-      var free = COLORS.filter(function (c) {
-        return used.indexOf(c) < 0;
-      });
-      new Node(root, pick(free.length ? free : COLORS));
-    } else {
-      var a = new Node(n, n.color);
-      if (count + 1 <= max) new Node(n, n.color);
-      n.v = Math.max(a.r, n.kids[n.kids.length - 1].r);
-    }
-    return true;
-  };
-
-  Tree.prototype.rewire = function () {
-    var root = this.root;
-    var movers = [];
-    var homes = root.live();
-    root.each(function (n) {
-      if (n.depth === 2 && n.ta > 0 && n.parent.live().length >= 2) movers.push(n);
-    });
-    if (!movers.length) return false;
-    var n = pick(movers);
-    var to = homes.filter(function (h) {
-      return h !== n.parent && h.live().length < 3;
-    });
-    if (!to.length) return false;
-    var home = pick(to);
-    n.parent.kids.splice(n.parent.kids.indexOf(n), 1);
-    n.parent = home;
-    if (Math.random() < 0.5) home.kids.unshift(n);
-    else home.kids.push(n);
-    return true;
   };
 
   Tree.prototype.update = function (dt, now) {
-    var self = this;
-    var gone = [];
     this.root.each(function (n) {
       n.x = ease(n.x, n.tx, 4, dt);
       n.y = ease(n.y, n.ty, 4, dt);
-      n.a = ease(n.a, n.ta, 3, dt);
+      n.a = ease(n.a, 1, 3, dt);
       n.vs = ease(n.vs, n.v, 3, dt);
-      n.la = ease(n.la, n.depth > 0 && n.ta > 0 && !n.live().length ? 1 : 0, 3, dt);
+      n.w = ease(n.w, n.w0, 0.04, dt);
       n.hot = Math.max(0, n.hot - dt / 3);
-      if (n.ta === 0 && n.a < 0.02 && n.parent && n.parent.ta > 0) gone.push(n);
     });
-    if (gone.length) {
-      gone.forEach(function (n) {
-        var p = n.parent;
-        p.kids.splice(p.kids.indexOf(n), 1);
-        if (!p.live().length) p.v = p.r = pick(REWARDS); // the parent is a leaf now
-      });
-      this.forest.place(this);
-    }
     if (this.forest.trees[this.k + 1]) {
       var exits = this.exits();
-      if (exits.length) {
-        this.lcol = exits[0].color;
-        this.lx = this.lx === null ? exits[0].x : ease(this.lx, exits[0].x, 4, dt);
-        this.ly = this.ly === null ? exits[0].y : ease(this.ly, exits[0].y, 4, dt);
-        var second = exits[1] || exits[0];
-        this.mcol = second.color;
-        this.mx = this.mx === null ? second.x : ease(this.mx, second.x, 4, dt);
-        this.my = this.my === null ? second.y : ease(this.my, second.y, 4, dt);
-        this.exit = exits[0];
-      }
+      var second = exits[1] || exits[0];
+      this.exit = exits[0];
+      this.lcol = exits[0].color;
+      this.mcol = second.color;
+      this.lx = this.lx === null ? exits[0].x : ease(this.lx, exits[0].x, 4, dt);
+      this.ly = this.ly === null ? exits[0].y : ease(this.ly, exits[0].y, 4, dt);
+      this.mx = this.mx === null ? second.x : ease(this.mx, second.x, 4, dt);
+      this.my = this.my === null ? second.y : ease(this.my, second.y, 4, dt);
     }
-    if (now >= this.nextChange) {
-      this.restructure();
-      this.nextChange = now + rand(4, 8);
+    if (now >= this.nextShift) {
+      this.shift();
+      this.nextShift = now + rand(6, 12);
     }
     if (now >= this.nextSample && !this.walking) {
-      self.start();
+      this.start();
       this.nextSample = now + rand(2.2, 4.5);
     }
+  };
+
+  // A leaf's reward changes (the label flashes); the values above it follow as the tree is sampled
+  Tree.prototype.shift = function () {
+    var leaf = pick(this.leaves());
+    var r = leaf.r;
+    while (r === leaf.r) r = pick(REWARDS);
+    leaf.r = leaf.v = r;
+    this.forest.pulses.push({ x: leaf.x, y: leaf.y, color: leaf.color, t: 0 });
   };
 
   Tree.prototype.start = function () {
@@ -427,7 +317,7 @@
     this.h = h;
     this.first = first;
     this.span = Math.min(w - 24, MAX_SPAN);
-    this.maxLeaves = clamp(Math.floor(this.span / 28), 3, 8);
+    this.maxLeaves = clamp(Math.floor(this.span / 24), 3, 5);
     var count = Math.max(1, Math.floor((h - 16) / 180));
     this.block = (h - 16) / count;
     this.gy = clamp((this.block - 72) / DEPTH, 22, 46);
@@ -459,9 +349,8 @@
       t.root.each(function (n) {
         n.x = n.tx;
         n.y = n.ty;
-        n.a = n.ta;
+        n.a = 1;
         n.vs = n.v;
-        n.la = n.depth > 0 && !n.live().length ? 1 : 0;
       });
       t.update(0, -1);
     });
@@ -497,8 +386,7 @@
     var path = wk.path;
     var tree = wk.tree;
     if (wk.kind === 'down') {
-      var n = path[wk.i + 1];
-      n.hot = 1;
+      path[wk.i + 1].hot = 1;
       wk.i++;
       if (wk.i < path.length - 1) return true;
       this.arrive(wk);
@@ -526,7 +414,7 @@
     this.pulses.push({ x: leaf.x, y: leaf.y, color: leaf.color, t: 0 });
     path.slice(1).forEach(function (n) {
       n.w += (g >= 1 ? 0.2 : 0.06) * (1 - n.w);
-      n.parent.live().forEach(function (s) {
+      n.parent.kids.forEach(function (s) {
         if (s !== n) s.w = Math.max(0.15, s.w * 0.93);
       });
     });
@@ -551,9 +439,9 @@
     this.pulses.forEach(function (p) {
       g.globalAlpha = 0.8 * (1 - p.t);
       g.strokeStyle = p.color;
-      g.lineWidth = 1.6;
+      g.lineWidth = 1.3;
       g.beginPath();
-      g.arc(p.x, p.y, 5 + 15 * p.t, 0, Math.PI * 2);
+      g.arc(p.x, p.y, 4 + 12 * p.t, 0, Math.PI * 2);
       g.stroke();
     });
     g.globalAlpha = 1;
@@ -562,7 +450,7 @@
   // (starting below the leaf's reward)
   Forest.prototype.linkCurve = function (t, second) {
     var next = this.trees[t.k + 1];
-    return curve(second ? t.mx : t.lx, (second ? t.my : t.ly) + 21, next.root.x, next.root.y);
+    return curve(second ? t.mx : t.lx, (second ? t.my : t.ly) + 19, next.root.x, next.root.y);
   };
 
   // Links to the next tree: dashes flowing down from the best leaf, and fainter ones from the second best
@@ -573,12 +461,12 @@
       var c = this.linkCurve(t, second);
       g.strokeStyle = g.fillStyle = second ? t.mcol : t.lcol;
       g.globalAlpha = second ? 0.3 : 0.6;
-      g.lineWidth = second ? 1 : 1.6;
-      g.setLineDash(second ? [2, 5] : [5, 5]);
+      g.lineWidth = second ? 0.9 : 1.3;
+      g.setLineDash(second ? [2, 5] : [4, 5]);
       g.lineDashOffset = -now * (second ? 10 : 16);
       stroke(g, c);
       g.setLineDash([]);
-      arrow(g, c, 0.86, second ? 3 : 4);
+      arrow(g, c, 0.86, second ? 2.6 : 3.4);
     }, this);
   };
 
@@ -589,17 +477,17 @@
     t.root.each(function (n) {
       if (!n.parent || n.a < 0.01) return;
       var c = curve(n.parent.x, n.parent.y, n.x, n.y);
-      var width = 0.7 + 2.4 * n.w;
+      var width = 0.6 + 1.7 * n.w;
       g.strokeStyle = g.fillStyle = n.color;
       if (n.hot > 0) {
-        g.globalAlpha = 0.2 * n.hot * n.a;
-        g.lineWidth = width + 6;
+        g.globalAlpha = 0.18 * n.hot * n.a;
+        g.lineWidth = width + 4.5;
         stroke(g, c);
       }
       g.globalAlpha = n.a * Math.max(0.3 + 0.45 * n.w, n.hot);
-      g.lineWidth = width + 1.3 * n.hot;
+      g.lineWidth = width + n.hot;
       stroke(g, c);
-      arrow(g, c, 0.6, 2.6 + 1.6 * n.w + n.hot);
+      arrow(g, c, 0.6, 2.2 + 1.2 * n.w + 0.8 * n.hot);
     });
   };
 
@@ -612,14 +500,11 @@
     t.root.each(function (n) {
       if (n.a < 0.01) return;
       var root = !n.parent;
-      var r = root ? 6.5 : 4.8;
-      var full = level(n.vs);
-      var leafness = n.la;
-      g.globalAlpha = n.a;
-      g.lineWidth = root ? 1.7 : 1.4;
-      g.strokeStyle = g.fillStyle = n.color;
-      if (leafness < 0.99) {
-        g.globalAlpha = n.a * (1 - leafness);
+      g.lineWidth = root ? 1.5 : 1.2;
+      g.strokeStyle = n.color;
+      if (n.kids.length) {
+        var r = root ? 5.2 : 3.9;
+        g.globalAlpha = n.a;
         g.fillStyle = '#ffffff';
         g.beginPath();
         g.arc(n.x, n.y, r, 0, Math.PI * 2);
@@ -627,33 +512,33 @@
         g.save();
         g.clip();
         g.fillStyle = n.color;
-        g.globalAlpha *= 0.6;
+        g.globalAlpha = n.a * 0.6;
+        var full = level(n.vs);
         g.fillRect(n.x - r, n.y + r - 2 * r * full, 2 * r, 2 * r * full);
         g.restore();
         g.stroke();
-      }
-      if (leafness > 0.01) {
-        var s = 8.5;
-        g.globalAlpha = n.a * leafness;
+      } else {
+        var s = 7;
+        g.globalAlpha = n.a;
         g.fillStyle = '#ffffff';
         g.fillRect(n.x - s / 2, n.y - s / 2, s, s);
         g.fillStyle = n.color;
-        g.globalAlpha = n.a * leafness * (0.15 + 0.75 * level(n.r));
+        g.globalAlpha = n.a * (0.15 + 0.75 * level(n.r));
         g.fillRect(n.x - s / 2, n.y - s / 2, s, s);
-        g.globalAlpha = n.a * leafness;
+        g.globalAlpha = n.a;
         g.strokeRect(n.x - s / 2, n.y - s / 2, s, s);
         g.fillStyle = INK;
-        g.globalAlpha = n.a * leafness * 0.85;
+        g.globalAlpha = n.a * 0.85;
         g.textAlign = 'center';
-        g.fillText(signed(n.r, 0), n.x, n.y + 14);
+        g.fillText(signed(n.r, 0), n.x, n.y + 12);
       }
       if (root) {
-        g.globalAlpha = 0.85;
+        g.globalAlpha = n.a * 0.85;
         g.fillStyle = INK;
         g.textAlign = 'right';
-        g.fillText('s' + subscript(label), n.x - 11, n.y);
+        g.fillText('s' + subscript(label), n.x - 9, n.y);
         g.textAlign = 'left';
-        g.fillText('V ' + signed(n.vs, 1), n.x + 11, n.y);
+        g.fillText('V ' + signed(n.vs, 1), n.x + 9, n.y);
       }
     });
   };
@@ -676,7 +561,7 @@
         g.globalAlpha = 0.55 - 0.1 * j;
         g.fillStyle = col;
         g.beginPath();
-        g.arc(p.x, p.y, 3.4 - 0.45 * j, 0, Math.PI * 2);
+        g.arc(p.x, p.y, 3 - 0.4 * j, 0, Math.PI * 2);
         g.fill();
       }
       p = at(c, smooth(wk.t));
@@ -689,38 +574,38 @@
       g.globalAlpha = 1;
       g.fillStyle = '#ffffff';
       g.strokeStyle = col;
-      g.lineWidth = 1.8;
+      g.lineWidth = 1.5;
       g.beginPath();
-      g.arc(p.x, p.y, 4, 0, Math.PI * 2);
+      g.arc(p.x, p.y, 3.4, 0, Math.PI * 2);
       g.fill();
       g.stroke();
       g.fillStyle = INK;
       g.font = FONT;
       g.textAlign = 'left';
       g.textBaseline = 'middle';
-      g.fillText(signed(wk.g, 0), p.x + 7, p.y - 1);
+      g.fillText(signed(wk.g, 0), p.x + 6, p.y - 1);
       return;
     } else {
       if (!this.trees[wk.tree.k + 1] || wk.tree.lx === null) return;
       c = this.linkCurve(wk.tree, false);
       p = at(c, smooth(wk.t));
     }
-    var glow = g.createRadialGradient(p.x, p.y, 0, p.x, p.y, 13);
+    var glow = g.createRadialGradient(p.x, p.y, 0, p.x, p.y, 11);
     glow.addColorStop(0, col);
     glow.addColorStop(1, 'rgba(255,255,255,0)');
-    g.globalAlpha = 0.6;
+    g.globalAlpha = 0.55;
     g.fillStyle = glow;
     g.beginPath();
-    g.arc(p.x, p.y, 13, 0, Math.PI * 2);
+    g.arc(p.x, p.y, 11, 0, Math.PI * 2);
     g.fill();
     g.globalAlpha = 1;
     g.fillStyle = col;
     g.beginPath();
-    g.arc(p.x, p.y, 3.8, 0, Math.PI * 2);
+    g.arc(p.x, p.y, 3.3, 0, Math.PI * 2);
     g.fill();
     g.fillStyle = '#ffffff';
     g.beginPath();
-    g.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+    g.arc(p.x, p.y, 1.3, 0, Math.PI * 2);
     g.fill();
   };
 
@@ -768,7 +653,7 @@
       sides.forEach(function (f) {
         f.trees.forEach(function (t) {
           t.nextSample += gap;
-          t.nextChange += gap;
+          t.nextShift += gap;
         });
       });
     }
