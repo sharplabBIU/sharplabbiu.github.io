@@ -1,40 +1,22 @@
-// Page backdrop: a pane of glass tinted the content boxes' light cyan, with reinforcement-learning notes written on it
-// in wet marker, drawn once onto a fixed canvas behind the page and redrawn when the window is resized. The notes sit
-// in the margins beside the content box, written neatly on straight lines, in the site's inks: dark slate, with teal,
-// orange and fuchsia as in the lab logo. The logo is written on the glass too, where the side-logo link sits (the
-// link's own image is then hidden but still clickable). Each mark is wet and glossy, with a darker rim where the ink
-// pools, and casts a faint shadow on the wall behind the glass. A copy of the top of the canvas fills the strip
-// behind the fixed header, so content scrolling up still disappears below the header bar.
+// Page backdrop: a pane of glass, white with a hint of cyan, with reinforcement-learning figures written on it in wet
+// marker, drawn once onto a fixed canvas behind the page and redrawn when the window is resized. The lab logo and five
+// figures stand in one column centred in the margin to the right of the content box, in the same order at any window
+// size, scaled to fit: the successor vs. predecessor representation, a decision tree, TD learning vs. Rescorla-Wagner,
+// a transition replayed in offline memory, and resource rationality. Where that margin is too narrow the glass is
+// left clear. The marker strokes are neat and straight, wet and glossy, with a darker rim where the ink pools, and
+// each casts a faint shadow on the wall behind the glass. The logo is written on the glass the same way, where the
+// side-logo link sits (the link is centred in the margin and its own image hidden, but it stays clickable). A copy of
+// the top of the canvas fills the strip behind the fixed header, so content scrolling up still disappears below the
+// header bar.
 (function () {
   'use strict';
 
   var FONT = '"Klee One", "Comic Sans MS", cursive';
-  var GLASS = '#e0ffff'; // light cyan, as in the content boxes
   var SLATE = '#1f3333'; // dark slate, as the text in the content boxes
-  var INKS = ['#008080', '#e2661b', '#c51f98']; // teal, orange, fuchsia: the lab logo's colours
-
-  // Notes: lines of text (_{} subscript, ^{} superscript) or drawings, each with an optional highlight in a coloured ink
-  var NOTES = [
-    { lines: ['V(s) = max_{a} { r(s,a)', '   + γ Σ_{s′} P(s′|s,a) V(s′) }'], mark: 'box' },
-    { lines: ['δ_{t} = r_{t+1} + γV(s_{t+1}) − V(s_{t})'], mark: 'underline' },
-    { lines: ['Q(s,a) ← Q(s,a) + α δ'] },
-    { draw: 'mdp' },
-    { lines: ['π(a|s) ∝ e^{β Q(s,a)}'], mark: 'underline' },
-    { draw: 'grid' },
-    { lines: ['G_{t} = Σ_{k} γ^{k} r_{t+k+1}'] },
-    { draw: 'curve' },
-    { lines: ['TD(λ)'], mark: 'circle' },
-    { draw: 'tree' },
-    { lines: ['ε-greedy:', '  explore w.p. ε', '  exploit w.p. 1 − ε'] },
-    { lines: ['Q*(s,a) = r + γ max_{a′} Q*(s′,a′)'] },
-    { draw: 'discount' },
-    { lines: ['P(s′ | s, a)'], mark: 'box' },
-    { lines: ['model-based', 'vs. model-free?'], mark: 'underline' },
-    { draw: 'dyna' },
-    { lines: ['V^{π}(s) = Σ_{a} π(a|s) Q(s,a)'] },
-    { lines: ['α = learning rate'], mark: 'underline' }
-  ];
-  var SEED = 628094209; // the same glass on every page
+  var TEAL = '#008080'; // teal, orange and fuchsia: the lab logo's colours
+  var ORANGE = '#e2661b';
+  var FUCHSIA = '#c51f98';
+  var COLUMN = 180; // the figures' width before scaling
 
   var canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
@@ -57,15 +39,6 @@
   var logoImg = logo && logo.querySelector('img');
   if (logoImg && !logoImg.complete) logoImg.addEventListener('load', function () { draw(); });
 
-  function rng(a) {
-    return function () {
-      a = (a + 0x6d2b79f5) | 0;
-      var t = Math.imul(a ^ (a >>> 15), 1 | a);
-      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  }
-
   // Text runs: "max_{a}" -> max with a subscript a; "γ^{k}" -> γ with a superscript k
   function runs(str) {
     var out = [];
@@ -82,7 +55,7 @@
   }
 
   function runFont(size, s) {
-    return '600 ' + (s ? size * 0.62 : size).toFixed(1) + 'px ' + FONT;
+    return '600 ' + (s ? size * 0.62 : size).toFixed(2) + 'px ' + FONT;
   }
 
   function measure(g, str, size) {
@@ -96,6 +69,7 @@
 
   // Handwriting in marker: the letters thickened by tracing their outlines with the nib, on a straight line
   function write(g, str, x, y, size) {
+    g.save();
     runs(str).forEach(function (r) {
       g.font = runFont(size, r.s);
       g.lineWidth = size * (r.s ? 0.05 : 0.065);
@@ -104,7 +78,16 @@
       g.fillText(r.t, x, y + dy);
       x += g.measureText(r.t).width;
     });
+    g.restore();
     return x;
+  }
+
+  function writeC(g, str, cx, y, size) {
+    return write(g, str, cx - measure(g, str, size) / 2, y, size);
+  }
+
+  function writeR(g, str, right, y, size) {
+    return write(g, str, right - measure(g, str, size), y, size);
   }
 
   // Marker lines: straight and even, with a little more ink where the nib first touched the glass
@@ -119,118 +102,200 @@
     g.fill();
   }
 
-  function ellipse(g, rand, cx, cy, rx, ry) {
-    var start = rand() * Math.PI * 2;
+  function circle(g, x, y, r) {
     g.beginPath();
-    g.ellipse(cx, cy, rx, ry, 0, start, start + Math.PI * 2.08); // just past a full turn, closing the loop
+    g.arc(x, y, r, 0, Math.PI * 2);
     g.stroke();
+  }
+
+  function dot(g, x, y, r) {
+    g.beginPath();
+    g.arc(x, y, r, 0, Math.PI * 2);
+    g.fill();
+  }
+
+  function head(g, x, y, angle, k) {
+    stroke(g, [[x - k * Math.cos(angle - 0.5), y - k * Math.sin(angle - 0.5)], [x, y], [x - k * Math.cos(angle + 0.5), y - k * Math.sin(angle + 0.5)]]);
   }
 
   function arrow(g, x1, y1, x2, y2) {
     stroke(g, [[x1, y1], [x2, y2]]);
-    var a = Math.atan2(y2 - y1, x2 - x1);
-    var k = 8 + g.lineWidth;
-    stroke(g, [[x2 - k * Math.cos(a - 0.5), y2 - k * Math.sin(a - 0.5)], [x2, y2], [x2 - k * Math.cos(a + 0.5), y2 - k * Math.sin(a + 0.5)]]);
+    head(g, x2, y2, Math.atan2(y2 - y1, x2 - x1), Math.min(9, Math.hypot(x2 - x1, y2 - y1) * 0.4));
   }
 
-  // Drawings, each in a box of the given size (s scales them)
-  var DRAW = {
-    mdp: function (g, rand, s, size) {
-      var w = 190 * s;
-      var h = 90 * s;
-      g.lineWidth = 2.6;
-      ellipse(g, rand, 28 * s, 50 * s, 20 * s, 20 * s);
-      ellipse(g, rand, 162 * s, 50 * s, 20 * s, 20 * s);
-      write(g, 's', 23 * s, 56 * s, size);
-      write(g, 's′', 154 * s, 56 * s, size);
-      arrow(g, 52 * s, 42 * s, 138 * s, 42 * s);
-      write(g, 'a, P(s′|s,a)', 52 * s, 30 * s, size * 0.7);
-      g.beginPath();
-      g.moveTo(150 * s, 72 * s);
-      g.quadraticCurveTo(138 * s, 88 * s, 92 * s, 88 * s);
-      g.stroke();
-      write(g, 'r', 74 * s, 92 * s, size * 0.85);
-      return [w, h + 8 * s];
-    },
-    grid: function (g, rand, s, size) {
-      var c = 34 * s;
-      g.lineWidth = 2.4;
-      for (var i = 0; i <= 4; i++) stroke(g, [[i * c, 0], [i * c, 3 * c]]);
-      for (var j = 0; j <= 3; j++) stroke(g, [[0, j * c], [4 * c, j * c]]);
-      write(g, '+1', 3 * c + 5 * s, c * 0.68, size * 0.8);
-      write(g, '−1', 3 * c + 5 * s, c * 1.68, size * 0.8);
-      // A wall, hatched in
-      g.save();
-      g.beginPath();
-      g.rect(c + 4 * s, c + 4 * s, c - 8 * s, c - 8 * s);
-      g.clip();
-      g.lineWidth = 2;
-      for (var t = -c; t < c; t += 6 * s) stroke(g, [[c + t, 2 * c], [2 * c + t, c]]);
-      g.restore();
-      arrow(g, c * 0.5, c * 2.5, c * 0.5, c * 0.75);
-      arrow(g, c * 0.5, c * 0.5, c * 2.4, c * 0.5);
-      return [4 * c, 3 * c];
-    },
-    curve: function (g, rand, s, size) {
-      var w = 170 * s;
-      var h = 100 * s;
-      g.lineWidth = 2.4;
-      arrow(g, 14 * s, h - 14 * s, 14 * s, 4 * s);
-      arrow(g, 14 * s, h - 14 * s, w, h - 14 * s);
-      g.beginPath();
-      for (var i = 0; i <= 40; i++) {
-        var u = i / 40;
-        var px = 18 * s + u * (w - 30 * s);
-        var py = h - 18 * s - (h - 40 * s) * (1 - Math.exp(-4 * u));
-        if (i) g.lineTo(px, py);
-        else g.moveTo(px, py);
+  // A curved arrow from (x1, y1) to (x2, y2), bent towards (cx, cy)
+  function bend(g, x1, y1, cx, cy, x2, y2) {
+    g.beginPath();
+    g.moveTo(x1, y1);
+    g.quadraticCurveTo(cx, cy, x2, y2);
+    g.stroke();
+    head(g, x2, y2, Math.atan2(y2 - cy, x2 - cx), 8);
+  }
+
+  function dashes(g, x1, y1, x2, y2) {
+    g.save();
+    g.lineWidth = 1.8;
+    g.setLineDash([4, 6]);
+    g.beginPath();
+    g.moveTo(x1, y1);
+    g.lineTo(x2, y2);
+    g.stroke();
+    g.restore();
+  }
+
+  // A thought bubble: an ellipse of scallops
+  function cloud(g, cx, cy, rx, ry, bumps) {
+    g.beginPath();
+    for (var i = 0; i <= bumps; i++) {
+      var t = (i / bumps) * Math.PI * 2;
+      var px = cx + rx * Math.cos(t);
+      var py = cy + ry * Math.sin(t);
+      if (!i) {
+        g.moveTo(px, py);
+        continue;
       }
-      g.stroke();
-      write(g, 'trials', w - 54 * s, h + 2 * s, size * 0.7);
-      write(g, 'reward', 20 * s, 12 * s, size * 0.7);
-      return [w, h + 6 * s];
-    },
-    tree: function (g, rand, s, size) {
-      var w = 170 * s;
-      var nodes = [[85, 10], [40, 50], [130, 50], [18, 92], [62, 92], [108, 92], [152, 92]];
-      var edges = [[0, 1], [0, 2], [1, 3], [1, 4], [2, 5], [2, 6]];
-      g.lineWidth = 2.4;
-      edges.forEach(function (e) {
-        stroke(g, [[nodes[e[0]][0] * s, nodes[e[0]][1] * s], [nodes[e[1]][0] * s, nodes[e[1]][1] * s]]);
-      });
-      nodes.forEach(function (n) {
-        g.beginPath();
-        g.arc(n[0] * s, n[1] * s, 4.5 * s, 0, Math.PI * 2);
-        g.fill();
-      });
-      ['3', '−1', '0', '5'].forEach(function (v, i) {
-        write(g, v, (nodes[3 + i][0] - 6) * s, 116 * s, size * 0.75);
-      });
-      return [w, 120 * s];
-    },
-    discount: function (g, rand, s, size) {
-      var h = 90 * s;
-      g.lineWidth = 2.4;
-      stroke(g, [[0, h], [170 * s, h]]);
-      for (var t = 0; t < 8; t++) {
-        var bh = (h - 22 * s) * Math.pow(0.72, t);
-        stroke(g, [[10 * s + t * 20 * s, h], [10 * s + t * 20 * s, h - bh], [24 * s + t * 20 * s, h - bh], [24 * s + t * 20 * s, h]]);
-      }
-      write(g, 'γ^{t}', 120 * s, 22 * s, size * 0.9);
-      return [170 * s, h + 4 * s];
-    },
-    dyna: function (g, rand, s, size) {
-      g.lineWidth = 2.4;
-      write(g, 'experience', 0, 16 * s, size * 0.8);
-      write(g, 'model', 116 * s, 16 * s, size * 0.8);
-      write(g, 'Q', 76 * s, 86 * s, size * 0.9);
-      arrow(g, 90 * s, 10 * s, 110 * s, 10 * s);
-      arrow(g, 135 * s, 24 * s, 98 * s, 72 * s);
-      arrow(g, 30 * s, 24 * s, 68 * s, 72 * s);
-      write(g, 'plan', 128 * s, 60 * s, size * 0.65);
-      return [172 * s, 92 * s];
+      var tm = ((i - 0.5) / bumps) * Math.PI * 2;
+      g.quadraticCurveTo(cx + rx * 1.3 * Math.cos(tm), cy + ry * 1.3 * Math.sin(tm), px, py);
     }
-  };
+    g.closePath();
+    g.stroke();
+  }
+
+  // The figures, top to bottom, each COLUMN wide at most and h tall before scaling, written in one or more inks
+  var FIGURES = [
+    // Successor vs. predecessor representation: from state s, the states expected to follow it and those expected to lead to it
+    {
+      w: 180,
+      h: 110,
+      inks: [
+        [SLATE, function (g) {
+          var xs = [14, 52, 90, 128, 166];
+          xs.forEach(function (x, i) {
+            circle(g, x, 58, i === 2 ? 12 : 7);
+            if (i < 4) arrow(g, x + (i === 2 ? 12 : 7) + 3, 58, xs[i + 1] - (i === 1 ? 12 : 7) - 3, 58);
+          });
+          writeC(g, 's', 90, 63, 15);
+        }],
+        [TEAL, function (g) {
+          bend(g, 98.5, 49.5, 132, 18, 164, 49);
+          writeR(g, 'SR: successors', 180, 14, 13);
+        }],
+        [ORANGE, function (g) {
+          bend(g, 81.5, 66.5, 48, 98, 16, 67);
+          write(g, 'PR: predecessors', 0, 106, 13);
+        }]
+      ]
+    },
+    // A decision tree, with the best path through it picked out
+    {
+      w: 180,
+      h: 116,
+      inks: [
+        [SLATE, function (g) {
+          circle(g, 90, 10, 7);
+          circle(g, 45, 52, 6);
+          circle(g, 135, 52, 6);
+          stroke(g, [[85, 15], [49.5, 47.5]]);
+          stroke(g, [[41.5, 57], [21, 88]]);
+          stroke(g, [[48.5, 57], [69, 88]]);
+          stroke(g, [[131.5, 57], [111, 88]]);
+          [20, 70, 110].forEach(function (x) { dot(g, x, 92, 3.5); });
+          write(g, 'a_{1}', 48, 28, 13);
+          write(g, 'a_{2}', 117, 28, 13);
+          [['+3', 20], ['−1', 70], ['0', 110]].forEach(function (v) { writeC(g, v[0], v[1], 112, 14); });
+        }],
+        [FUCHSIA, function (g) {
+          stroke(g, [[95, 15], [130.5, 47.5]]);
+          stroke(g, [[138.5, 57], [159, 88]]);
+          dot(g, 160, 92, 3.5);
+          writeC(g, '+5', 160, 112, 14);
+        }]
+      ]
+    },
+    // TD learning vs. Rescorla-Wagner: TD adds the discounted value of the next state to the prediction error
+    {
+      w: 180,
+      h: 54,
+      inks: [
+        [SLATE, function (g) {
+          var fs = tdSize(g);
+          write(g, 'TD:', 0, 18, 15);
+          write(g, 'ΔV = α(r + γV′ − V)', 36, 18, fs);
+          write(g, 'RW:', 0, 46, 15);
+          write(g, 'ΔV = α(r − V)', 36, 46, fs);
+        }],
+        [TEAL, function (g) {
+          var fs = tdSize(g);
+          var x0 = 36 + measure(g, 'ΔV = α(r ', fs);
+          stroke(g, [[x0 - 1, 24], [x0 + measure(g, '+ γV′', fs) + 1, 24]]);
+        }]
+      ]
+    },
+    // A transition s -> s′ replayed offline, in a thought bubble
+    {
+      w: 180,
+      h: 128,
+      inks: [
+        [SLATE, function (g) {
+          circle(g, 56, 74, 13);
+          circle(g, 130, 74, 13);
+          writeC(g, 's', 56, 79, 15);
+          writeC(g, 's′', 131, 79, 15);
+          arrow(g, 73, 74, 113, 74);
+          writeC(g, 'a', 93, 67, 12);
+          writeC(g, 'r', 93, 91, 12);
+        }],
+        [ORANGE, function (g) {
+          cloud(g, 93, 66, 74, 44, 12);
+          writeC(g, 'offline memory', 93, 45, 13);
+          circle(g, 19, 115, 5);
+          circle(g, 7, 124, 3);
+        }]
+      ]
+    },
+    // Resource rationality: computing pays until its cost outweighs what it adds, so the best amount is in between
+    {
+      w: 180,
+      h: 130,
+      inks: [
+        [SLATE, function (g) {
+          writeC(g, 'resource rationality', 90, 14, 14);
+          arrow(g, 12, 112, 12, 28);
+          arrow(g, 12, 112, 178, 112);
+          write(g, 'net value', 19, 34, 11);
+          writeR(g, 'computation', 178, 127, 11);
+          var p = rrPeak();
+          dashes(g, p[0], p[1] + 6, p[0], 110);
+        }],
+        [FUCHSIA, function (g) {
+          g.beginPath();
+          for (var i = 0; i <= 50; i++) {
+            var pt = rrPoint(i / 50);
+            if (i) g.lineTo(pt[0], pt[1]);
+            else g.moveTo(pt[0], pt[1]);
+          }
+          g.stroke();
+          var p = rrPeak();
+          dot(g, p[0], p[1], 4);
+        }]
+      ]
+    }
+  ];
+
+  // The TD and RW equations' size: as large as fits beside their labels
+  function tdSize(g) {
+    return Math.min(15, 15 * 140 / measure(g, 'ΔV = α(r + γV′ − V)', 15));
+  }
+
+  // Net value of computing an amount u (0 to 1): a benefit that saturates, less a cost that keeps growing
+  function rrPoint(u) {
+    var net = 1 - Math.exp(-4 * u) - 0.75 * u;
+    return [16 + u * 150, 106 - (net / 0.5) * 60];
+  }
+
+  function rrPeak() {
+    return rrPoint(Math.log(4 / 0.75) / 4);
+  }
 
   var W, H, dpr;
 
@@ -293,189 +358,84 @@
     ctx.restore();
   }
 
-  // The glass: the content boxes' light cyan, a little clearer at the top and deeper at the foot, where thick glass
-  // shows more of its colour; long diagonal reflections; polished edges; and steel standoffs holding it to the wall
-  function glass(rand) {
-    var tint = ctx.createLinearGradient(0, 0, W * 0.25, H);
-    tint.addColorStop(0, '#effffe');
-    tint.addColorStop(0.5, GLASS);
-    tint.addColorStop(1, '#ccf3f0');
+  function draw() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = document.documentElement.clientWidth;
+    H = document.documentElement.clientHeight;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // The glass: nearly white with a hint of cyan, a touch clearer at the top and a touch more cyan at the foot
+    var tint = ctx.createLinearGradient(0, 0, W * 0.2, H);
+    tint.addColorStop(0, '#fbffff');
+    tint.addColorStop(1, '#eefafa');
     ctx.fillStyle = tint;
     ctx.fillRect(0, 0, W, H);
 
-    // Reflections: pairs of bands, a broad soft one with a narrow bright one beside it, every so often across the pane
-    var nx = Math.cos(0.52);
-    var ny = Math.sin(0.52);
-    var span = nx * W + ny * H;
-    var shine = ctx.createLinearGradient(0, 0, nx * span, ny * span);
-    shine.addColorStop(0, 'rgba(255,255,255,0)');
-    var period = 560;
-    for (var p = 140 + rand() * 200; p < span - 120; p += period * (0.85 + rand() * 0.3)) {
-      var bw = 70 + rand() * 50;
-      [[p - bw / 2, 0], [p - bw / 4, 0.16], [p, 0.3], [p + bw / 4, 0.16], [p + bw / 2, 0],
-        [p + bw / 2 + 22, 0], [p + bw / 2 + 27, 0.5], [p + bw / 2 + 32, 0]].forEach(function (st) {
-        shine.addColorStop(Math.min(1, Math.max(0, st[0] / span)), 'rgba(255,255,255,' + st[1] + ')');
-      });
-    }
-    shine.addColorStop(1, 'rgba(255,255,255,0)');
-    ctx.fillStyle = shine;
-    ctx.fillRect(0, 0, W, H);
-
-    // Polished edges: deeper cyan at the very edge of the pane with a bright line just inside it
-    [[0, 0, 1, 0, W], [0, 0, 0, 1, H], [W, 0, -1, 0, W], [0, H, 0, -1, H]].forEach(function (e) {
-      var d = 7;
-      var x0 = e[0];
-      var y0 = e[1];
-      var gr = ctx.createLinearGradient(x0, y0, x0 + e[2] * d, y0 + e[3] * d);
-      gr.addColorStop(0, 'rgba(0, 110, 110, 0.28)');
-      gr.addColorStop(1, 'rgba(0, 110, 110, 0)');
-      ctx.fillStyle = gr;
-      if (e[2]) ctx.fillRect(e[2] > 0 ? 0 : W - d, 0, d, H);
-      else ctx.fillRect(0, e[3] > 0 ? 0 : H - d, W, d);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-      if (e[2]) ctx.fillRect(e[2] > 0 ? d : W - d - 1, 0, 1, H);
-      else ctx.fillRect(0, e[3] > 0 ? d : H - d - 1, W, 1);
-    });
-
-    standoff(W - 24, 24);
-    standoff(W - 24, H - 24);
-  }
-
-  function standoff(x, y) {
-    var r = 9;
-    ctx.save();
-    ctx.shadowColor = 'rgba(0, 40, 40, 0.3)';
-    ctx.shadowBlur = 4 * dpr;
-    ctx.shadowOffsetX = 1.5 * dpr;
-    ctx.shadowOffsetY = 2.5 * dpr;
-    var body = ctx.createLinearGradient(x - r, y - r, x + r, y + r);
-    body.addColorStop(0, '#f6f8f8');
-    body.addColorStop(0.55, '#b9c3c3');
-    body.addColorStop(1, '#8a9696');
-    ctx.fillStyle = body;
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-    var face = ctx.createRadialGradient(x - 3, y - 3, 1, x, y, r - 2);
-    face.addColorStop(0, '#ffffff');
-    face.addColorStop(1, '#a9b4b4');
-    ctx.fillStyle = face;
-    ctx.beginPath();
-    ctx.arc(x, y, r - 2, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  function draw() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = window.innerWidth;
-    H = window.innerHeight;
-    canvas.width = Math.round(W * dpr);
-    canvas.height = Math.round(H * dpr);
-    var rand = rng(SEED);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    glass(rand);
-
-    // Where the notes go: the margins beside the content box when they are wide enough, otherwise anywhere
-    var zones = [];
+    // The column: the margin to the right of the content box, when it is wide enough
     var card = document.querySelector('.content-card');
+    var col = null;
     if (card) {
       var cr = card.getBoundingClientRect();
-      if (cr.left >= 130) zones.push([12, cr.left - 14]);
-      if (W - cr.right >= 130) zones.push([cr.right + 14, W - 12]);
+      if (W - cr.right >= 110) col = [cr.right, W];
     }
-    if (!zones.length) zones.push([12, W - 12]);
+    if (!col) {
+      copyStrip();
+      return;
+    }
+    var cx = (col[0] + col[1]) / 2;
 
-    // The lab logo, written on the glass where the side-logo link is
-    var logoBottom = 0;
-    if (logo && logoImg && getComputedStyle(logo).display !== 'none') {
-      var lr = logoImg.getBoundingClientRect();
-      logoBottom = lr.bottom + 16;
-      if (logoImg.complete && logoImg.naturalWidth && lr.width) {
-        var ll = layerOf(lr.width * dpr, lr.height * dpr);
+    // The lab logo at the top of the column, centred in it
+    var top = 24;
+    var ls = logo && getComputedStyle(logo);
+    if (logoImg && ls.display !== 'none') {
+      var lw = parseFloat(ls.width);
+      var lh = logoImg.naturalWidth ? (lw * logoImg.naturalHeight) / logoImg.naturalWidth : logoImg.offsetHeight;
+      var lx = Math.round(cx - lw / 2);
+      var ly = parseFloat(ls.top) || 0;
+      logo.style.left = lx + 'px';
+      logo.style.right = 'auto';
+      top = ly + lh + 22;
+      if (logoImg.complete && logoImg.naturalWidth) {
+        var ll = layerOf(lw * dpr, lh * dpr);
         ll.getContext('2d').drawImage(logoImg, 0, 0, ll.width, ll.height);
-        ink(ll, Math.round(lr.left * dpr), Math.round(lr.top * dpr), 0.12, 0.25);
+        ink(ll, Math.round(lx * dpr), Math.round(ly * dpr), 0.12, 0.25);
         logoImg.style.opacity = '0';
       }
     }
 
-    var pad = 18; // room around a note for its highlight
-
-    // The notes, stacked down each margin
-    var order = NOTES.map(function (n, i) { return i; });
-    for (var i = order.length - 1; i > 0; i--) {
-      var j = Math.floor(rand() * (i + 1));
-      var tmp = order[i];
-      order[i] = order[j];
-      order[j] = tmp;
+    // The figures below it, as large as fits the margin's width and the height left (up to a little over their size),
+    // spaced evenly; on a short window the last ones are left off rather than written too small to read
+    var figs = FIGURES.slice();
+    var avail = H - 18 - top;
+    var minGap = 18;
+    var s;
+    for (;;) {
+      var total = figs.reduce(function (t, f) { return t + f.h; }, 0);
+      s = Math.min(1.25, (col[1] - col[0] - 28) / COLUMN, (avail - minGap * (figs.length - 1)) / total);
+      if (s >= 0.5 || figs.length === 1) break;
+      figs.pop();
     }
-    var next = 0;
-    zones.forEach(function (z, zi) {
-      var zw = z[1] - z[0];
-      var size = Math.max(15, Math.min(24, zw / 10));
-      var y = 20 + (zi === zones.length - 1 && logoBottom ? logoBottom : 0);
-      while (y < H - 50 && next < order.length) {
-        var note = NOTES[order[next]];
-        next++;
-        var colour = INKS[(rand() * INKS.length) | 0];
-        var text = rand() < 0.3 ? INKS[(rand() * INKS.length) | 0] : SLATE; // some notes in coloured ink
-        if (text === colour) colour = SLATE;
-        var w;
-        var h;
-        var paint;
-        var mark = null;
-        if (note.lines) {
-          // Long lines are written smaller to fit the margin, down to a readable minimum
-          var ns = size;
-          var widest = 0;
-          note.lines.forEach(function (line) { widest = Math.max(widest, measure(ctx, line, size)); });
-          if (widest > zw - 24) ns = size * (zw - 24) / widest;
-          if (ns < 12.5) continue;
-          w = widest * ns / size;
-          var lh = ns * 1.4;
-          h = lh * note.lines.length + ns * 0.35;
-          paint = (function (lines, lh, ns) {
-            return function (g) {
-              lines.forEach(function (line, li) { write(g, line, 0, ns + li * lh, ns); });
-            };
-          })(note.lines, lh, ns);
-          if (note.mark) {
-            mark = (function (kind, w, h) {
-              return function (g) {
-                g.lineWidth = 2.6;
-                if (kind === 'underline') stroke(g, [[-2, h + 2], [w + 4, h + 2]]);
-                if (kind === 'box') stroke(g, [[-8, -5], [w + 8, -5], [w + 8, h + 5], [-8, h + 5]], true);
-                if (kind === 'circle') ellipse(g, rand, w / 2, h / 2, w / 2 + 12, h / 2 + 6);
-              };
-            })(note.mark, w, h);
-          }
-        } else {
-          var probe = document.createElement('canvas').getContext('2d');
-          var dims = DRAW[note.draw](probe, rng(1), 1, size);
-          var s = Math.min(1, (zw - 24) / dims[0]);
-          w = dims[0] * s;
-          h = dims[1] * s;
-          paint = (function (fn, s) {
-            return function (g) { fn(g, rand, s, size); };
-          })(DRAW[note.draw], s);
-        }
-        if (w > zw - 10) continue; // too wide for this margin
-        var x = Math.round(z[0] + rand() * (zw - w - 10) + 5);
-        [[paint, text], [mark, colour]].forEach(function (part) {
-          if (!part[0]) return;
-          var layer = layerOf((w + pad * 2) * dpr, (h + pad * 2) * dpr);
-          var g = layer.getContext('2d');
-          g.setTransform(dpr, 0, 0, dpr, pad * dpr, pad * dpr);
-          g.lineCap = 'round';
-          g.lineJoin = 'round';
-          g.fillStyle = part[1];
-          g.strokeStyle = part[1];
-          part[0](g);
-          ink(layer, Math.round((x - pad) * dpr), Math.round((y - pad) * dpr), 0.28, 0.4);
-        });
-        y += h + 30 + rand() * 36;
-      }
+    var used = figs.reduce(function (t, f) { return t + f.h * s; }, 0);
+    var gap = figs.length > 1 ? Math.min(56, Math.max(minGap, (avail - used) / (figs.length - 1))) : 0;
+    var pad = 14;
+    var y = top;
+    figs.forEach(function (f) {
+      var x = cx - (f.w * s) / 2;
+      f.inks.forEach(function (part) {
+        var layer = layerOf((f.w * s + pad * 2) * dpr, (f.h * s + pad * 2) * dpr);
+        var g = layer.getContext('2d');
+        g.setTransform(dpr * s, 0, 0, dpr * s, pad * dpr, pad * dpr);
+        g.lineCap = 'round';
+        g.lineJoin = 'round';
+        g.lineWidth = 2.4;
+        g.fillStyle = part[0];
+        g.strokeStyle = part[0];
+        part[1](g);
+        ink(layer, Math.round((x - pad) * dpr), Math.round((y - pad) * dpr), 0.28, 0.4);
+      });
+      y += f.h * s + gap;
     });
 
     copyStrip();
@@ -492,7 +452,7 @@
   draw();
   // Redraw once the handwriting font (with its Greek and maths symbols) has loaded
   if (document.fonts && document.fonts.load) {
-    document.fonts.load('600 20px "Klee One"', 'Vγδπαβθλε∇∝←′≈Σ').then(draw);
+    document.fonts.load('600 20px "Klee One"', 'VΔγδπαβθλε∇∝←′≈Σ').then(draw);
   }
   if (nav && window.ResizeObserver) new ResizeObserver(copyStrip).observe(nav);
 
