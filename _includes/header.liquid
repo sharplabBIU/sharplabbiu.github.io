@@ -121,9 +121,10 @@
       </div>
     </div>
   </nav>
-  <!-- Lab logo at the top right, in the black margin beside the content box (wide windows only) -->
+  <!-- Lab logo at the top right, on the glass beside the content box (wide windows only); assets/js/glassboard.js
+       writes it on the glass in marker and hides this image, which stays as the link -->
   <a class="side-logo" href="{{ '/' | relative_url }}" aria-label="Sharp Lab home">
-    <img src="{{ site.icon | prepend: '/assets/img/' | relative_url | bust_file_cache }}" alt="Sharp Lab logo">
+    <img src="{{ '/assets/img/lab_logo_glass.png' | relative_url | bust_file_cache }}" width="480" height="646" alt="Sharp Lab logo">
   </a>
   {% if site.enable_progressbar %}
     <!-- Scrolling Progress Bar -->

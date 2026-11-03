@@ -1532,7 +1532,7 @@ footer > .container {
   }
 }
 
-// Wide windows: the header, content box and footer sit against the window's left edge, and the chalkboard shows
+// Wide windows: the header, content box and footer sit against the window's left edge, and the glass shows
 // only in the strip on the right, as wide as each side's margin was when they were centred (50vw - 535px with the
 // 1100px content width); each container drops its left gutter and fills the rest of the width
 @media (min-width: 1100px) {
@@ -1594,9 +1594,9 @@ footer > .container {
 }
 
 // Page backdrop and content box
-// Chalkboard backdrop with reinforcement-learning notes in chalk drawn over it (assets/js/chalkboard.js);
-// each page's content sits in one opaque lightcyan box with darkslategray text and a thin black outline, like the header and footer
-// The chalkboard stays still while the page scrolls, and the header area repeats it exactly,
+// A pane of light cyan glass with reinforcement-learning notes written on it in marker (assets/js/glassboard.js);
+// each page's content sits in one opaque lightcyan box with dark slate text and a thin black outline, like the header and footer
+// The glass stays still while the page scrolls, and the header area repeats it exactly,
 // so content scrolling past is never seen above or beside the header bar
 body,
 #navbar {
@@ -1638,7 +1638,7 @@ textarea,
 
 .content-card {
   background-color: $card-color; // lightcyan
-  // All text inside the box is darkslategray, links included (the site's colour variables are re-pointed here)
+  // All text inside the box is dark slate, links included (the site's colour variables are re-pointed here)
   --global-text-color: #{$card-text-color};
   --global-text-color-light: #{$card-text-color};
   --global-theme-color: #{$card-text-color};
@@ -1712,7 +1712,7 @@ textarea,
     font-weight: 700;
     line-height: 1.3;
     margin: 0.2rem 0 0;
-    color: $card-text-color; // darkslategray like the "world model" title in the brain
+    color: $card-text-color; // dark slate like the text in the box
   }
 
   // Explanation bubbles, anchored just below the part they describe (positions are percentages of the graphic)
@@ -1786,7 +1786,7 @@ textarea,
   }
 }
 
-// Lab logo at the top right of every page, centred in the black margin to the right of the content box,
+// Lab logo at the top right of every page, centred in the glass margin to the right of the content box,
 // above the fixed header; hidden where that margin is too narrow for it.
 // With the 1100px content width the margin is 50vw - 535px wide, so a logo of width w sits
 // (50vw - 535px - w) / 2 from the window's right edge
@@ -1807,7 +1807,6 @@ textarea,
       display: block;
       width: 100%;
       height: auto;
-      border-radius: 8px;
     }
   }
 }
