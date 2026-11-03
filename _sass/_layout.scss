@@ -18,11 +18,11 @@ body {
 }
 
 body.fixed-top-nav {
-  // Room for the fixed header bar: 78px tall, 56px on phones (the content box starts right below it)
-  padding-top: 78px;
+  // Room for the fixed header bar (the content box starts right below it)
+  padding-top: $header-height;
 
   @media (max-width: 767.98px) {
-    padding-top: 56px;
+    padding-top: $header-height-phone;
   }
 }
 
