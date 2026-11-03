@@ -1532,14 +1532,15 @@ footer > .container {
   }
 }
 
-// Wide windows: the header, content box and footer sit against the window's left edge, and the glass shows
-// only in the strip on the right, as wide as each side's margin was when they were centred (50vw - 535px with the
-// 1100px content width); each container drops its left gutter and fills the rest of the width
-@media (min-width: 1100px) {
+// Wider windows: the header, content box and footer sit against the window's left edge, and the glass shows only
+// in a strip on the right that is always $glass-width wide; the content takes the rest of the width, growing and
+// shrinking with the window. Each container drops its left gutter and keeps its 15px right gutter, so it is
+// 15px less than the strip short of the window's width
+@media (min-width: 992px) {
   #navbar > .container,
   .container.main-content,
   footer > .container {
-    width: unquote("calc(100% - 50vw + 550px)");
+    width: unquote("calc(100% - #{$glass-width - 15px})");
     max-width: none;
     margin-left: 0;
     margin-right: auto; // also against the left edge inside the header's flex row
@@ -1786,11 +1787,11 @@ textarea,
   }
 }
 
-// Lab logo at the top right of every page, centred in the glass margin to the right of the content box,
-// above the fixed header; hidden where that margin is too narrow for it.
-// With the 1100px content width the margin is 50vw - 535px wide, so a logo of width w sits
-// (50vw - 535px - w) / 2 from the window's right edge (assets/js/glassboard.js then centres it exactly and writes it
-// on the glass, so it must not animate to its place when the window is resized, as links otherwise do)
+// Lab logo at the top right of every page, centred in the glass strip to the right of the content box, above the
+// fixed header; hidden on narrower windows, which have no strip (assets/js/glassboard.js then centres it exactly and
+// writes it on the glass, so it must not animate to its place when the window is resized, as links otherwise do)
+$side-logo-width: 140px;
+
 .side-logo {
   display: none;
   transition: none;
@@ -1800,13 +1801,13 @@ textarea,
   }
 }
 
-@media (min-width: 1300px) {
+@media (min-width: 992px) {
   .side-logo {
     display: block;
     position: fixed;
     top: 14px;
-    right: unquote("calc(25vw - 307.5px)");
-    width: 80px;
+    right: ($glass-width - $side-logo-width) * 0.5;
+    width: $side-logo-width;
     z-index: 1031;
 
     img {
@@ -1814,20 +1815,6 @@ textarea,
       width: 100%;
       height: auto;
     }
-  }
-}
-
-@media (min-width: 1360px) {
-  .side-logo {
-    right: unquote("calc(25vw - 322.5px)");
-    width: 110px;
-  }
-}
-
-@media (min-width: 1420px) {
-  .side-logo {
-    right: unquote("calc(25vw - 337.5px)");
-    width: 140px;
   }
 }
 
