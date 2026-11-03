@@ -456,7 +456,10 @@ footer.fixed-bottom {
 }
 
 // The footer: a black bar the full width of the window at the end of the page, right below the content box
+// (and over the decision trees, which are fixed behind the content)
 footer.sticky-bottom {
+  position: relative;
+  z-index: 2;
   font-size: 0.86rem;
   background-color: $bar-color;
 
@@ -1485,7 +1488,7 @@ swiper-container {
   }
 }
 
-// Phones and small tablets (narrower than 768px): the page links drop down from the menu button at the right end of
+// Phones and small tablets (narrower than 768px): the page links drop down from the menu button at the left end of
 // the header, one under another, centred
 @media (max-width: 767.98px) {
   .navbar .navbar-nav {
@@ -1536,16 +1539,14 @@ footer > .container {
   }
 }
 
-// Lab logo at the left end of the header on every page, as it looks on white: on a white tile in the black bar.
-// It is taken out of the row, so the page links are centred in the whole bar
-$header-logo-inset: 8px;
-
+// Lab logo at the right end of the header on every page, as it looks on white: on a white tile as tall as the black
+// bar. It is taken out of the row, so the page links are centred in the whole bar
 .navbar-logo {
   position: absolute;
-  top: $header-logo-inset;
-  left: 1.25rem;
-  height: $header-height-phone - 2 * $header-logo-inset;
-  padding: 3px 5px;
+  top: 0;
+  right: 0;
+  height: $header-height-phone;
+  padding: 4px 6px;
   background-color: $white-color;
   transition: none;
 
@@ -1562,8 +1563,8 @@ $header-logo-inset: 8px;
 
 @media (min-width: 768px) {
   .navbar-logo {
-    height: $header-height - 2 * $header-logo-inset;
-    padding: 5px 7px;
+    height: $header-height;
+    padding: 5px 9px;
   }
 }
 
@@ -1587,11 +1588,19 @@ $header-logo-inset: 8px;
   font-size: 0.85rem;
 }
 
-// Page backdrop and content box
-// Each page's content sits in one box the full width of the window, white with a faint hint of cyan, with dark slate
-// text, between the black header and footer bars
+// Page and content box
+// Between the black header and footer bars the page is white with a faint hint of cyan. Each page's text sits in a
+// column $text-column-width wide, centred in the window, with decision trees in the open space either side of it
+// (assets/js/decision-trees.js: two canvases fixed below the header, behind the content and the footer)
 body {
-  background-color: $backdrop-color;
+  background-color: $card-color;
+}
+
+.dtree {
+  display: none;
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
 }
 
 // Typeface: Inter for all text (loaded by the Google Fonts link in _config.yml), the text in the content boxes
@@ -1618,6 +1627,8 @@ textarea,
 
 // Main container: the content box fills short pages, so the footer stays at the bottom of the window
 .main-content {
+  position: relative;
+  z-index: 1;
   margin-top: 0;
   display: flex;
   flex-direction: column;
@@ -1627,8 +1638,8 @@ textarea,
   }
 }
 
+// The content box: clear, so the trees show either side of the text, and padded to centre the text column
 .content-card {
-  background-color: $card-color; // white with a faint hint of cyan
   // All text inside the box is dark slate, links included (the site's colour variables are re-pointed here)
   --global-text-color: #{$card-text-color};
   --global-text-color-light: #{$card-text-color};
@@ -1636,6 +1647,8 @@ textarea,
   --global-hover-color: #{$card-text-color};
   color: $card-text-color;
   padding: 2rem;
+  padding-left: unquote("max(2rem, calc((100% - #{$text-column-width}) / 2))");
+  padding-right: unquote("max(2rem, calc((100% - #{$text-column-width}) / 2))");
 
   > :first-child {
     margin-top: 0;
@@ -1824,14 +1837,7 @@ textarea,
   }
 }
 
-// Home description: in a column no wider than the world-model graphic (880px), centred in the content box;
-// a little smaller than the theme's h3, with space between the paragraphs
-.home-intro {
-  max-width: 880px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
+// Home description: a little smaller than the theme's h3, with space between the paragraphs
 .home-intro h3 {
   font-size: 1.7rem;
   line-height: 1.25;

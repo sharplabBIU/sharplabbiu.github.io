@@ -11,7 +11,7 @@ $blue-color: #0076df !default;
 $blue-color-dark: #00369f !default;
 $bar-color: #000000 !default; // black: the header and footer bars
 $bar-text-color: #e0ffff !default; // lightcyan: header and footer text
-$card-color: #f9ffff !default; // white with a faint hint of cyan: the content boxes
+$card-color: #f9ffff !default; // white with a faint hint of cyan: the page, behind the text and the decision trees
 $outline-color: #000000 !default; // black: the thin line around the project diagrams
 $cyan-color: #2698ba !default;
 $light-cyan-color: lighten($cyan-color, 25%);
@@ -20,7 +20,7 @@ $green-color-lime: #b7d12a !default;
 $green-color-dark: #009f06 !default;
 $green-color-light: #ddffdd !default;
 $green-color-bright: #11d68b !default;
-$backdrop-color: #f5fdfd !default; // white with a hint of cyan: the page backdrop, behind the header, content box and footer
+$text-column-width: 960px !default; // the text on every page, in a column centred in the window
 $header-height: 100px !default; // the header bar, fixed to the top of the window, with the lab logo in it
 $header-height-phone: 64px !default; // the header bar on phones (narrower than 768px)
 $card-text-color: #1f3333 !default; // dark slate, deeper than darkslategray: text in the content boxes
