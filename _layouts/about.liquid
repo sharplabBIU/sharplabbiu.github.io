@@ -9,7 +9,7 @@ layout: default
   {% endif %}
 
   <article>
-    <!-- The description is split at the "world-model figure" marker in the page: the first paragraph goes above the graphic, the rest below it -->
+    <!-- The description is split at the "world-model figure" marker in the page, if it has one: the first part goes above the graphic, the rest below it -->
     {% assign home_parts = content | split: '<!-- world-model figure -->' %}
     <div class="home-lead">
       <div class="home-intro">{{ home_parts[0] }}</div>

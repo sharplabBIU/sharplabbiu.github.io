@@ -1,6 +1,7 @@
 // Glass panes along the left and right edges of the window (wider windows only), beside the text column: thin panes of
-// glass with drawings on them in dark slate gray and dark red marker, as on a lab's glass board, and no writing. Left,
-// how to plan: a decision tree, planning with one's own world model, and task construal in a grid world (Ho et al.).
+// black glass with drawings on them in light cyan (as the header's text) and pale orange marker, and no writing. Left,
+// how to predict and plan: forward and backward prediction (successor and predecessor representations, Sharp & Eldar),
+// planning with one's own world model, and task construal in a grid world (Ho et al.).
 // Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
 // Eldar). Clicking a drawing opens a card describing it, with key papers, and most drawings also change when clicked
 // (on the home page, the parts of the world model open the matching part of the brain). Two canvases fixed below the
@@ -8,14 +9,12 @@
 (function () {
   'use strict';
 
-  var SLATE = '#2f4f4f'; // dark slate gray
-  var RED = '#8b0000'; // dark red
+  var INK = '#e0ffff'; // light cyan, as the header's text
+  var ORANGE = '#ffc080'; // pale orange
   var DW = 120; // the width the drawings are made at, before scaling to the pane
   var PANE = 140; // the widest a pane gets
   var MIN_PANE = 104; // the narrowest open space that gets a pane
   var GAP = 16; // between the panes and the text column
-  var REWARDS = [-2, -1, 0, 1, 2, 3, 4, 5];
-  var STRENGTHS = [0.2, 0.45, 0.7, 0.95];
 
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -24,14 +23,12 @@
   var LAB = {
     anxiety: ['Sharp 2024, Anxiety involves altered planning (Trends Cogn Sci)', 'https://www.sciencedirect.com/science/article/pii/S1364661324002924'],
     worldModel: ['Sharp et al., A world-model theory of trait anxiety (PsyArXiv)', 'https://osf.io/preprints/psyarxiv/98ktg_v4'],
-    direction: ['Sharp & Eldar 2024, forward and backward planning (Nat Hum Behav)', 'https://doi.org/10.1038/s41562-024-01930-8'],
+    direction: ['Sharp & Eldar 2024, Humans adaptively deploy forward and backward prediction (Nat Hum Behav)', 'https://doi.org/10.1038/s41562-024-01930-8'],
     delay: ['Sharp & Eldar, Humans adaptively delay planning using cognitive maps (PsyArXiv)', 'https://osf.io/preprints/psyarxiv/8ubct_v5'],
     construal: ['Schiff & Sharp, anxiety and task generalization (Top Cogn Sci)', 'https://onlinelibrary.wiley.com/doi/full/10.1111/tops.70051'],
   };
   var REF = {
     suttonBarto: ['Sutton & Barto 2018, Reinforcement Learning: An Introduction', 'http://incompleteideas.net/book/the-book-2nd.html'],
-    huys2012: ['Huys et al. 2012, Bonsai trees in your head', 'https://doi.org/10.1371/journal.pcbi.1002410'],
-    dawDayan: ['Daw & Dayan 2014, The algorithmic anatomy of model-based evaluation', 'https://doi.org/10.1098/rstb.2013.0478'],
     dawNivDayan: ['Daw, Niv & Dayan 2005, Uncertainty-based competition between prefrontal and striatal systems', 'https://doi.org/10.1038/nn1560'],
     dyna: ['Sutton 1991, Dyna, an integrated architecture for learning, planning, and reacting', 'https://doi.org/10.1145/122344.122377'],
     momennejad: ['Momennejad et al. 2018, Offline replay supports planning in human reinforcement learning', 'https://doi.org/10.7554/eLife.32548'],
@@ -43,18 +40,18 @@
     ho2022: ['Ho et al. 2022, People construct simplified mental representations to plan', 'https://doi.org/10.1038/s41586-022-04743-9'],
   };
   var NOTES = {
-    tree: {
-      title: 'Planning as tree search',
+    predict: {
+      title: 'Forward and backward prediction',
       text:
-        'Looking ahead through a tree of actions (lines) and the states they lead to (circles). Each circle fills with its value, the best total reward reachable below it; each leaf fills with its reward, and a line is as wide as the action is reliable (its causal strength). Whole trees grow too fast to search, so people sample and prune only some branches. Click a leaf to raise its reward (shift-click lowers it), a line to change its strength, or a circle to sample a path from it.',
-      eq: 'V(s) = max<sub>a</sub> [ r(s,a) + V(s′) ]',
-      links: [REF.huys2012, REF.dawDayan, LAB.direction],
+        'Two ways to predict with a map of the world. From a state (filled), the successor representation predicts which states will follow it, and how soon (light cyan); the predecessor representation predicts which states came before it (orange). Each circle fills with how much that state is expected, discounted by how many steps away it is. Which is more efficient depends on the world: where paths diverge, possible futures outnumber the present, so it pays to predict backward from a goal to what leads to it; where paths converge, it pays to predict forward. People adapt accordingly, using more backward prediction where paths diverge and more forward prediction where they converge. Click a state to predict from it.',
+      eq: 'M<sub>SR</sub>(s,s′) = E[ Σ<sub>t</sub> γ<sup>t</sup> 𝟙(s<sub>t</sub> = s′) | s<sub>0</sub> = s ]<br>M<sub>PR</sub>(s,s′) = E[ Σ<sub>t</sub> γ<sup>t</sup> 𝟙(s<sub>−t</sub> = s′) | s<sub>0</sub> = s ]',
+      links: [LAB.direction, REF.dayan1993],
     },
     world: {
       wm: 'model',
       title: 'Planning with one’s own world model',
       text:
-        'Each person plans with their own model of the world: beliefs about what leads to what (the map, its arrows as thick as they are likely) and about what is worth having (the star). Planning looks ahead through this model and takes the best action at each step (the red branch). The equation is the same for everyone; what differs is the model it is solved with, as in the brain on our home page, and biases in it, as in anxiety, reshape every plan. Click the map, the star or the branches for each part.',
+        'Each person plans with their own model of the world: beliefs about what leads to what (the map, its arrows as thick as they are likely) and about what is worth having (the star). Planning looks ahead through this model and takes the best action at each step (the orange branch). The equation is the same for everyone; what differs is the model it is solved with, as in the brain on our home page, and biases in it, as in anxiety, reshape every plan. Click the map, the star or the branches for each part.',
       eq: 'Q<sub>i</sub>(s,a) = r<sub>i</sub>(s) + γ Σ<sub>s′</sub> p<sub>i</sub>(s′|s,a) max<sub>a′</sub> Q<sub>i</sub>(s′,a′)',
       links: [LAB.worldModel, LAB.anxiety, REF.dawNivDayan, REF.suttonBarto],
     },
@@ -78,14 +75,14 @@
       wm: 'tasks',
       title: 'The plan: values of actions',
       text:
-        'The value person i expects from taking action a in state s and acting well afterwards, worked out with their own world model; the plan takes the best action (the red branch). In the brain on our home page this is a task representation, built for the task at hand from the beliefs and goals above it.',
+        'The value person i expects from taking action a in state s and acting well afterwards, worked out with their own world model; the plan takes the best action (the orange branch). In the brain on our home page this is a task representation, built for the task at hand from the beliefs and goals above it.',
       eq: 'π<sub>i</sub>(s) = argmax<sub>a</sub> Q<sub>i</sub>(s,a)',
       links: [REF.dawNivDayan, LAB.worldModel],
     },
     construal: {
       title: 'Task construal',
       text:
-        'To plan, people build a simplified representation of the task, keeping only what matters. Here the plan from the dot to the star (red) keeps the wall in its way and ignores the obstacles drawn dashed, which do not change the best route. Representing more costs effort, so the best construal trades how well its plan does against its cost. We ask how anxiety distorts construals. Click an obstacle to keep it or leave it out: leave out the wall and the plan runs into it.',
+        'To plan, people build a simplified representation of the task, keeping only what matters. Here the plan from the dot to the star (orange) keeps the wall in its way and ignores the obstacles drawn dashed, which do not change the best route. Representing more costs effort, so the best construal trades how well its plan does against its cost. We ask how anxiety distorts construals. Click an obstacle to keep it or leave it out: leave out the wall and the plan runs into it.',
       eq: 'VOR(c) = U(π<sub>c</sub>) − C(c)',
       links: [REF.ho2022, REF.lieder, LAB.anxiety, LAB.construal],
     },
@@ -99,14 +96,14 @@
     needgain: {
       title: 'What to replay or plan: need × gain',
       text:
-        'Mattar and Daw’s answer to which memory to replay, or which step to plan, next: the one whose update would improve future reward the most. That is the product of gain, how much better one would act in that state after the update (high next to a newly found reward, the star), and need, how often one expects to be there (the larger circles, near you, the filled dot). The red ring marks the winner. Click a state to move yourself there.',
+        'Mattar and Daw’s answer to which memory to replay, or which step to plan, next: the one whose update would improve future reward the most. That is the product of gain, how much better one would act in that state after the update (high next to a newly found reward, the star), and need, how often one expects to be there (the larger circles, near you, the filled dot). The orange ring marks the winner. Click a state to move yourself there.',
       eq: 'EVB(s<sub>k</sub>) = Gain(s<sub>k</sub>) × Need(s<sub>k</sub>)',
       links: [REF.mattarDaw, REF.dayan1993, LAB.direction],
     },
     when: {
       title: 'When to plan',
       text:
-        'In our task people moved three steps down a decision tree toward a goal (the star). At each step they could plan the move themselves, or let the computer choose at random for a small sure reward. Planning pays only where the choice decides whether the goal is reached (red); where both moves keep the goal in reach (dashed), it is better to delay. People learned to delay planning adaptively, as a meta-controller that searches a cognitive map of the task predicts. Click an end state to make it the goal.',
+        'In our task people moved three steps down a decision tree toward a goal (the star). At each step they could plan the move themselves, or let the computer choose at random for a small sure reward. Planning pays only where the choice decides whether the goal is reached (orange); where both moves keep the goal in reach (dashed), it is better to delay. People learned to delay planning adaptively, as a meta-controller that searches a cognitive map of the task predicts. Click an end state to make it the goal.',
       eq: 'V<sub>take</sub> = R<sub>g</sub> γ<sup>Δ</sup>,  V<sub>relinquish</sub> = 1 (+ R<sub>g</sub> γ<sup>Δ</sup>)',
       links: [LAB.delay, REF.callaway, ['Planning efficiency, on our projects page', '/projects/#planning-efficiency']],
     },
@@ -114,10 +111,6 @@
 
   function clamp(x, a, b) {
     return Math.max(a, Math.min(b, x));
-  }
-
-  function pick(list) {
-    return list[Math.floor(Math.random() * list.length)];
   }
 
   // A steady pseudo-random number for a seed, so hand-drawn wobbles stay the same each time the panes are drawn
@@ -130,24 +123,6 @@
     return [0, 1, 2, 3, 4, 5].map(function (k) {
       return rnd(seed * 7.13 + k);
     });
-  }
-
-  function choose(weights) {
-    var sum = 0;
-    var i;
-    for (i = 0; i < weights.length; i++) sum += weights[i];
-    var u = Math.random() * sum;
-    for (i = 0; i < weights.length; i++) {
-      u -= weights[i];
-      if (u <= 0) return i;
-    }
-    return weights.length - 1;
-  }
-
-  function stepIn(list, value, down) {
-    var i = list.indexOf(value);
-    if (i < 0) i = 0;
-    return list[(i + (down ? list.length - 1 : 1)) % list.length];
   }
 
   // Curves: a cubic from a parent straight down into a child, or a straight line
@@ -173,15 +148,6 @@
     var dx = 3 * u * u * (c[2] - c[0]) + 6 * u * t * (c[4] - c[2]) + 3 * t * t * (c[6] - c[4]);
     var dy = 3 * u * u * (c[3] - c[1]) + 6 * u * t * (c[5] - c[3]) + 3 * t * t * (c[7] - c[5]);
     return Math.atan2(dy, dx);
-  }
-
-  function distance(c, x, y) {
-    var best = Infinity;
-    for (var i = 0; i <= 20; i++) {
-      var p = at(c, i / 20);
-      best = Math.min(best, Math.hypot(p.x - x, p.y - y));
-    }
-    return best;
   }
 
   // Marker strokes: along a curve, wobbling a little from side to side as a hand does (less on short strokes)
@@ -274,7 +240,7 @@
     var off = layer.width * 2 + 50; // the layer is drawn off the canvas so only its shadow lands
     g.save();
     g.setTransform(1, 0, 0, 1, 0, 0);
-    g.shadowColor = 'rgba(15, 50, 50, 0.22)';
+    g.shadowColor = 'rgba(0, 0, 0, 0.5)';
     g.shadowBlur = 2.5 * dpr;
     g.shadowOffsetX = off + 2.5 * dpr;
     g.shadowOffsetY = 3.5 * dpr;
@@ -327,12 +293,12 @@
     g.closePath();
   }
 
-  // A goal or a reward: a star in dark red
+  // A goal or a reward: a star in pale orange
   function goal(g, x, y, r, j) {
     wipe(g, function () {
       star(g, x, y, r + 1, j);
     });
-    g.strokeStyle = g.fillStyle = RED;
+    g.strokeStyle = g.fillStyle = ORANGE;
     star(g, x, y, r, j);
     g.globalAlpha = 0.5;
     g.fill();
@@ -352,7 +318,7 @@
       g.beginPath();
       g.arc(x, y, r, 0, Math.PI * 2);
       g.clip();
-      g.globalAlpha = 0.55;
+      g.globalAlpha = 0.7;
       g.fillRect(x - r, y + r - 2 * r * full, 2 * r, 2 * r * full);
       g.restore();
     }
@@ -370,214 +336,114 @@
   // ---- Drawings. Each is made at width DW from y = 0 down to its height h, and note names its card. hit(x, y) says
   // what a click there does: act changes the drawing, note opens the card on one of its parts ----
 
-  // A decision tree: two branches from the root (dark slate gray and dark red), leaves filled with their rewards,
-  // circles with their values, edges as wide as their causal strength. Click a leaf to change its reward, an edge its
-  // strength, a circle to sample a path from it
-  function TreeFigure() {
-    this.h = 112;
-    this.note = 'tree';
-    this.lit = [];
-    this.end = null;
-    var root = (this.root = this.node(null, SLATE));
-    var first = Math.floor(Math.random() * 2);
-    this.node(root, first ? SLATE : RED);
-    this.node(root, first ? RED : SLATE);
-    var want = 4 + Math.floor(Math.random() * 2);
-    for (var tries = 0; tries < 40 && this.leaves().length < want; tries++) {
-      var open = this.leaves().filter(function (n) {
-        return n.depth < 3;
+  // Forward and backward prediction (Sharp & Eldar): states in rows, time running down, paths converging into the
+  // middle and diverging after it. From the state predicted from (filled), the successor representation runs forward
+  // to the states that follow it (light cyan) and the predecessor representation backward to the states that came
+  // before it (orange), each state filling with how much it is expected there, discounted by the steps away. Click a
+  // state to predict from it
+  var ROWS = [[22, 60, 98], [40, 80], [60], [40, 80], [22, 60, 98]];
+  var MOVES = [[0, 3], [1, 3], [1, 4], [2, 4], [3, 5], [4, 5], [5, 6], [5, 7], [6, 8], [6, 9], [7, 9], [7, 10]];
+  var GAMMA = 0.85;
+
+  function PredictFigure() {
+    this.h = 104;
+    this.note = 'predict';
+    this.from = 5;
+    var states = (this.states = []);
+    ROWS.forEach(function (xs, k) {
+      xs.forEach(function (x) {
+        states.push({ x: x, y: 8 + k * 22, k: k, next: [], prev: [], j: jit(x * 1.3 + k * 17) });
       });
-      if (!open.length) break;
-      var n = open[
-        choose(
-          open.map(function (m) {
-            return 4 - m.depth;
-          })
-        )
-      ];
-      this.node(n, n.color);
-      this.node(n, n.color);
-    }
-    this.backup(root);
-    this.layout();
+    });
+    MOVES.forEach(function (m) {
+      states[m[0]].next.push(m[1]);
+      states[m[1]].prev.push(m[0]);
+    });
+    // How likely each state is, starting from the top row at random and moving down at random
+    states.forEach(function (s) {
+      s.p = s.k
+        ? s.prev.reduce(function (sum, a) {
+            return sum + states[a].p / states[a].next.length;
+          }, 0)
+        : 1 / ROWS[0].length;
+    });
   }
 
-  TreeFigure.prototype.node = function (parent, color) {
-    var n = { parent: parent, kids: [], depth: parent ? parent.depth + 1 : 0, color: color, w: pick(STRENGTHS), r: pick(REWARDS) };
-    n.v = n.r;
-    n.j = [0, 0, 0, 0, 0, 0].map(Math.random);
-    if (parent) parent.kids.push(n);
-    return n;
-  };
-
-  TreeFigure.prototype.each = function (fn) {
-    (function walk(n) {
-      fn(n);
-      n.kids.forEach(walk);
-    })(this.root);
-  };
-
-  TreeFigure.prototype.leaves = function () {
-    var out = [];
-    this.each(function (n) {
-      if (n.depth > 0 && !n.kids.length) out.push(n);
+  // The successor representation from the state predicted from (ahead) and the predecessor representation (behind):
+  // the discounted chance of being in each state so many steps after it, or of having been in it so many steps before
+  PredictFigure.prototype.predict = function () {
+    var states = this.states;
+    var f = this.from;
+    var ahead = states.map(function () {
+      return 0;
     });
-    return out;
-  };
-
-  TreeFigure.prototype.backup = function (n) {
-    var self = this;
-    n.v = n.kids.length
-      ? Math.max.apply(
-          null,
-          n.kids.map(function (k) {
-            return self.backup(k);
-          })
-        )
-      : n.r;
-    return n.v;
-  };
-
-  TreeFigure.prototype.layout = function () {
-    var order = this.leaves();
-    var step = Math.min(100 / order.length, 25);
-    var x0 = DW / 2 - (step * (order.length - 1)) / 2;
-    order.forEach(function (n, i) {
-      n.x = x0 + i * step;
-    });
-    (function place(n) {
-      n.y = 9 + n.depth * 31;
-      if (n.kids.length) {
-        n.kids.forEach(place);
-        n.x = (n.kids[0].x + n.kids[n.kids.length - 1].x) / 2;
-      }
-    })(this.root);
-  };
-
-  TreeFigure.prototype.draw = function (g) {
-    var lit = this.lit;
-    this.each(function (n) {
-      if (!n.parent) return;
-      var on = lit.indexOf(n) >= 0;
-      var c = curve(n.parent.x, n.parent.y, n.x, n.y);
-      var width = 1.3 + 2 * n.w;
-      g.strokeStyle = n.color;
-      if (on) {
-        g.globalAlpha = 0.2;
-        g.lineWidth = width + 6;
-        marker(g, c, n.j);
-      }
-      g.globalAlpha = on ? 1 : 0.55 + 0.4 * n.w;
-      g.lineWidth = width + (on ? 1 : 0);
-      marker(g, c, n.j);
-      g.lineWidth = 1.4;
-      chevron(g, c, 0.62, 3.2 + 1.4 * n.w);
-    });
-    g.globalAlpha = 1;
-    this.each(function (n) {
-      g.strokeStyle = g.fillStyle = n.color;
-      if (n.kids.length) {
-        g.lineWidth = n.parent ? 1.6 : 1.9;
-        state(g, n.x, n.y, n.parent ? 4.6 : 6, clamp((n.v + 2) / 7, 0, 1), n.j);
-        return;
-      }
-      var s = 8.5;
-      wipe(g, function () {
-        g.beginPath();
-        g.rect(n.x - s / 2 - 1, n.y - s / 2 - 1, s + 2, s + 2);
+    var behind = ahead.slice();
+    ahead[f] = behind[f] = 1;
+    for (var i = f + 1; i < states.length; i++) {
+      states[i].prev.forEach(function (a) {
+        ahead[i] += (GAMMA * ahead[a]) / states[a].next.length;
       });
-      var full = clamp((n.r + 2) / 7, 0, 1);
-      if (full > 0) {
-        g.globalAlpha = 0.6;
-        g.fillRect(n.x - s / 2, n.y + s / 2 - s * full, s, s * full);
+    }
+    for (var k = f - 1; k >= 0; k--) {
+      var s = states[k];
+      s.next.forEach(function (b) {
+        behind[k] += (GAMMA * behind[b] * s.p) / s.next.length / states[b].p;
+      });
+    }
+    return { ahead: ahead, behind: behind };
+  };
+
+  PredictFigure.prototype.draw = function (g) {
+    var states = this.states;
+    var f = this.from;
+    var r = this.predict();
+    g.lineWidth = 1.4;
+    MOVES.forEach(function (m) {
+      var a = states[m[0]];
+      var b = states[m[1]];
+      if (r.ahead[m[0]] && r.ahead[m[1]]) {
+        g.strokeStyle = INK;
+        arrowBetween(g, [a.x, a.y], [b.x, b.y], 6.5, 7.5, 3.2);
+      } else if (r.behind[m[0]] && r.behind[m[1]]) {
+        g.strokeStyle = ORANGE;
+        arrowBetween(g, [b.x, b.y], [a.x, a.y], 6.5, 7.5, 3.2);
+      } else {
+        g.strokeStyle = INK;
+        g.globalAlpha = 0.3;
+        line(g, a.x, a.y, b.x, b.y);
         g.globalAlpha = 1;
       }
-      g.lineWidth = 1.6;
-      rect(g, n.x - s / 2, n.y - s / 2, s, s, n.j);
-      g.stroke();
     });
-    if (this.end) {
-      g.strokeStyle = this.end.color;
-      g.lineWidth = 1.5;
-      circle(g, this.end.x, this.end.y, 9, this.end.j);
-    }
+    states.forEach(function (s, i) {
+      var full = r.ahead[i] || r.behind[i];
+      g.strokeStyle = g.fillStyle = i !== f && r.behind[i] ? ORANGE : INK;
+      g.globalAlpha = full ? 1 : 0.45;
+      g.lineWidth = i === f ? 1.8 : 1.3;
+      state(g, s.x, s.y, i === f ? 6.5 : 5.5, full, s.j);
+      g.globalAlpha = 1;
+    });
   };
 
-  TreeFigure.prototype.hit = function (x, y) {
+  PredictFigure.prototype.hit = function (x, y) {
     var self = this;
-    var found = null;
-    var near = 9;
-    this.each(function (n) {
-      var d = Math.hypot(n.x - x, n.y - y);
-      if (!n.kids.length && Math.abs(n.x - x) < 8 && Math.abs(n.y - y) < 8) d = Math.min(d, 1);
-      if (d < near) {
-        near = d;
-        found = n;
-      }
-    });
-    if (found) {
-      var n = found;
-      if (!n.kids.length) {
+    for (var i = 0; i < this.states.length; i++) {
+      var s = this.states[i];
+      if (Math.hypot(s.x - x, s.y - y) <= 10) {
+        var k = i;
         return {
-          tip: 'Click to raise this reward, shift-click to lower it',
-          act: function (down) {
-            n.r = stepIn(REWARDS, n.r, down);
-            self.backup(self.root);
+          tip: 'Click to predict from this state',
+          act: function () {
+            self.from = k;
           },
         };
       }
-      return {
-        tip: 'Click to sample a path from here',
-        act: function () {
-          self.sample(n);
-        },
-      };
-    }
-    near = 5;
-    this.each(function (m) {
-      if (!m.parent) return;
-      var d = distance(curve(m.parent.x, m.parent.y, m.x, m.y), x, y);
-      if (d < near) {
-        near = d;
-        found = m;
-      }
-    });
-    if (found) {
-      var e = found;
-      return {
-        tip: 'Click to strengthen this line, shift-click to weaken it',
-        act: function (down) {
-          e.w = stepIn(STRENGTHS, e.w, down);
-        },
-      };
     }
     return null;
   };
 
-  // A path down from a node, choosing among the children by causal strength and value
-  TreeFigure.prototype.sample = function (n) {
-    this.lit = [];
-    while (n.kids.length) {
-      n = n.kids[
-        choose(
-          n.kids.map(function (k) {
-            return k.w * Math.exp(0.45 * k.v);
-          })
-        )
-      ];
-      this.lit.push(n);
-    }
-    this.end = n;
-  };
-
-  TreeFigure.prototype.clear = function () {
-    this.lit = [];
-    this.end = null;
-  };
-
   // Planning with one's own world model: a head in profile with, inside it, a map of what leads to what (arrows as
   // thick as they are likely), a star for what is worth having, and a plan branching from a state, its best branch in
-  // red. The map, the star and the plan each have a card, tied to the matching part of the home page's brain
+  // orange. The map, the star and the plan each have a card, tied to the matching part of the home page's brain
   var HEAD = [
     [38, 116, 38, 104, 22, 96, 18, 74],
     [18, 74, 12, 40, 30, 8, 62, 8],
@@ -597,7 +463,7 @@
   }
 
   WorldFigure.prototype.draw = function (g) {
-    g.strokeStyle = g.fillStyle = SLATE;
+    g.strokeStyle = g.fillStyle = INK;
     g.lineWidth = 2;
     HEAD.forEach(function (c, i) {
       marker(g, c, jit(i * 5 + 1));
@@ -614,20 +480,20 @@
     var root = [67, 66];
     var best = [84, 86];
     var other = [55, 88];
-    g.strokeStyle = SLATE;
+    g.strokeStyle = INK;
     g.globalAlpha = 0.7;
     g.lineWidth = 1.3;
     marker(g, straight(root[0], root[1], other[0], other[1]), jit(91));
     g.globalAlpha = 1;
-    g.strokeStyle = RED;
+    g.strokeStyle = ORANGE;
     g.lineWidth = 2.6;
     marker(g, straight(root[0], root[1], best[0], best[1]), jit(92));
-    g.strokeStyle = g.fillStyle = SLATE;
+    g.strokeStyle = g.fillStyle = INK;
     g.lineWidth = 1.5;
     state(g, root[0], root[1], 3.6, 1, jit(93));
     g.lineWidth = 1.3;
     state(g, other[0], other[1], 3, 0, jit(94));
-    g.strokeStyle = g.fillStyle = RED;
+    g.strokeStyle = g.fillStyle = ORANGE;
     g.lineWidth = 1.5;
     state(g, best[0], best[1], 3.4, 1, jit(95));
   };
@@ -640,7 +506,7 @@
   };
 
   // A grid world: a plan from the dot to the star made with a construal that keeps only some obstacles (Ho et al.).
-  // Click an obstacle to add it to the construal or leave it out; the plan is made again, and fails (a red cross) if it
+  // Click an obstacle to add it to the construal or leave it out; the plan is made again, and fails (an orange cross) if it
   // runs into one left out
   function GridFigure() {
     this.h = 96;
@@ -718,7 +584,7 @@
   GridFigure.prototype.draw = function (g) {
     var self = this;
     var s = this.cell;
-    g.strokeStyle = SLATE;
+    g.strokeStyle = INK;
     g.globalAlpha = 0.25;
     g.lineWidth = 0.8;
     g.beginPath();
@@ -738,7 +604,7 @@
     this.obstacles.forEach(function (o, k) {
       o.cells.forEach(function (cell, i) {
         var p = self.cellXY(cell[0], cell[1]);
-        g.strokeStyle = g.fillStyle = SLATE;
+        g.strokeStyle = g.fillStyle = INK;
         rect(g, p[0] + 2, p[1] + 2, s - 4, s - 4, jit(k * 13 + i));
         if (o.on) {
           g.globalAlpha = 0.6;
@@ -756,7 +622,7 @@
         }
       });
     });
-    g.strokeStyle = RED;
+    g.strokeStyle = ORANGE;
     g.lineWidth = 2.1;
     var pts = this.path.map(function (k) {
       var p = self.cellXY(k[0], k[1]);
@@ -774,14 +640,14 @@
     }
     this.crashes.forEach(function (k) {
       var p = self.cellXY(k[0], k[1]);
-      g.strokeStyle = RED;
+      g.strokeStyle = ORANGE;
       g.lineWidth = 2.3;
       line(g, p[0] + 3, p[1] + 3, p[0] + s - 3, p[1] + s - 3);
       line(g, p[0] + s - 3, p[1] + 3, p[0] + 3, p[1] + s - 3);
     });
     var sp = this.cellXY(this.start[0], this.start[1]);
     var gp = this.cellXY(this.goal[0], this.goal[1]);
-    g.strokeStyle = g.fillStyle = SLATE;
+    g.strokeStyle = g.fillStyle = INK;
     g.lineWidth = 1.4;
     state(g, sp[0] + s / 2, sp[1] + s / 2, 4, 1, jit(60));
     goal(g, gp[0] + s / 2, gp[1] + s / 2, 5.5, jit(61));
@@ -810,7 +676,7 @@
     };
   };
 
-  // Offline learning: at rest (the moon), the steps taken on the way to a reward (the star) are replayed backward (red
+  // Offline learning: at rest (the moon), the steps taken on the way to a reward (the star) are replayed backward (orange
   // hops, the latest darkest), and each replayed step fills the state it leads back to with value. Click to replay the
   // next step
   function OfflineFigure() {
@@ -825,7 +691,7 @@
     var xs = this.xs;
     var y = this.y;
     var i;
-    g.fillStyle = SLATE;
+    g.fillStyle = INK;
     g.globalAlpha = 0.6;
     g.beginPath();
     g.arc(60, 19, 10, 0, Math.PI * 2);
@@ -835,16 +701,16 @@
       g.beginPath();
       g.arc(65.5, 14.5, 9, 0, Math.PI * 2);
     });
-    g.strokeStyle = SLATE;
+    g.strokeStyle = INK;
     g.lineWidth = 1.5;
     line(g, xs[0], y, xs[4], y);
     for (i = 0; i < 4; i++) {
-      g.strokeStyle = g.fillStyle = SLATE;
+      g.strokeStyle = g.fillStyle = INK;
       g.lineWidth = 1.6;
       state(g, xs[i], y, 5.5, i >= 4 - this.k ? Math.pow(0.8, 4 - i) : 0, jit(i + 20));
     }
     goal(g, xs[4], y, 7.5, jit(29));
-    g.strokeStyle = RED;
+    g.strokeStyle = ORANGE;
     for (var m = 1; m <= this.k; m++) {
       var a = xs[5 - m];
       var b = xs[4 - m];
@@ -868,8 +734,8 @@
   };
 
   // Need and gain (Mattar & Daw): states on a grid, as large as they are needed (how soon and how often one expects to
-  // be there from where one is, the filled dot), red arrows into a newly found reward (the star) from the states where
-  // an update would gain the most, and a red ring on the state to replay next, where need × gain is largest. Click a
+  // be there from where one is, the filled dot), orange arrows into a newly found reward (the star) from the states where
+  // an update would gain the most, and an orange ring on the state to replay next, where need × gain is largest. Click a
   // state to move there
   function NeedGainFigure() {
     this.h = 90;
@@ -904,7 +770,7 @@
     var self = this;
     var cells = this.cells();
     var sp = this.xy(this.star[0], this.star[1]);
-    g.strokeStyle = SLATE;
+    g.strokeStyle = INK;
     g.globalAlpha = 0.3;
     g.lineWidth = 1;
     for (var r = 0; r < this.rows; r++) {
@@ -919,7 +785,7 @@
     cells.forEach(function (k) {
       if (k.need * k.gain > best.need * best.gain) best = k;
       if (!k.next) return;
-      g.strokeStyle = RED;
+      g.strokeStyle = ORANGE;
       g.lineWidth = 1.6;
       arrowBetween(g, self.xy(k.c, k.r), sp, k.size + 1.5, 9, 3.5);
     });
@@ -930,7 +796,7 @@
         g.beginPath();
         g.arc(p[0], p[1], k.size + 0.6, 0, Math.PI * 2);
       });
-      g.strokeStyle = g.fillStyle = SLATE;
+      g.strokeStyle = g.fillStyle = INK;
       g.globalAlpha = you ? 1 : 0.1 + 0.4 * k.need;
       g.beginPath();
       g.arc(p[0], p[1], you ? k.size - 2.2 : k.size, 0, Math.PI * 2);
@@ -941,7 +807,7 @@
     });
     goal(g, sp[0], sp[1], 7.5, jit(57));
     var bp = this.xy(best.c, best.r);
-    g.strokeStyle = RED;
+    g.strokeStyle = ORANGE;
     g.lineWidth = 2;
     circle(g, bp[0], bp[1], best.size + 4.5, jit(58));
   };
@@ -962,7 +828,7 @@
   };
 
   // When to plan (Sharp & Eldar): a three-step decision tree whose paths cross over, with the goal at one end (the
-  // star). A state is red where the choice decides whether the goal is reached: plan there. It is dashed where both
+  // star). A state is orange where the choice decides whether the goal is reached: plan there. It is dashed where both
   // moves keep the goal in reach: better to let chance choose, delaying planning. Click an end state to make it the goal
   var STEPS = {
     A: { at: [60, 8], kids: ['B', 'C'] },
@@ -1010,7 +876,7 @@
         var b = STEPS[c].at;
         var cv = curve(n.at[0], n.at[1], b[0], b[1]);
         var on = live && self.reaches(c);
-        g.strokeStyle = on ? RED : SLATE;
+        g.strokeStyle = on ? ORANGE : INK;
         g.globalAlpha = on ? 0.95 : 0.4;
         g.lineWidth = on ? 1.9 : 1.3;
         marker(g, cv, jit(i * 4 + m + 70));
@@ -1032,7 +898,7 @@
           g.beginPath();
           g.rect(x - 4.5, y - 4.5, 9, 9);
         });
-        g.strokeStyle = SLATE;
+        g.strokeStyle = INK;
         g.globalAlpha = 0.7;
         g.lineWidth = 1.5;
         rect(g, x - 3.5, y - 3.5, 7, 7, jit(i + 80));
@@ -1042,17 +908,17 @@
       }
       var live = self.live(k);
       if (live === 1) {
-        g.strokeStyle = g.fillStyle = RED;
+        g.strokeStyle = g.fillStyle = ORANGE;
         g.lineWidth = 1.8;
         state(g, x, y, 5.2, 1, jit(i + 80));
       } else if (live === 2) {
-        g.strokeStyle = g.fillStyle = SLATE;
+        g.strokeStyle = g.fillStyle = INK;
         g.lineWidth = 1.5;
         g.setLineDash([2, 2.4]);
         state(g, x, y, 5.2, 0, jit(i + 80));
         g.setLineDash([]);
       } else {
-        g.strokeStyle = g.fillStyle = SLATE;
+        g.strokeStyle = g.fillStyle = INK;
         g.globalAlpha = 0.4;
         g.lineWidth = 1.3;
         state(g, x, y, 4.6, 0, jit(i + 80));
@@ -1154,26 +1020,32 @@
       lg.setLineDash([]);
       f.draw(lg);
     });
-    ink(g, this.layer, 0.28, 0.4);
+    ink(g, this.layer, 0.08, 0.3);
   };
 
-  // A tall pane of glass against the window's edge, faintly cyan, its cut edge a little green, with a soft shadow on
-  // the wall behind it, toward the text
+  // A tall pane of black glass against the window's edge, a sheen across it and its cut edge catching the light, with a
+  // soft shadow on the wall behind it, toward the text
   Pane.prototype.drawGlass = function () {
     var g = this.g;
     var p = this.pane;
     g.save();
-    g.shadowColor = 'rgba(20, 60, 60, 0.18)';
+    g.shadowColor = 'rgba(0, 0, 0, 0.3)';
     g.shadowBlur = 14;
     g.shadowOffsetX = this.side === 'left' ? 3 : -3;
     g.shadowOffsetY = 4;
     var tint = g.createLinearGradient(p.x, 0, p.x + p.w, this.h);
-    tint.addColorStop(0, 'rgba(234, 249, 249, 0.96)');
-    tint.addColorStop(1, 'rgba(214, 238, 238, 0.96)');
+    tint.addColorStop(0, 'rgba(8, 10, 12, 0.97)');
+    tint.addColorStop(1, 'rgba(30, 34, 38, 0.97)');
     g.fillStyle = tint;
     g.fillRect(p.x, 0, p.w, this.h);
     g.restore();
-    g.strokeStyle = 'rgba(40, 110, 100, 0.35)';
+    var sheen = g.createLinearGradient(p.x, 0, p.x + p.w, p.w * 0.8);
+    sheen.addColorStop(0, 'rgba(255, 255, 255, 0)');
+    sheen.addColorStop(0.45, 'rgba(255, 255, 255, 0.07)');
+    sheen.addColorStop(0.6, 'rgba(255, 255, 255, 0)');
+    g.fillStyle = sheen;
+    g.fillRect(p.x, 0, p.w, this.h);
+    g.strokeStyle = 'rgba(224, 255, 255, 0.3)';
     g.lineWidth = 1;
     g.beginPath();
     var edge = this.side === 'left' ? p.x + p.w - 0.5 : p.x + 0.5;
@@ -1324,7 +1196,7 @@
     var rw = Math.min(PANE, Math.floor(parseFloat(cs.paddingRight) - GAP));
     if (!panes.length) {
       panes = [
-        new Pane('left', [new TreeFigure(), new WorldFigure(), new GridFigure()]),
+        new Pane('left', [new PredictFigure(), new WorldFigure(), new GridFigure()]),
         new Pane('right', [new OfflineFigure(), new NeedGainFigure(), new WhenFigure()]),
       ];
     }
