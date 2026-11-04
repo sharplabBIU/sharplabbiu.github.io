@@ -1,26 +1,26 @@
-// Glass panes along the left and right edges of the window (wider windows only), beside the text column: tall panes of
-// glass with figures written on them in dark slate gray and dark red marker, as on a lab's glass board. Left: a decision
-// tree, TD and Rescorla–Wagner learning, softmax choice, offline learning from memory. Right: the Bellman equation with
-// an individual's world model, need and gain (Mattar & Daw), when to plan (Sharp & Eldar), and task construal in a grid
-// world (Ho et al.). Terms with a dotted underline open a note on them, with key papers (on the home page, the terms of
-// the Bellman equation also open the matching part of the world-model brain). The tree, the grid's obstacles and the
-// softmax curves change when clicked. Two canvases fixed below the header, drawn again only when something changes.
+// Glass panes along the left and right edges of the window (wider windows only), beside the text column: thin panes of
+// glass with drawings on them in dark slate gray and dark red marker, as on a lab's glass board, and no writing. Left,
+// how to plan: a decision tree, planning with one's own world model, and task construal in a grid world (Ho et al.).
+// Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
+// Eldar). Clicking a drawing opens a card describing it, with key papers, and most drawings also change when clicked
+// (on the home page, the parts of the world model open the matching part of the brain). Two canvases fixed below the
+// header, drawn again only when something changes.
 (function () {
   'use strict';
 
   var SLATE = '#2f4f4f'; // dark slate gray
   var RED = '#8b0000'; // dark red
-  var HAND = '"Klee One", "Comic Sans MS", cursive'; // handwriting
-  var DW = 230; // the width the figures are drawn at, before scaling to the pane
+  var DW = 120; // the width the drawings are made at, before scaling to the pane
+  var PANE = 140; // the widest a pane gets
+  var MIN_PANE = 104; // the narrowest open space that gets a pane
   var GAP = 16; // between the panes and the text column
-  var MIN_SIDE = 190; // the narrowest open space that gets a pane
   var REWARDS = [-2, -1, 0, 1, 2, 3, 4, 5];
   var STRENGTHS = [0.2, 0.45, 0.7, 0.95];
 
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-  // Notes on the terms: what they are, how they relate to the field's key ideas, and key papers. "wm" names the part of
-  // the home page's world-model brain that a term corresponds to
+  // The cards: what each drawing shows, how it relates to the field's key ideas, its key equation and key papers. "wm"
+  // names the part of the home page's world-model brain that a drawing corresponds to
   var LAB = {
     anxiety: ['Sharp 2024, Anxiety involves altered planning (Trends Cogn Sci)', 'https://www.sciencedirect.com/science/article/pii/S1364661324002924'],
     worldModel: ['Sharp et al., A world-model theory of trait anxiety (PsyArXiv)', 'https://osf.io/preprints/psyarxiv/98ktg_v4'],
@@ -30,10 +30,6 @@
   };
   var REF = {
     suttonBarto: ['Sutton & Barto 2018, Reinforcement Learning: An Introduction', 'http://incompleteideas.net/book/the-book-2nd.html'],
-    sutton1988: ['Sutton 1988, Learning to predict by the methods of temporal differences', 'https://doi.org/10.1007/BF00115009'],
-    schultz: ['Schultz, Dayan & Montague 1997, A neural substrate of prediction and reward', 'https://doi.org/10.1126/science.275.5306.1593'],
-    daw2006: ['Daw et al. 2006, Cortical substrates for exploratory decisions in humans', 'https://doi.org/10.1038/nature04766'],
-    huys2016: ['Huys, Maia & Frank 2016, Computational psychiatry as a bridge to clinical applications', 'https://doi.org/10.1038/nn.4238'],
     huys2012: ['Huys et al. 2012, Bonsai trees in your head', 'https://doi.org/10.1371/journal.pcbi.1002410'],
     dawDayan: ['Daw & Dayan 2014, The algorithmic anatomy of model-based evaluation', 'https://doi.org/10.1098/rstb.2013.0478'],
     dawNivDayan: ['Daw, Niv & Dayan 2005, Uncertainty-based competition between prefrontal and striatal systems', 'https://doi.org/10.1038/nn1560'],
@@ -50,163 +46,69 @@
     tree: {
       title: 'Planning as tree search',
       text:
-        'Model-based planning looks ahead through a tree of possible actions (edges) and the states they lead to (nodes), adding up the rewards along each path. Full trees grow too fast to search, so people sample and prune only some branches. Click a leaf to change its reward (shift-click lowers it), an edge to change its causal strength, or a node to sample a path down from it.',
+        'Looking ahead through a tree of actions (lines) and the states they lead to (circles). Each circle fills with its value, the best total reward reachable below it; each leaf fills with its reward, and a line is as wide as the action is reliable (its causal strength). Whole trees grow too fast to search, so people sample and prune only some branches. Click a leaf to raise its reward (shift-click lowers it), a line to change its strength, or a circle to sample a path from it.',
+      eq: 'V(s) = max<sub>a</sub> [ r(s,a) + V(s′) ]',
       links: [REF.huys2012, REF.dawDayan, LAB.direction],
     },
-    value: {
-      title: 'Value, V',
+    world: {
+      wm: 'model',
+      title: 'Planning with one’s own world model',
       text:
-        'A node’s value is the best total reward reachable from it: each node takes the largest of its children’s values, down to the rewards at the leaves. This backup is the Bellman equation applied to a tree. The ink in each circle fills up with its value.',
-      links: [REF.suttonBarto, REF.dawDayan],
+        'Each person plans with their own model of the world: beliefs about what leads to what (the map, its arrows as thick as they are likely) and about what is worth having (the star). Planning looks ahead through this model and takes the best action at each step (the red branch). The equation is the same for everyone; what differs is the model it is solved with, as in the brain on our home page, and biases in it, as in anxiety, reshape every plan. Click the map, the star or the branches for each part.',
+      eq: 'Q<sub>i</sub>(s,a) = r<sub>i</sub>(s) + γ Σ<sub>s′</sub> p<sub>i</sub>(s′|s,a) max<sub>a′</sub> Q<sub>i</sub>(s′,a′)',
+      links: [LAB.worldModel, LAB.anxiety, REF.dawNivDayan, REF.suttonBarto],
     },
-    strength: {
-      title: 'Causal strength',
-      text:
-        'How reliably an action brings about the next state, drawn as the width of the edge. Sampling follows strong edges more often, so a path’s chance of being imagined depends on the beliefs about causes, not only on the rewards.',
-      links: [REF.huys2012, LAB.worldModel],
-    },
-    rw: {
-      title: 'Rescorla–Wagner rule',
-      text:
-        'Learning from prediction errors: the value V of a cue moves toward the reward r by a fraction α of the error (r − V). It explains blocking and other conditioning effects, but it treats each trial as one moment, with no notion of what comes next.',
-      links: [['Rescorla & Wagner 1972, as covered in Sutton & Barto, ch. 14', REF.suttonBarto[1]]],
-    },
-    td: {
-      title: 'Temporal-difference (TD) learning',
-      text:
-        'TD learning carries Rescorla–Wagner across time: the error δ compares the reward plus the discounted value of the next state, γV(s′), with the prediction V(s). Values then chain back from rewards to the states and cues that predict them. Dopamine neurons fire like δ.',
-      links: [REF.sutton1988, REF.schultz, REF.suttonBarto],
-    },
-    delta: {
-      title: 'Prediction error, δ',
-      text: 'What happened (the reward, plus what is now expected) minus what was expected. Learning is driven by surprise: with no error there is nothing to learn.',
-      links: [REF.schultz],
-    },
-    alpha: {
-      title: 'Learning rate, α',
-      text: 'How far each error moves the estimate, from 0 to 1. A high α follows recent outcomes; a low α averages over many. Models often fit it per person, and sometimes separately for gains and losses.',
-      links: [REF.suttonBarto],
-    },
-    gamma: {
-      title: 'Discount factor, γ',
-      text: 'How much future value counts against immediate reward, from 0 to 1. Near 0 only the next reward matters; near 1 the far future counts almost as much.',
-      links: [REF.suttonBarto],
-    },
-    softmax: {
-      title: 'Softmax choice',
-      text:
-        'Turns values into choice probabilities: p(a) = e^βQ(a) / Σ e^βQ. With two options it is a logistic curve in the value difference: the bigger the difference, the more reliably the better option is chosen. Click a β on the graph to pick out its curve.',
-      links: [REF.daw2006, REF.suttonBarto],
-    },
-    beta: {
-      title: 'Inverse temperature, β',
-      text:
-        'How strongly values drive choice. With a high β the better option is almost always chosen (exploitation); at β = 0 choice is random. It trades exploration against exploitation and is fit per person in computational psychiatry.',
-      links: [REF.daw2006, REF.huys2016],
-    },
-    dq: {
-      title: 'Value difference',
-      text: 'Q(a) − Q(b): how much better a is expected to be than b. At 0 the two are chosen equally often, whatever β.',
-      links: [REF.suttonBarto],
-    },
-    offline: {
-      title: 'Offline learning',
-      text:
-        'Learning without new experience, between decisions or during rest, by replaying memories or simulating with a model of the world. It lets a few experiences go a long way, for example updating the value of a route you are not on. Our lab studies how the seconds between choices shape it.',
-      links: [REF.dyna, REF.momennejad, ['Offline learning, on our projects page', '/projects/#offline-learning']],
-    },
-    memory: {
-      title: 'Memories of experience',
-      text: 'Each experience can be stored as a transition: state, action, reward and next state, (s, a, r, s′). Stored transitions can be learned from again later, as if they had just happened.',
-      links: [REF.dyna, REF.mattarDaw],
-    },
-    replay: {
-      title: 'Replay',
-      text:
-        'Reactivating stored experiences offline, as hippocampal place cells do during rest and pauses, sometimes in reverse order. Each replayed transition updates values as a real one would: a Dyna-style backup.',
-      links: [REF.fosterWilson, REF.momennejad, REF.mattarDaw],
-    },
-    qi: {
-      wm: 'tasks',
-      title: 'Q for person i',
-      text:
-        'The value person i expects from taking action a in state s and acting well afterwards, worked out by planning with their own world model. In the brain on the home page this is a task representation: built for the task at hand from the priors and goals above it.',
-      links: [REF.dawNivDayan, LAB.worldModel],
-    },
-    ri: {
-      wm: 'goals',
-      title: 'Rewards for person i, rᵢ(s)',
-      text:
-        'What person i finds rewarding or threatening in each state. These come from their intrinsic goals (the goals in the home-page brain), so the same outcome can be worth different amounts to different people.',
-      links: [LAB.worldModel],
-    },
-    pi: {
+    world_p: {
       wm: 'world',
-      title: 'Transitions for person i, pᵢ(s′|s,a)',
+      title: 'Beliefs about what leads to what',
       text:
-        'Person i’s beliefs about what follows what: where action a leads from state s. They draw on causal knowledge about the world and about the self (what one’s actions can bring about) in the home-page brain. Overstating the chance of harm or understating control changes every plan built on them, as in anxiety.',
+        'Person i’s transition beliefs: where action a leads from state s, drawn as a map whose arrows are as thick as they are likely. They draw on causal knowledge about the world and about the self (what one’s own actions can bring about), as in the brain on our home page. Overstating the chance of harm, or understating one’s control, changes every plan built on them, as in anxiety.',
+      eq: 'p<sub>i</sub>(s′|s,a)',
       links: [LAB.anxiety, LAB.worldModel],
     },
-    max: {
-      title: 'The max over a′',
+    world_r: {
+      wm: 'goals',
+      title: 'Goals: what is worth having',
       text:
-        'Planning assumes you will choose the best action from the next state on, so the value of (s, a) includes the best value to be had afterwards. This recursion is Bellman’s principle of optimality.',
-      links: [REF.suttonBarto],
+        'What person i finds rewarding or threatening in each state, drawn as the star. These come from their intrinsic goals (the goals in the brain on our home page), so the same outcome can be worth different amounts to different people.',
+      eq: 'r<sub>i</sub>(s)',
+      links: [LAB.worldModel],
     },
-    indiv: {
-      wm: 'model',
-      title: 'i: one person’s world model',
+    world_q: {
+      wm: 'tasks',
+      title: 'The plan: values of actions',
       text:
-        'The subscript i marks what is particular to one person. The equation is the same for everyone; what differs is the world model it is solved with: the transition beliefs pᵢ and the rewards rᵢ. The brain on the home page shows such a world model, and how biases in it, as in trait anxiety, reshape the tasks built from it.',
-      links: [LAB.worldModel, LAB.anxiety],
+        'The value person i expects from taking action a in state s and acting well afterwards, worked out with their own world model; the plan takes the best action (the red branch). In the brain on our home page this is a task representation, built for the task at hand from the beliefs and goals above it.',
+      eq: 'π<sub>i</sub>(s) = argmax<sub>a</sub> Q<sub>i</sub>(s,a)',
+      links: [REF.dawNivDayan, LAB.worldModel],
     },
-    evb: {
-      title: 'Expected value of backup',
+    construal: {
+      title: 'Task construal',
       text:
-        'Mattar and Daw’s answer to which memory to replay, or which step to plan, next: the one whose update is expected to improve future reward the most. It factors into Gain × Need, and it reproduces forward replay before choices and reverse replay after rewards in the hippocampus.',
-      links: [REF.mattarDaw],
+        'To plan, people build a simplified representation of the task, keeping only what matters. Here the plan from the dot to the star (red) keeps the wall in its way and ignores the obstacles drawn dashed, which do not change the best route. Representing more costs effort, so the best construal trades how well its plan does against its cost. We ask how anxiety distorts construals. Click an obstacle to keep it or leave it out: leave out the wall and the plan runs into it.',
+      eq: 'VOR(c) = U(π<sub>c</sub>) − C(c)',
+      links: [REF.ho2022, REF.lieder, LAB.anxiety, LAB.construal],
     },
-    gain: {
-      title: 'Gain',
+    offline: {
+      title: 'Offline learning from memory',
       text:
-        'How much better you would act in state sₖ after the update: the change in the policy there, weighted by the new action values. Gain is high after a surprise, such as an unexpected reward or a new obstacle.',
-      links: [REF.mattarDaw],
+        'Learning without new experience, at rest (the moon), by replaying stored steps of experience. After a reward (the star), replay can run backward along the path just taken, as hippocampal place cells do, and each replayed step updates a value as a real step would, so the value spreads back without walking the path again. Click to replay the next step.',
+      eq: 'V(s) ← V(s) + α [ r + γV(s′) − V(s) ]',
+      links: [REF.dyna, REF.fosterWilson, REF.momennejad, ['Offline learning, on our projects page', '/projects/#offline-learning']],
     },
-    need: {
-      title: 'Need',
+    needgain: {
+      title: 'What to replay or plan: need × gain',
       text:
-        'How often you expect to be in state sₖ from now on, discounted by how far ahead: the successor representation of where you are. Need is high for the states just ahead, which favours planning forward before acting.',
+        'Mattar and Daw’s answer to which memory to replay, or which step to plan, next: the one whose update would improve future reward the most. That is the product of gain, how much better one would act in that state after the update (high next to a newly found reward, the star), and need, how often one expects to be there (the larger circles, near you, the filled dot). The red ring marks the winner. Click a state to move yourself there.',
+      eq: 'EVB(s<sub>k</sub>) = Gain(s<sub>k</sub>) × Need(s<sub>k</sub>)',
       links: [REF.mattarDaw, REF.dayan1993, LAB.direction],
     },
     when: {
       title: 'When to plan',
       text:
-        'In a three-step task, people could take control and plan the next move, or relinquish it: a random move plus a small sure reward. Planning paid only where it could find a way to the goal; elsewhere it was better to delay. People learned to delay planning adaptively, and a meta-controller that searches a cognitive map of the task explained this better than one that learns from outcomes.',
+        'In our task people moved three steps down a decision tree toward a goal (the star). At each step they could plan the move themselves, or let the computer choose at random for a small sure reward. Planning pays only where the choice decides whether the goal is reached (red); where both moves keep the goal in reach (dashed), it is better to delay. People learned to delay planning adaptively, as a meta-controller that searches a cognitive map of the task predicts. Click an end state to make it the goal.',
+      eq: 'V<sub>take</sub> = R<sub>g</sub> γ<sup>Δ</sup>,  V<sub>relinquish</sub> = 1 (+ R<sub>g</sub> γ<sup>Δ</sup>)',
       links: [LAB.delay, REF.callaway, ['Planning efficiency, on our projects page', '/projects/#planning-efficiency']],
-    },
-    vtake: {
-      title: 'Values of taking and relinquishing control',
-      text:
-        'Taking control is worth the goal reward R_g discounted over the Δ = 3 − d steps still to go, if planning found an action that reaches the goal (otherwise 0). Relinquishing is worth the sure reward of 1, plus the discounted goal reward when both actions reach the goal.',
-      links: [LAB.delay],
-    },
-    pn: {
-      title: 'What planning found, p⁽ⁿ⁾',
-      text:
-        'The probability that a limited number of rollouts over the cognitive map found n = 0, 1 or 2 actions that reach the goal. The chance of each control choice mixes the softmax of its value over these outcomes.',
-      links: [LAB.delay, REF.lieder],
-    },
-    construal: {
-      title: 'Task construal',
-      text:
-        'To plan, people build a simplified representation of the task, leaving out what hardly matters. In mazes, they attend to and remember the obstacles that change the best route and ignore the rest. We ask how anxiety distorts construals. Click an obstacle to add it to the construal or leave it out.',
-      links: [REF.ho2022, LAB.anxiety, LAB.construal],
-    },
-    vor: {
-      title: 'Value of representation',
-      text:
-        'VOR(c) = U(π_c) − C(c): how well the plan made with construal c does in the real task, minus the cost of representing c (each obstacle adds to it). The best construal balances the two, so obstacles that do not change the plan are ignored.',
-      links: [REF.ho2022, REF.lieder],
     },
   };
 
@@ -228,10 +130,6 @@
     return [0, 1, 2, 3, 4, 5].map(function (k) {
       return rnd(seed * 7.13 + k);
     });
-  }
-
-  function signed(v) {
-    return v > 0 ? '+' + v : v < 0 ? '−' + -v : '0';
   }
 
   function choose(weights) {
@@ -286,16 +184,17 @@
     return best;
   }
 
-  // Marker strokes: along a curve, wobbling a little from side to side as a hand does
+  // Marker strokes: along a curve, wobbling a little from side to side as a hand does (less on short strokes)
   function marker(g, c, j, t0, t1) {
     t0 = t0 || 0;
     t1 = t1 === undefined ? 1 : t1;
+    var amp = 0.8 * Math.min(1, Math.hypot(c[6] - c[0], c[7] - c[1]) / 28);
     g.beginPath();
     for (var i = 0; i <= 16; i++) {
       var t = t0 + ((t1 - t0) * i) / 16;
       var p = at(c, t);
       var a = heading(c, t) + Math.PI / 2;
-      var off = 0.8 * (0.6 * Math.sin(2 * Math.PI * (t * (1 + j[0]) + j[1])) + 0.4 * Math.sin(2 * Math.PI * (t * (2.5 + j[2]) + j[3])));
+      var off = amp * (0.6 * Math.sin(2 * Math.PI * (t * (1 + j[0]) + j[1])) + 0.4 * Math.sin(2 * Math.PI * (t * (2.5 + j[2]) + j[3])));
       if (i) g.lineTo(p.x + off * Math.cos(a), p.y + off * Math.sin(a));
       else g.moveTo(p.x + off * Math.cos(a), p.y + off * Math.sin(a));
     }
@@ -322,11 +221,11 @@
     g.stroke();
   }
 
-  // A line with an arrowhead at its end
-  function arrowLine(g, ax, ay, bx, by) {
+  // A line with an arrowhead of the given size at its end
+  function arrowLine(g, ax, ay, bx, by, size) {
     var c = straight(ax, ay, bx, by);
     marker(g, c, jit(ax + ay * 2 + bx * 3 + by * 5));
-    chevron(g, c, 1, 5);
+    chevron(g, c, 1, size);
   }
 
   // A circle drawn by hand: not quite round, its ends overlapping a little
@@ -360,87 +259,6 @@
     fn();
     g.fill();
     g.restore();
-  }
-
-  // Handwriting. Text runs: "Q_{i}" puts i below the line, "γ^{t}" puts t above it
-  function runs(str) {
-    var out = [];
-    var re = /([_^])\{([^}]*)\}/g;
-    var last = 0;
-    var m;
-    while ((m = re.exec(str))) {
-      if (m.index > last) out.push({ t: str.slice(last, m.index), s: 0 });
-      out.push({ t: m[2], s: m[1] === '_' ? -1 : 1 });
-      last = re.lastIndex;
-    }
-    if (last < str.length) out.push({ t: str.slice(last), s: 0 });
-    return out;
-  }
-
-  function fontFor(size, s) {
-    return '600 ' + (s ? size * 0.66 : size).toFixed(2) + 'px ' + HAND;
-  }
-
-  function measure(g, str, size) {
-    var w = 0;
-    runs(str).forEach(function (r) {
-      g.font = fontFor(size, r.s);
-      w += g.measureText(r.t).width;
-    });
-    return w;
-  }
-
-  // Writes in marker (the letters thickened by tracing their outlines with the nib); returns where the text ends
-  function write(g, str, x, y, size) {
-    g.save();
-    g.textBaseline = 'middle';
-    g.textAlign = 'left';
-    runs(str).forEach(function (r) {
-      g.font = fontFor(size, r.s);
-      g.lineWidth = size * (r.s ? 0.05 : 0.07);
-      var dy = r.s < 0 ? size * 0.3 : r.s > 0 ? -size * 0.38 : 0;
-      g.strokeText(r.t, x, y + dy);
-      g.fillText(r.t, x, y + dy);
-      x += g.measureText(r.t).width;
-    });
-    g.restore();
-    return x;
-  }
-
-  // A line of text made of parts: strings, or [string, note] for a term that opens a note (dotted underline). Starts
-  // at x, or is centred on x when centred
-  function say(api, parts, x, y, size, color, centred) {
-    var g = api.g;
-    var total = 0;
-    parts.forEach(function (p) {
-      total += measure(g, typeof p === 'string' ? p : p[0], size);
-    });
-    if (centred) x -= total / 2;
-    g.strokeStyle = g.fillStyle = color || SLATE;
-    parts.forEach(function (p) {
-      var str = typeof p === 'string' ? p : p[0];
-      var w = measure(g, str, size);
-      write(g, str, x, y, size);
-      if (typeof p !== 'string') {
-        g.save();
-        g.globalAlpha = 0.75;
-        g.lineWidth = 1.1;
-        g.setLineDash([1.2, 2.6]);
-        g.beginPath();
-        g.moveTo(x + 1, y + size * 0.62);
-        g.lineTo(x + w - 1, y + size * 0.62);
-        g.stroke();
-        g.restore();
-        api.hot(x - 2, y - size * 0.7, w + 4, size * 1.5, { note: p[1] });
-      }
-      x += w;
-    });
-    return x;
-  }
-
-  // A figure's heading, in dark red
-  function title(api, parts) {
-    say(api, parts, DW / 2, 9, 12.5, RED, true);
   }
 
   function layerOf(w, h) {
@@ -497,12 +315,67 @@
     g.restore();
   }
 
-  // ---- Figures. Each is drawn at width DW from y = 0 down to its height h; hit(x, y) says what a click there does ----
+  // A five-pointed star drawn by hand (the path is left closed for filling and stroking)
+  function star(g, x, y, r, j) {
+    g.beginPath();
+    for (var i = 0; i < 10; i++) {
+      var a = -Math.PI / 2 + (i * Math.PI) / 5 + (j[i % 6] - 0.5) * 0.1;
+      var rr = (i % 2 ? r * 0.45 : r) * (1 + (j[(i + 3) % 6] - 0.5) * 0.1);
+      if (i) g.lineTo(x + rr * Math.cos(a), y + rr * Math.sin(a));
+      else g.moveTo(x + rr * Math.cos(a), y + rr * Math.sin(a));
+    }
+    g.closePath();
+  }
 
-  // A decision tree: two branches from the root (dark slate gray and dark red), leaves with rewards, edges as wide as
-  // their causal strength. Click a leaf to change its reward, an edge its strength, a node to sample a path from it
+  // A goal or a reward: a star in dark red
+  function goal(g, x, y, r, j) {
+    wipe(g, function () {
+      star(g, x, y, r + 1, j);
+    });
+    g.strokeStyle = g.fillStyle = RED;
+    star(g, x, y, r, j);
+    g.globalAlpha = 0.5;
+    g.fill();
+    g.globalAlpha = 1;
+    g.lineWidth = 1.5;
+    g.stroke();
+  }
+
+  // A state: the glass wiped clear inside a circle, ink filling it from the bottom up to full (0 to 1), and its outline
+  function state(g, x, y, r, full, j) {
+    wipe(g, function () {
+      g.beginPath();
+      g.arc(x, y, r + 0.6, 0, Math.PI * 2);
+    });
+    if (full > 0) {
+      g.save();
+      g.beginPath();
+      g.arc(x, y, r, 0, Math.PI * 2);
+      g.clip();
+      g.globalAlpha = 0.55;
+      g.fillRect(x - r, y + r - 2 * r * full, 2 * r, 2 * r * full);
+      g.restore();
+    }
+    circle(g, x, y, r, j);
+  }
+
+  // An arrow from a circle of radius ra at a to one of radius rb at b, edge to edge
+  function arrowBetween(g, a, b, ra, rb, size) {
+    var d = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    var ux = (b[0] - a[0]) / d;
+    var uy = (b[1] - a[1]) / d;
+    arrowLine(g, a[0] + ux * ra, a[1] + uy * ra, b[0] - ux * rb, b[1] - uy * rb, size);
+  }
+
+  // ---- Drawings. Each is made at width DW from y = 0 down to its height h, and note names its card. hit(x, y) says
+  // what a click there does: act changes the drawing, note opens the card on one of its parts ----
+
+  // A decision tree: two branches from the root (dark slate gray and dark red), leaves filled with their rewards,
+  // circles with their values, edges as wide as their causal strength. Click a leaf to change its reward, an edge its
+  // strength, a circle to sample a path from it
   function TreeFigure() {
-    this.h = 150;
+    this.h = 112;
+    this.note = 'tree';
     this.lit = [];
     this.end = null;
     var root = (this.root = this.node(null, SLATE));
@@ -567,13 +440,13 @@
 
   TreeFigure.prototype.layout = function () {
     var order = this.leaves();
-    var step = Math.min(150 / order.length, 34);
+    var step = Math.min(100 / order.length, 25);
     var x0 = DW / 2 - (step * (order.length - 1)) / 2;
     order.forEach(function (n, i) {
       n.x = x0 + i * step;
     });
     (function place(n) {
-      n.y = 34 + n.depth * 27;
+      n.y = 9 + n.depth * 31;
       if (n.kids.length) {
         n.kids.forEach(place);
         n.x = (n.kids[0].x + n.kids[n.kids.length - 1].x) / 2;
@@ -581,73 +454,53 @@
     })(this.root);
   };
 
-  TreeFigure.prototype.draw = function (api) {
-    var g = api.g;
+  TreeFigure.prototype.draw = function (g) {
     var lit = this.lit;
-    title(api, ['planning: a ', ['decision tree', 'tree']]);
     this.each(function (n) {
       if (!n.parent) return;
       var on = lit.indexOf(n) >= 0;
       var c = curve(n.parent.x, n.parent.y, n.x, n.y);
-      var width = 1.4 + 2.2 * n.w;
+      var width = 1.3 + 2 * n.w;
       g.strokeStyle = n.color;
       if (on) {
         g.globalAlpha = 0.2;
-        g.lineWidth = width + 7;
+        g.lineWidth = width + 6;
         marker(g, c, n.j);
       }
       g.globalAlpha = on ? 1 : 0.55 + 0.4 * n.w;
       g.lineWidth = width + (on ? 1 : 0);
       marker(g, c, n.j);
-      g.lineWidth = 1.5;
-      chevron(g, c, 0.62, 3.6 + 1.6 * n.w);
+      g.lineWidth = 1.4;
+      chevron(g, c, 0.62, 3.2 + 1.4 * n.w);
     });
     g.globalAlpha = 1;
-    var self = this;
     this.each(function (n) {
       g.strokeStyle = g.fillStyle = n.color;
       if (n.kids.length) {
-        var r = n.parent ? 4.8 : 6.5;
-        wipe(g, function () {
-          g.beginPath();
-          g.arc(n.x, n.y, r + 0.6, 0, Math.PI * 2);
-        });
-        var full = clamp((n.v + 2) / 7, 0, 1);
-        if (full > 0) {
-          g.save();
-          g.beginPath();
-          g.arc(n.x, n.y, r, 0, Math.PI * 2);
-          g.clip();
-          g.globalAlpha = 0.55;
-          g.fillRect(n.x - r, n.y + r - 2 * r * full, 2 * r, 2 * r * full);
-          g.restore();
-        }
-        g.lineWidth = n.parent ? 1.7 : 2;
-        circle(g, n.x, n.y, r, n.j);
-      } else {
-        var s = 8.5;
-        wipe(g, function () {
-          g.beginPath();
-          g.rect(n.x - s / 2 - 1, n.y - s / 2 - 1, s + 2, s + 2);
-        });
-        rect(g, n.x - s / 2, n.y - s / 2, s, s, n.j);
-        g.globalAlpha = 0.12 + 0.7 * clamp((n.r + 2) / 7, 0, 1);
-        g.fill();
-        g.globalAlpha = 1;
-        g.lineWidth = 1.6;
-        g.stroke();
-        say(api, [signed(n.r)], n.x, n.y + 13, 11, SLATE, true);
+        g.lineWidth = n.parent ? 1.6 : 1.9;
+        state(g, n.x, n.y, n.parent ? 4.6 : 6, clamp((n.v + 2) / 7, 0, 1), n.j);
+        return;
       }
+      var s = 8.5;
+      wipe(g, function () {
+        g.beginPath();
+        g.rect(n.x - s / 2 - 1, n.y - s / 2 - 1, s + 2, s + 2);
+      });
+      var full = clamp((n.r + 2) / 7, 0, 1);
+      if (full > 0) {
+        g.globalAlpha = 0.6;
+        g.fillRect(n.x - s / 2, n.y + s / 2 - s * full, s, s * full);
+        g.globalAlpha = 1;
+      }
+      g.lineWidth = 1.6;
+      rect(g, n.x - s / 2, n.y - s / 2, s, s, n.j);
+      g.stroke();
     });
     if (this.end) {
       g.strokeStyle = this.end.color;
       g.lineWidth = 1.5;
       circle(g, this.end.x, this.end.y, 9, this.end.j);
     }
-    var root = this.root;
-    say(api, [['V', 'value'], ' ' + signed(root.v)], root.x + 11, root.y, 11.5);
-    say(api, ['s'], root.x - 18, root.y, 12);
-    say(api, ['edge width: ', ['causal strength', 'strength']], DW / 2, self.h - 6, 10, SLATE, true);
   };
 
   TreeFigure.prototype.hit = function (x, y) {
@@ -655,9 +508,8 @@
     var found = null;
     var near = 9;
     this.each(function (n) {
-      var leaf = !n.kids.length;
       var d = Math.hypot(n.x - x, n.y - y);
-      if (leaf && Math.abs(n.x - x) < 9 && y > n.y - 7 && y < n.y + 19) d = Math.min(d, 1);
+      if (!n.kids.length && Math.abs(n.x - x) < 8 && Math.abs(n.y - y) < 8) d = Math.min(d, 1);
       if (d < near) {
         near = d;
         found = n;
@@ -667,7 +519,7 @@
       var n = found;
       if (!n.kids.length) {
         return {
-          tip: 'Reward ' + signed(n.r) + ': click to raise it, shift-click to lower it',
+          tip: 'Click to raise this reward, shift-click to lower it',
           act: function (down) {
             n.r = stepIn(REWARDS, n.r, down);
             self.backup(self.root);
@@ -675,7 +527,7 @@
         };
       }
       return {
-        tip: (n.parent ? 'Value ' : 'V ') + signed(n.v) + ': click to sample a path from here',
+        tip: 'Click to sample a path from here',
         act: function () {
           self.sample(n);
         },
@@ -693,7 +545,7 @@
     if (found) {
       var e = found;
       return {
-        tip: 'Causal strength ' + e.w.toFixed(2) + ': click to strengthen it, shift-click to weaken it',
+        tip: 'Click to strengthen this line, shift-click to weaken it',
         act: function (down) {
           e.w = stepIn(STRENGTHS, e.w, down);
         },
@@ -723,177 +575,88 @@
     this.end = null;
   };
 
-  // TD learning against the Rescorla–Wagner rule
-  function LearningFigure() {
-    this.h = 96;
+  // Planning with one's own world model: a head in profile with, inside it, a map of what leads to what (arrows as
+  // thick as they are likely), a star for what is worth having, and a plan branching from a state, its best branch in
+  // red. The map, the star and the plan each have a card, tied to the matching part of the home page's brain
+  var HEAD = [
+    [38, 116, 38, 104, 22, 96, 18, 74],
+    [18, 74, 12, 40, 30, 8, 62, 8],
+    [62, 8, 88, 8, 102, 26, 100, 46],
+    [100, 46, 100, 52, 108, 60, 110, 66],
+    [110, 66, 108, 70, 102, 70, 100, 72],
+    [100, 72, 102, 78, 100, 82, 100, 84],
+    [100, 84, 100, 92, 94, 96, 86, 96],
+    [86, 96, 80, 96, 76, 100, 76, 116],
+  ];
+  var MAP = [[32, 44], [53, 30], [50, 60]];
+  var ROUTES = [[0, 1, 2.6], [0, 2, 1.1], [1, 2, 1.8]];
+
+  function WorldFigure() {
+    this.h = 118;
+    this.note = 'world';
   }
 
-  LearningFigure.prototype.draw = function (api) {
-    title(api, ['learning: ', ['TD', 'td'], ' vs ', ['Rescorla–Wagner', 'rw']]);
-    var x = 14;
-    say(api, [['RW', 'rw'], ':   V ← V + ', ['α', 'alpha'], ['(r − V)', 'delta']], x, 32, 12.5);
-    say(api, [['TD', 'td'], ':   ', ['δ', 'delta'], ' = r + ', ['γ', 'gamma'], 'V(s′) − V(s)'], x, 54, 12.5);
-    say(api, ['          V(s) ← V(s) + αδ'], x, 74, 12.5);
-    say(api, ['TD adds what comes next: γV(s′)'], DW / 2, 91, 10, RED, true);
-  };
-
-  // Softmax choice between a and b, for three inverse temperatures. Click a β to pick out its curve
-  function SoftmaxFigure() {
-    this.h = 148;
-    this.betas = [0.5, 1, 3];
-    this.pick = 2;
-    this.box = { x: 42, y: 44, w: 150, h: 78 };
-  }
-
-  SoftmaxFigure.prototype.draw = function (api) {
-    var g = api.g;
-    var b = this.box;
-    title(api, ['choice: ', ['softmax', 'softmax']]);
-    say(api, ['p(a) = 1 / (1 + e^{−β[Q(a) − Q(b)]})'], DW / 2, 27, 11.5, SLATE, true);
-    g.strokeStyle = SLATE;
-    g.lineWidth = 1.5;
-    arrowLine(g, b.x, b.y + b.h, b.x + b.w + 8, b.y + b.h);
-    arrowLine(g, b.x, b.y + b.h, b.x, b.y - 6);
-    g.lineWidth = 1;
-    g.globalAlpha = 0.5;
-    g.setLineDash([2, 3]);
-    g.beginPath();
-    g.moveTo(b.x, b.y);
-    g.lineTo(b.x + b.w, b.y);
-    g.moveTo(b.x + b.w / 2, b.y);
-    g.lineTo(b.x + b.w / 2, b.y + b.h);
-    g.stroke();
-    g.setLineDash([]);
-    g.globalAlpha = 1;
-    say(api, ['1'], b.x - 8, b.y, 10, SLATE, true);
-    say(api, ['0'], b.x - 8, b.y + b.h, 10, SLATE, true);
-    say(api, ['p(a)'], b.x - 22, b.y + b.h / 2, 10.5, SLATE, true);
-    say(api, ['0'], b.x + b.w / 2, b.y + b.h + 9, 10, SLATE, true);
-    say(api, [['Q(a) − Q(b)', 'dq']], b.x + b.w / 2, b.y + b.h + 21, 10.5, SLATE, true);
-    var self = this;
-    this.betas.forEach(function (beta, k) {
-      var on = k === self.pick;
-      var pts = [];
-      for (var i = 0; i <= 24; i++) {
-        var d = -4 + (8 * i) / 24;
-        pts.push([b.x + (b.w * i) / 24, b.y + b.h - b.h / (1 + Math.exp(-beta * d))]);
-      }
-      g.strokeStyle = on ? RED : SLATE;
-      g.globalAlpha = on ? 1 : 0.6;
-      g.lineWidth = on ? 2.6 : 1.6;
-      for (var p = 1; p < pts.length; p++) marker(g, straight(pts[p - 1][0], pts[p - 1][1], pts[p][0], pts[p][1]), jit(k * 31 + p));
-      g.globalAlpha = 1;
-      var ly = b.y - 2 + k * 15;
-      say(api, [['β', 'beta'], ' = ' + beta], b.x + b.w + 6, ly + 16, 10.5, on ? RED : SLATE);
+  WorldFigure.prototype.draw = function (g) {
+    g.strokeStyle = g.fillStyle = SLATE;
+    g.lineWidth = 2;
+    HEAD.forEach(function (c, i) {
+      marker(g, c, jit(i * 5 + 1));
     });
+    ROUTES.forEach(function (r) {
+      g.lineWidth = r[2];
+      arrowBetween(g, MAP[r[0]], MAP[r[1]], 6.5, 7.5, 3.5);
+    });
+    g.lineWidth = 1.5;
+    MAP.forEach(function (m, i) {
+      state(g, m[0], m[1], 4.5, 0, jit(i + 40));
+    });
+    goal(g, 80, 30, 8.5, jit(77));
+    var root = [67, 66];
+    var best = [84, 86];
+    var other = [55, 88];
+    g.strokeStyle = SLATE;
+    g.globalAlpha = 0.7;
+    g.lineWidth = 1.3;
+    marker(g, straight(root[0], root[1], other[0], other[1]), jit(91));
+    g.globalAlpha = 1;
+    g.strokeStyle = RED;
+    g.lineWidth = 2.6;
+    marker(g, straight(root[0], root[1], best[0], best[1]), jit(92));
+    g.strokeStyle = g.fillStyle = SLATE;
+    g.lineWidth = 1.5;
+    state(g, root[0], root[1], 3.6, 1, jit(93));
+    g.lineWidth = 1.3;
+    state(g, other[0], other[1], 3, 0, jit(94));
+    g.strokeStyle = g.fillStyle = RED;
+    g.lineWidth = 1.5;
+    state(g, best[0], best[1], 3.4, 1, jit(95));
   };
 
-  SoftmaxFigure.prototype.hit = function (x, y) {
-    var b = this.box;
-    var self = this;
-    for (var k = 0; k < this.betas.length; k++) {
-      var ly = b.y - 2 + k * 15 + 16;
-      if (x > b.x + b.w + 4 && x < b.x + b.w + 50 && Math.abs(y - ly) < 7) {
-        var kk = k;
-        return {
-          tip: 'Pick out the curve for β = ' + this.betas[k],
-          act: function () {
-            self.pick = kk;
-          },
-        };
-      }
-    }
+  WorldFigure.prototype.hit = function (x, y) {
+    if (Math.hypot(x - 80, y - 30) < 13) return { note: 'world_r' };
+    if (x > 50 && x < 92 && y > 58 && y < 94) return { note: 'world_q' };
+    if (x > 22 && x < 62 && y > 20 && y < 68) return { note: 'world_p' };
     return null;
   };
 
-  // Offline learning: experience goes into memory, and memories replayed at rest update the values
-  function OfflineFigure() {
-    this.h = 120;
-  }
-
-  OfflineFigure.prototype.draw = function (api) {
-    var g = api.g;
-    title(api, [['offline learning', 'offline'], ' from memory']);
-    var boxes = [
-      { x: 16, y: 26, w: 84, label: 'experience' },
-      { x: 130, y: 26, w: 84, label: ['memory', 'memory'] },
-      { x: 130, y: 66, w: 84, label: ['replay', 'replay'] },
-      { x: 16, y: 66, w: 84, label: 'values Q' },
-    ];
-    boxes.forEach(function (bx, k) {
-      g.strokeStyle = k === 2 ? RED : SLATE;
-      g.lineWidth = 1.6;
-      rect(g, bx.x, bx.y, bx.w, 24, jit(k * 11 + 3));
-      g.stroke();
-      say(api, [bx.label], bx.x + bx.w / 2, bx.y + 12, 11, k === 2 ? RED : SLATE, true);
-    });
-    g.strokeStyle = SLATE;
-    g.lineWidth = 1.5;
-    arrowLine(g, 102, 38, 127, 38);
-    g.strokeStyle = RED;
-    arrowLine(g, 172, 52, 172, 63);
-    arrowLine(g, 128, 78, 103, 78);
-    g.strokeStyle = SLATE;
-    arrowLine(g, 58, 64, 58, 53);
-    say(api, ['at rest'], 172, 96, 9.5, RED, true);
-    say(api, ['each replayed (s,a,r,s′): Q ← Q + αδ'], DW / 2, 112, 10.5, SLATE, true);
-  };
-
-  // The Bellman equation for one person's world model
-  function BellmanFigure() {
-    this.h = 98;
-  }
-
-  BellmanFigure.prototype.draw = function (api) {
-    title(api, ['planning with ', ['person i’s world model', 'indiv']]);
-    say(api, [['Q_{i}(s,a)', 'qi'], ' = ', ['r_{i}(s)', 'ri']], 12, 34, 13);
-    say(api, ['+ ', ['γ', 'gamma'], ' Σ_{s′} ', ['p_{i}(s′|s,a)', 'pi'], ' ', ['max', 'max'], '_{a′} ', ['Q_{i}(s′,a′)', 'qi']], DW / 2, 58, 11.5, SLATE, true);
-    say(api, [['i', 'indiv'], ': one person’s world model, as in the brain'], DW / 2, 82, 10, RED, true);
-    say(api, ['on our home page'], DW / 2, 95, 10, RED, true);
-  };
-
-  // Need and gain: which step to replay or plan next (Mattar & Daw)
-  function NeedGainFigure() {
-    this.h = 104;
-  }
-
-  NeedGainFigure.prototype.draw = function (api) {
-    title(api, ['how to plan: ', ['need × gain', 'evb']]);
-    say(api, [['EVB', 'evb'], '(s_{k}) = ', ['Gain', 'gain'], ' × ', ['Need', 'need']], DW / 2, 32, 13, SLATE, true);
-    say(api, [['Gain', 'gain'], ' = Σ_{a} [π_{new} − π_{old}](a|s_{k}) Q_{new}(s_{k},a)'], DW / 2, 56, 10.5, SLATE, true);
-    say(api, [['Need', 'need'], ' = Σ_{t} ', ['γ', 'gamma'], '^{t} P(s_{t} = s_{k})'], DW / 2, 78, 11.5, SLATE, true);
-    say(api, ['replay where it helps most (Mattar & Daw)'], DW / 2, 98, 9.5, RED, true);
-  };
-
-  // When to plan: take control and plan now, or relinquish it (Sharp & Eldar)
-  function WhenFigure() {
-    this.h = 112;
-  }
-
-  WhenFigure.prototype.draw = function (api) {
-    title(api, [['when to plan', 'when'], ' (Sharp & Eldar)']);
-    say(api, [['V_{take}', 'vtake'], ' = R_{g} ', ['γ', 'gamma'], '^{Δ}     Δ = 3 − d'], 14, 32, 12);
-    say(api, [['V_{relinquish}', 'vtake'], ' = 1  (+ R_{g} γ^{Δ})'], 14, 53, 12);
-    say(api, ['P(ã) = Σ_{n} ', ['p^{(n)}', 'pn'], ' ', ['σ', 'softmax'], '(Q^{(n)}(ã))'], 14, 76, 12);
-    say(api, ['plan now (take control), or delay?'], DW / 2, 102, 10, RED, true);
-  };
-
-  // A grid world: a plan to the goal made with a construal that keeps only some obstacles (Ho et al.). Click an
-  // obstacle to add it to the construal or leave it out; the plan is made again, and fails if it runs into one left out
+  // A grid world: a plan from the dot to the star made with a construal that keeps only some obstacles (Ho et al.).
+  // Click an obstacle to add it to the construal or leave it out; the plan is made again, and fails (a red cross) if it
+  // runs into one left out
   function GridFigure() {
-    this.h = 174;
-    this.cols = 8;
+    this.h = 96;
+    this.note = 'construal';
+    this.cols = 7;
     this.rows = 6;
-    this.cell = 17;
-    this.x0 = (DW - 8 * 17) / 2;
-    this.y0 = 22;
+    this.cell = 15;
+    this.x0 = (DW - 7 * 15) / 2;
+    this.y0 = 3;
     this.start = [0, 5];
-    this.goal = [7, 5];
+    this.goal = [6, 5];
     this.obstacles = [
       { cells: [[3, 2], [3, 3], [3, 4], [3, 5]], on: true },
-      { cells: [[5, 3], [6, 3]], on: false },
-      { cells: [[6, 0], [7, 0]], on: false },
-      { cells: [[0, 0], [1, 0]], on: false },
+      { cells: [[4, 4], [5, 4]], on: false },
+      { cells: [[5, 0], [6, 0]], on: false },
+      { cells: [[1, 3], [1, 4]], on: false },
     ];
     this.plan();
   }
@@ -952,11 +715,9 @@
     return [this.x0 + c * this.cell, this.y0 + r * this.cell];
   };
 
-  GridFigure.prototype.draw = function (api) {
-    var g = api.g;
+  GridFigure.prototype.draw = function (g) {
     var self = this;
     var s = this.cell;
-    title(api, [['task construal', 'construal'], ' in a grid world']);
     g.strokeStyle = SLATE;
     g.globalAlpha = 0.25;
     g.lineWidth = 0.8;
@@ -996,41 +757,34 @@
       });
     });
     g.strokeStyle = RED;
-    g.lineWidth = 2.2;
+    g.lineWidth = 2.1;
     var pts = this.path.map(function (k) {
       var p = self.cellXY(k[0], k[1]);
       return [p[0] + s / 2, p[1] + s / 2];
     });
-    poly(g, pts);
-    for (var i = 2; i < pts.length; i += 3) {
-      g.lineWidth = 1.5;
-      chevron(g, straight(pts[i - 1][0], pts[i - 1][1], pts[i][0], pts[i][1]), 0.6, 4);
+    var corners = pts.filter(function (p, i) {
+      var a = pts[i - 1];
+      var b = pts[i + 1];
+      return !a || !b || (a[0] - p[0]) * (b[1] - p[1]) !== (a[1] - p[1]) * (b[0] - p[0]);
+    });
+    poly(g, corners);
+    for (var i = 2; i < pts.length - 1; i += 3) {
+      g.lineWidth = 1.4;
+      chevron(g, straight(pts[i - 1][0], pts[i - 1][1], pts[i][0], pts[i][1]), 0.6, 3.6);
     }
     this.crashes.forEach(function (k) {
       var p = self.cellXY(k[0], k[1]);
       g.strokeStyle = RED;
-      g.lineWidth = 2.4;
+      g.lineWidth = 2.3;
       line(g, p[0] + 3, p[1] + 3, p[0] + s - 3, p[1] + s - 3);
       line(g, p[0] + s - 3, p[1] + 3, p[0] + 3, p[1] + s - 3);
     });
     var sp = this.cellXY(this.start[0], this.start[1]);
     var gp = this.cellXY(this.goal[0], this.goal[1]);
-    say(api, ['S'], sp[0] + s / 2, sp[1] + s / 2, 11, SLATE, true);
-    say(api, ['G'], gp[0] + s / 2, gp[1] + s / 2, 11, RED, true);
-    var kept = this.obstacles.filter(function (o) {
-      return o.on;
-    }).length;
-    var y = this.y0 + this.rows * s;
-    say(api, [['VOR', 'vor'], '(c) = U(π_{c}) − C(c)'], DW / 2, y + 16, 11.5, SLATE, true);
-    say(
-      api,
-      [kept + ' of ' + this.obstacles.length + ' obstacles kept: ' + (this.crashes.length ? 'the plan runs into one ✗' : (this.path.length - 1) + ' steps ✓')],
-      DW / 2,
-      y + 34,
-      9.5,
-      RED,
-      true
-    );
+    g.strokeStyle = g.fillStyle = SLATE;
+    g.lineWidth = 1.4;
+    state(g, sp[0] + s / 2, sp[1] + s / 2, 4, 1, jit(60));
+    goal(g, gp[0] + s / 2, gp[1] + s / 2, 5.5, jit(61));
   };
 
   GridFigure.prototype.hit = function (x, y) {
@@ -1048,10 +802,277 @@
     });
     if (!o) return null;
     return {
-      tip: o.on ? 'Obstacle in the construal: click to leave it out' : 'Obstacle left out of the construal: click to keep it',
+      tip: o.on ? 'Click to leave this obstacle out of the construal' : 'Click to keep this obstacle in the construal',
       act: function () {
         o.on = !o.on;
         self.plan();
+      },
+    };
+  };
+
+  // Offline learning: at rest (the moon), the steps taken on the way to a reward (the star) are replayed backward (red
+  // hops, the latest darkest), and each replayed step fills the state it leads back to with value. Click to replay the
+  // next step
+  function OfflineFigure() {
+    this.h = 84;
+    this.note = 'offline';
+    this.xs = [12, 34, 56, 78, 103]; // the states along the path, then the reward
+    this.y = 72;
+    this.k = 2; // how many steps have been replayed
+  }
+
+  OfflineFigure.prototype.draw = function (g) {
+    var xs = this.xs;
+    var y = this.y;
+    var i;
+    g.fillStyle = SLATE;
+    g.globalAlpha = 0.6;
+    g.beginPath();
+    g.arc(60, 19, 10, 0, Math.PI * 2);
+    g.fill();
+    g.globalAlpha = 1;
+    wipe(g, function () {
+      g.beginPath();
+      g.arc(65.5, 14.5, 9, 0, Math.PI * 2);
+    });
+    g.strokeStyle = SLATE;
+    g.lineWidth = 1.5;
+    line(g, xs[0], y, xs[4], y);
+    for (i = 0; i < 4; i++) {
+      g.strokeStyle = g.fillStyle = SLATE;
+      g.lineWidth = 1.6;
+      state(g, xs[i], y, 5.5, i >= 4 - this.k ? Math.pow(0.8, 4 - i) : 0, jit(i + 20));
+    }
+    goal(g, xs[4], y, 7.5, jit(29));
+    g.strokeStyle = RED;
+    for (var m = 1; m <= this.k; m++) {
+      var a = xs[5 - m];
+      var b = xs[4 - m];
+      var c = [a - 2, y - 10, a - 5, y - 30, b + 5, y - 30, b + 2, y - 10];
+      g.globalAlpha = m === this.k ? 1 : 0.55;
+      g.lineWidth = m === this.k ? 2.2 : 1.5;
+      marker(g, c, jit(m * 9 + 3));
+      chevron(g, c, 1, 4);
+    }
+    g.globalAlpha = 1;
+  };
+
+  OfflineFigure.prototype.hit = function () {
+    var self = this;
+    return {
+      tip: this.k < 4 ? 'Click to replay the next step back' : 'Click to start again',
+      act: function () {
+        self.k = (self.k + 1) % 5;
+      },
+    };
+  };
+
+  // Need and gain (Mattar & Daw): states on a grid, as large as they are needed (how soon and how often one expects to
+  // be there from where one is, the filled dot), red arrows into a newly found reward (the star) from the states where
+  // an update would gain the most, and a red ring on the state to replay next, where need × gain is largest. Click a
+  // state to move there
+  function NeedGainFigure() {
+    this.h = 90;
+    this.note = 'needgain';
+    this.cols = 5;
+    this.rows = 4;
+    this.sp = 24;
+    this.x0 = 12;
+    this.y0 = 10;
+    this.star = [4, 0];
+    this.you = [0, 3];
+  }
+
+  NeedGainFigure.prototype.xy = function (c, r) {
+    return [this.x0 + c * this.sp, this.y0 + r * this.sp];
+  };
+
+  NeedGainFigure.prototype.cells = function () {
+    var out = [];
+    for (var r = 0; r < this.rows; r++) {
+      for (var c = 0; c < this.cols; c++) {
+        if (c === this.star[0] && r === this.star[1]) continue;
+        var far = Math.abs(c - this.star[0]) + Math.abs(r - this.star[1]);
+        var need = Math.pow(0.72, Math.abs(c - this.you[0]) + Math.abs(r - this.you[1]));
+        out.push({ c: c, r: r, need: need, gain: Math.pow(0.3, far - 1), next: far === 1, size: 2.2 + 4.2 * need });
+      }
+    }
+    return out;
+  };
+
+  NeedGainFigure.prototype.draw = function (g) {
+    var self = this;
+    var cells = this.cells();
+    var sp = this.xy(this.star[0], this.star[1]);
+    g.strokeStyle = SLATE;
+    g.globalAlpha = 0.3;
+    g.lineWidth = 1;
+    for (var r = 0; r < this.rows; r++) {
+      for (var c = 0; c < this.cols; c++) {
+        var p = this.xy(c, r);
+        if (c + 1 < this.cols) line(g, p[0], p[1], p[0] + this.sp, p[1]);
+        if (r + 1 < this.rows) line(g, p[0], p[1], p[0], p[1] + this.sp);
+      }
+    }
+    g.globalAlpha = 1;
+    var best = cells[0];
+    cells.forEach(function (k) {
+      if (k.need * k.gain > best.need * best.gain) best = k;
+      if (!k.next) return;
+      g.strokeStyle = RED;
+      g.lineWidth = 1.6;
+      arrowBetween(g, self.xy(k.c, k.r), sp, k.size + 1.5, 9, 3.5);
+    });
+    cells.forEach(function (k) {
+      var p = self.xy(k.c, k.r);
+      var you = k.c === self.you[0] && k.r === self.you[1];
+      wipe(g, function () {
+        g.beginPath();
+        g.arc(p[0], p[1], k.size + 0.6, 0, Math.PI * 2);
+      });
+      g.strokeStyle = g.fillStyle = SLATE;
+      g.globalAlpha = you ? 1 : 0.1 + 0.4 * k.need;
+      g.beginPath();
+      g.arc(p[0], p[1], you ? k.size - 2.2 : k.size, 0, Math.PI * 2);
+      g.fill();
+      g.globalAlpha = 1;
+      g.lineWidth = 1.3;
+      circle(g, p[0], p[1], k.size, jit(k.c * 7 + k.r * 3 + 50));
+    });
+    goal(g, sp[0], sp[1], 7.5, jit(57));
+    var bp = this.xy(best.c, best.r);
+    g.strokeStyle = RED;
+    g.lineWidth = 2;
+    circle(g, bp[0], bp[1], best.size + 4.5, jit(58));
+  };
+
+  NeedGainFigure.prototype.hit = function (x, y) {
+    var c = Math.round((x - this.x0) / this.sp);
+    var r = Math.round((y - this.y0) / this.sp);
+    var p = this.xy(c, r);
+    if (c < 0 || r < 0 || c >= this.cols || r >= this.rows || Math.hypot(p[0] - x, p[1] - y) > 10) return null;
+    if (c === this.star[0] && r === this.star[1]) return null;
+    var self = this;
+    return {
+      tip: 'Click to move yourself here',
+      act: function () {
+        self.you = [c, r];
+      },
+    };
+  };
+
+  // When to plan (Sharp & Eldar): a three-step decision tree whose paths cross over, with the goal at one end (the
+  // star). A state is red where the choice decides whether the goal is reached: plan there. It is dashed where both
+  // moves keep the goal in reach: better to let chance choose, delaying planning. Click an end state to make it the goal
+  var STEPS = {
+    A: { at: [60, 8], kids: ['B', 'C'] },
+    B: { at: [34, 36], kids: ['D', 'E'] },
+    C: { at: [86, 36], kids: ['E', 'F'] },
+    D: { at: [16, 64], kids: ['W', 'X'] },
+    E: { at: [60, 64], kids: ['X', 'Y'] },
+    F: { at: [104, 64], kids: ['Y', 'Z'] },
+    W: { at: [8, 96], kids: [] },
+    X: { at: [40, 96], kids: [] },
+    Y: { at: [80, 96], kids: [] },
+    Z: { at: [112, 96], kids: [] },
+  };
+
+  function WhenFigure() {
+    this.h = 104;
+    this.note = 'when';
+    this.goal = 'X';
+  }
+
+  WhenFigure.prototype.reaches = function (k) {
+    var self = this;
+    return (
+      k === this.goal ||
+      STEPS[k].kids.some(function (c) {
+        return self.reaches(c);
+      })
+    );
+  };
+
+  // How many of a state's moves keep the goal in reach
+  WhenFigure.prototype.live = function (k) {
+    var self = this;
+    return STEPS[k].kids.filter(function (c) {
+      return self.reaches(c);
+    }).length;
+  };
+
+  WhenFigure.prototype.draw = function (g) {
+    var self = this;
+    Object.keys(STEPS).forEach(function (k, i) {
+      var n = STEPS[k];
+      var live = self.live(k);
+      n.kids.forEach(function (c, m) {
+        var b = STEPS[c].at;
+        var cv = curve(n.at[0], n.at[1], b[0], b[1]);
+        var on = live && self.reaches(c);
+        g.strokeStyle = on ? RED : SLATE;
+        g.globalAlpha = on ? 0.95 : 0.4;
+        g.lineWidth = on ? 1.9 : 1.3;
+        marker(g, cv, jit(i * 4 + m + 70));
+        g.lineWidth = 1.3;
+        chevron(g, cv, 0.6, 3.5);
+      });
+    });
+    g.globalAlpha = 1;
+    Object.keys(STEPS).forEach(function (k, i) {
+      var n = STEPS[k];
+      var x = n.at[0];
+      var y = n.at[1];
+      if (!n.kids.length) {
+        if (k === self.goal) {
+          goal(g, x, y, 7, jit(i + 80));
+          return;
+        }
+        wipe(g, function () {
+          g.beginPath();
+          g.rect(x - 4.5, y - 4.5, 9, 9);
+        });
+        g.strokeStyle = SLATE;
+        g.globalAlpha = 0.7;
+        g.lineWidth = 1.5;
+        rect(g, x - 3.5, y - 3.5, 7, 7, jit(i + 80));
+        g.stroke();
+        g.globalAlpha = 1;
+        return;
+      }
+      var live = self.live(k);
+      if (live === 1) {
+        g.strokeStyle = g.fillStyle = RED;
+        g.lineWidth = 1.8;
+        state(g, x, y, 5.2, 1, jit(i + 80));
+      } else if (live === 2) {
+        g.strokeStyle = g.fillStyle = SLATE;
+        g.lineWidth = 1.5;
+        g.setLineDash([2, 2.4]);
+        state(g, x, y, 5.2, 0, jit(i + 80));
+        g.setLineDash([]);
+      } else {
+        g.strokeStyle = g.fillStyle = SLATE;
+        g.globalAlpha = 0.4;
+        g.lineWidth = 1.3;
+        state(g, x, y, 4.6, 0, jit(i + 80));
+        g.globalAlpha = 1;
+      }
+    });
+  };
+
+  WhenFigure.prototype.hit = function (x, y) {
+    var self = this;
+    var found = null;
+    Object.keys(STEPS).forEach(function (k) {
+      var n = STEPS[k];
+      if (!n.kids.length && Math.hypot(n.at[0] - x, n.at[1] - y) < 9) found = k;
+    });
+    if (!found || found === this.goal) return null;
+    return {
+      tip: 'Click to make this the goal',
+      act: function () {
+        self.goal = found;
       },
     };
   };
@@ -1062,7 +1083,6 @@
     this.side = side;
     this.figures = figures;
     this.on = false;
-    this.hots = [];
     this.canvas = document.createElement('canvas');
     this.canvas.className = 'glass-pane';
     this.canvas.setAttribute('aria-hidden', 'true');
@@ -1071,20 +1091,21 @@
     var self = this;
     this.canvas.addEventListener('click', function (e) {
       e.stopPropagation();
-      self.click(self.target(e), e);
+      self.click(e);
     });
     this.canvas.addEventListener('mousemove', function (e) {
-      var t = self.target(e);
-      self.canvas.style.cursor = t ? 'pointer' : 'default';
-      var tip = t ? t.tip || 'Click for a note on ' + NOTES[t.note].title : '';
+      var spot = self.locate(e);
+      var hit = spot && spot.hit;
+      self.canvas.style.cursor = spot ? 'pointer' : 'default';
+      var tip = !spot ? '' : hit && hit.tip ? hit.tip : hit && hit.note ? NOTES[hit.note].title : 'Click for a description';
       if (self.canvas.title !== tip) self.canvas.title = tip;
     });
   }
 
-  // The pane runs the full height of the canvas against the window's edge, as wide as the open space allows; the
-  // figures are scaled to fit it and spread down it
+  // The pane runs the full height of the canvas against the window's edge; the drawings are scaled to its width and
+  // spread evenly down it, with as much space between them as above the first and below the last
   Pane.prototype.fit = function (x, w, top, h) {
-    this.on = w >= MIN_SIDE && h >= 360;
+    this.on = w >= MIN_PANE && h >= 320;
     this.canvas.style.display = this.on ? 'block' : 'none';
     if (!this.on) return;
     var st = this.canvas.style;
@@ -1099,14 +1120,14 @@
     this.h = h;
     var pw = w - 4;
     this.pane = { x: this.side === 'left' ? 0 : w - pw, w: pw };
+    var n = this.figures.length;
     var sum = 0;
     this.figures.forEach(function (f) {
       sum += f.h;
     });
-    var pad = 16;
-    var scale = Math.min(1.3, (pw - 18) / DW, (h - 2 * pad - 18 * (this.figures.length - 1)) / sum);
-    var gap = clamp((h - 2 * pad - sum * scale) / (this.figures.length - 1), 10, 70);
-    var y = (h - (sum * scale + gap * (this.figures.length - 1))) / 2;
+    var scale = Math.min(1.1, (pw - 14) / DW, (h - (n + 1) * 24) / sum);
+    var gap = (h - sum * scale) / (n + 1);
+    var y = gap;
     var x0 = this.pane.x + (pw - DW * scale) / 2;
     this.figures.forEach(function (f) {
       f.at = { x: x0, y: y, s: scale };
@@ -1126,17 +1147,12 @@
     lg.clearRect(0, 0, this.layer.width, this.layer.height);
     lg.lineCap = 'round';
     lg.lineJoin = 'round';
-    var hots = (this.hots = []);
     this.figures.forEach(function (f) {
       var a = f.at;
       lg.setTransform(dpr * a.s, 0, 0, dpr * a.s, dpr * a.x, dpr * a.y);
       lg.globalAlpha = 1;
-      f.draw({
-        g: lg,
-        hot: function (x, y, w, h, t) {
-          hots.push({ x: a.x + x * a.s, y: a.y + y * a.s, w: w * a.s, h: h * a.s, t: t });
-        },
-      });
+      lg.setLineDash([]);
+      f.draw(lg);
     });
     ink(g, this.layer, 0.28, 0.4);
   };
@@ -1166,52 +1182,52 @@
     g.stroke();
   };
 
-  // What a click at the pointer does: a term's note, else the figure's own action there
-  Pane.prototype.target = function (e) {
+  // The drawing under the pointer, if any: what a click there does, and where the drawing is on the screen
+  Pane.prototype.locate = function (e) {
     var box = this.canvas.getBoundingClientRect();
     var x = e.clientX - box.left;
     var y = e.clientY - box.top;
-    for (var i = 0; i < this.hots.length; i++) {
-      var h = this.hots[i];
-      if (x >= h.x && x <= h.x + h.w && y >= h.y && y <= h.y + h.h) {
-        var t = h.t;
-        t.rect = { x: box.left + h.x, y: box.top + h.y, w: h.w, h: h.h };
-        return t;
-      }
-    }
     for (var k = 0; k < this.figures.length; k++) {
       var f = this.figures[k];
-      if (!f.hit) continue;
       var a = f.at;
       var fx = (x - a.x) / a.s;
       var fy = (y - a.y) / a.s;
-      if (fx < 0 || fy < 0 || fx > DW || fy > f.h) continue;
-      var hit = f.hit(fx, fy);
-      if (hit) return hit;
+      if (fx < -6 || fy < -6 || fx > DW + 6 || fy > f.h + 6) continue;
+      return { f: f, hit: f.hit ? f.hit(fx, fy) : null, rect: { x: box.left, y: box.top + a.y, w: box.width, h: f.h * a.s } };
     }
     return null;
   };
 
-  Pane.prototype.click = function (t, e) {
-    if (t && t.note) {
-      note.open(t.note, t.rect, this.side);
-      return;
-    }
-    note.close();
-    if (t && t.act) {
-      t.act(e.shiftKey);
-    } else {
+  // A click on a drawing opens its card (or the card on the part clicked) and changes the drawing where it changes; a
+  // second click on a drawing that does not change closes the card. A click on the bare glass closes it too
+  Pane.prototype.click = function (e) {
+    var spot = this.locate(e);
+    if (!spot) {
+      note.close();
       this.figures.forEach(function (f) {
         if (f.clear) f.clear();
       });
+      this.draw();
+      return;
     }
-    this.draw();
+    var hit = spot.hit;
+    var key = (hit && hit.note) || spot.f.note;
+    if (hit && hit.act) {
+      hit.act(e.shiftKey);
+      this.draw();
+      if (note.key !== key) note.open(key, spot.rect, this.side);
+    } else if (note.key === key) {
+      note.close();
+    } else {
+      note.open(key, spot.rect, this.side);
+    }
   };
 
-  // ---- Notes: a card beside the term, with what it is, how it relates to the field and key papers ----
+  // ---- Cards: beside the pane, level with the drawing, with what it shows, its key equation and key papers ----
 
   var note = {
     el: null,
+    key: null,
     open: function (key, at, side) {
       var n = NOTES[key];
       if (!n) return;
@@ -1237,10 +1253,15 @@
         });
       }
       var home = document.querySelector('.wm-hero');
-      var html = '<button type="button" class="gn-close" aria-label="Close">×</button><strong></strong><p></p>';
-      this.el.innerHTML = html;
+      this.el.innerHTML = '<button type="button" class="gn-close" aria-label="Close">×</button><strong></strong><p></p>';
       this.el.querySelector('strong').textContent = n.title;
       this.el.querySelector('p').textContent = n.text;
+      if (n.eq) {
+        var eq = document.createElement('p');
+        eq.className = 'gn-eq';
+        eq.innerHTML = n.eq; // written above, in this file
+        this.el.appendChild(eq);
+      }
       if (n.wm) {
         var a = document.createElement('a');
         a.className = 'gn-wm';
@@ -1261,14 +1282,15 @@
         this.el.appendChild(ul);
       }
       this.el.hidden = false;
+      this.key = key;
       var w = this.el.offsetWidth;
       var h = this.el.offsetHeight;
-      var left = side === 'left' ? at.x + at.w + 12 : at.x - w - 12;
+      var left = side === 'left' ? at.x + at.w + 10 : at.x - w - 10;
       left = clamp(left, 8, window.innerWidth - w - 8);
-      var top = clamp(at.y - 12, 8, window.innerHeight - h - 8);
+      var top = clamp(at.y, 8, window.innerHeight - h - 8);
       this.el.style.left = left + 'px';
       this.el.style.top = top + 'px';
-      // On the home page, the Bellman equation's terms also open their part of the world-model brain
+      // On the home page, the parts of the world model also open their part of the brain
       if (n.wm && home) {
         var part = home.querySelector('.wm-node[data-wm="' + n.wm + '"]');
         if (part) {
@@ -1280,6 +1302,7 @@
     },
     close: function () {
       if (this.el) this.el.hidden = true;
+      this.key = null;
     },
   };
 
@@ -1287,7 +1310,8 @@
 
   var panes = [];
 
-  // The open space either side of the text column: the content box's side padding, less a gap
+  // Thin panes against the window's edges, in the open space either side of the text column (the content box's side
+  // padding, less a gap)
   function fit() {
     var card = document.querySelector('.main-content > .content-card');
     if (!card) return;
@@ -1296,12 +1320,12 @@
     var nav = document.getElementById('navbar');
     var top = nav ? Math.round(nav.getBoundingClientRect().bottom) : 0;
     var h = window.innerHeight - top;
-    var lw = Math.floor(parseFloat(cs.paddingLeft) - GAP);
-    var rw = Math.floor(parseFloat(cs.paddingRight) - GAP);
+    var lw = Math.min(PANE, Math.floor(parseFloat(cs.paddingLeft) - GAP));
+    var rw = Math.min(PANE, Math.floor(parseFloat(cs.paddingRight) - GAP));
     if (!panes.length) {
       panes = [
-        new Pane('left', [new TreeFigure(), new LearningFigure(), new SoftmaxFigure(), new OfflineFigure()]),
-        new Pane('right', [new BellmanFigure(), new NeedGainFigure(), new WhenFigure(), new GridFigure()]),
+        new Pane('left', [new TreeFigure(), new WorldFigure(), new GridFigure()]),
+        new Pane('right', [new OfflineFigure(), new NeedGainFigure(), new WhenFigure()]),
       ];
     }
     note.close();
@@ -1317,11 +1341,4 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fit);
   else fit();
-  if (document.fonts && document.fonts.load) {
-    document.fonts.load('600 12px "Klee One"', 'sVQγδαβπσΣΔ′ã⁽⁾').then(function () {
-      panes.forEach(function (p) {
-        if (p.on) p.draw();
-      });
-    });
-  }
 })();

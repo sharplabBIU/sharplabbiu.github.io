@@ -1759,7 +1759,7 @@ body {
   z-index: 2;
 }
 
-// A note on a term written on the glass: a card beside it, with key papers
+// A card describing a drawing on the glass, beside the pane: what it shows, its key equation and key papers
 .glass-note {
   position: fixed;
   z-index: 1040;
@@ -1785,6 +1785,22 @@ body {
 
   p {
     margin: 0 0 0.5rem;
+  }
+
+  .gn-eq {
+    margin-bottom: 0.6rem;
+    padding: 0.4rem 0.6rem;
+    background-color: #eef7f7;
+    border-radius: 6px;
+    color: #2f4f4f;
+    font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+    font-size: 1.02rem;
+    line-height: 1.5;
+
+    sub,
+    sup {
+      font-size: 0.7em;
+    }
   }
 
   a {
