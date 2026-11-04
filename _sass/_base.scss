@@ -789,15 +789,31 @@ footer .footer-content {
       font-weight: 700;
     }
 
+    // Small photos, all one height, in centred rows; each opens large when clicked (assets/js/photo-viewer.js)
     .adventures-row {
       display: flex;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 8px;
+    }
+
+    .adventure-photo {
+      display: block;
+      flex: none;
+      overflow: hidden;
+      border-radius: 4px;
+      cursor: zoom-in;
 
       img {
         display: block;
-        min-width: 0;
-        height: auto;
+        width: auto;
+        height: 128px;
+        transition: transform 0.2s ease;
+      }
+
+      &:hover img,
+      &:focus-visible img {
+        transform: scale(1.05);
       }
     }
 
@@ -820,6 +836,95 @@ footer .footer-content {
   ul.team-list.team-minor li {
     margin-bottom: 0.2rem;
   }
+}
+
+@media (max-width: 575.98px) {
+  .team .lab-adventures .adventure-photo img {
+    height: 96px;
+  }
+}
+
+// Photo viewer (assets/js/photo-viewer.js): a photo large over the darkened page, with its caption under it, a close
+// button and arrows to the previous and next photos
+.photo-viewer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 4rem;
+  background-color: rgba(0, 0, 0, 0.88);
+
+  &[hidden] {
+    display: none;
+  }
+
+  figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: unquote("calc(100vh - 8rem)");
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  figcaption {
+    margin-top: 0.75rem;
+    color: #fffafa; // snow
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  button {
+    position: absolute;
+    padding: 0.5rem 1rem;
+    border: 0;
+    background: none;
+    color: #fffafa;
+    font-size: 2.6rem;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.8;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 1;
+    }
+  }
+
+  .pv-close {
+    top: 0.5rem;
+    right: 0.75rem;
+  }
+
+  .pv-prev,
+  .pv-next {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .pv-prev {
+    left: 0.5rem;
+  }
+
+  .pv-next {
+    right: 0.5rem;
+  }
+}
+
+body.pv-open {
+  overflow: hidden;
 }
 
 // Base text about 15% larger than the 1rem default

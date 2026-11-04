@@ -25,22 +25,27 @@ dog_photos:
 {% capture lab_adventures %}
   <section class="lab-adventures" aria-labelledby="lab-adventures">
     <h2 id="lab-adventures">Lab Adventures</h2>
-    <!-- Each photo's flex share is its aspect ratio, so the photos in a row line up at one height -->
+    <!-- Small photos, all one height, each a link to the full photo, which opens large over the page -->
     <div class="adventures-row">
       {% for photo in page.lab_photos %}
-        {% assign ratio = photo.w | times: 1.0 | divided_by: photo.h %}
-        <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" width="{{ photo.w }}" height="{{ photo.h }}" alt="{{ photo.alt }}" loading="lazy" style="flex: {{ ratio }} 1 {{ ratio | times: 240 | round }}px">
+        {% assign src = '/assets/img/lab/' | append: photo.src | relative_url %}
+        <a class="adventure-photo" href="{{ src }}">
+          <img src="{{ src }}" width="{{ photo.w }}" height="{{ photo.h }}" alt="{{ photo.alt }}" loading="lazy">
+        </a>
       {% endfor %}
     </div>
     <figure class="adventures-dog">
       <div class="adventures-row">
         {% for photo in page.dog_photos %}
-          {% assign ratio = photo.w | times: 1.0 | divided_by: photo.h %}
-          <img src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" width="{{ photo.w }}" height="{{ photo.h }}" alt="{{ photo.alt }}" loading="lazy" style="flex: {{ ratio }} 1 {{ ratio | times: 240 | round }}px">
+          {% assign src = '/assets/img/lab/' | append: photo.src | relative_url %}
+          <a class="adventure-photo" href="{{ src }}">
+            <img src="{{ src }}" width="{{ photo.w }}" height="{{ photo.h }}" alt="{{ photo.alt }}" loading="lazy">
+          </a>
         {% endfor %}
       </div>
       <figcaption>Our official lab dog, Dina!</figcaption>
     </figure>
+    <script src="{{ '/assets/js/photo-viewer.js' | relative_url | bust_file_cache }}" defer></script>
   </section>
 {% endcapture %}
 <div class="team">
