@@ -456,10 +456,10 @@ footer.fixed-bottom {
 }
 
 // The footer: a black bar the full width of the window at the end of the page, right below the content box
-// (and over the decision trees, which are fixed behind the content)
+// (and over the decision trees, which are fixed beside the content)
 footer.sticky-bottom {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   font-size: 0.86rem;
   background-color: $bar-color;
 
@@ -1642,7 +1642,8 @@ footer > .container {
 // Page and content box
 // Between the black header and footer bars the page is white with a faint hint of cyan. Each page's text sits in a
 // column $text-column-width wide, centred in the window, with decision trees in the open space either side of it
-// (assets/js/decision-trees.js: two canvases fixed below the header, behind the content and the footer)
+// (assets/js/decision-trees.js: two canvases fixed below the header, over the content box's side padding, which
+// they leave clear of the text, and under the footer; they respond to clicks)
 body {
   background-color: $card-color;
 }
@@ -1650,8 +1651,7 @@ body {
 .dtree {
   display: none;
   position: fixed;
-  z-index: 0;
-  pointer-events: none;
+  z-index: 2;
 }
 
 // Typeface: Inter for all text (loaded by the Google Fonts link in _config.yml), the text in the content boxes
