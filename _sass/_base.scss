@@ -456,7 +456,7 @@ footer.fixed-bottom {
 }
 
 // The footer: a black bar the full width of the window at the end of the page, right below the content box
-// (and over the decision trees, which are fixed beside the content)
+// (and over the glass panes, which are fixed beside the content)
 footer.sticky-bottom {
   position: relative;
   z-index: 3;
@@ -1746,17 +1746,79 @@ footer > .container {
 
 // Page and content box
 // Between the black header and footer bars the page is white with a faint hint of cyan. Each page's text sits in a
-// column $text-column-width wide, centred in the window, with decision trees in the open space either side of it
-// (assets/js/decision-trees.js: two canvases fixed below the header, over the content box's side padding, which
-// they leave clear of the text, and under the footer; they respond to clicks)
+// column $text-column-width wide, centred in the window, with a pane of glass against each edge of the window in the
+// open space either side of it (assets/js/glass-panes.js: two canvases fixed below the header, over the content box's
+// side padding, which they leave clear of the text, and under the footer; they respond to clicks)
 body {
   background-color: $card-color;
 }
 
-.dtree {
+.glass-pane {
   display: none;
   position: fixed;
   z-index: 2;
+}
+
+// A note on a term written on the glass: a card beside it, with key papers
+.glass-note {
+  position: fixed;
+  z-index: 1040;
+  width: 320px;
+  max-width: unquote("calc(100vw - 16px)");
+  padding: 0.9rem 2.2rem 0.9rem 1rem;
+  background-color: $white-color;
+  color: $black-color;
+  border: 1px solid #c9d2e3;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  font-size: 0.92rem;
+  line-height: 1.4;
+
+  &[hidden] {
+    display: none;
+  }
+
+  strong {
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  p {
+    margin: 0 0 0.5rem;
+  }
+
+  a {
+    color: #8b0000; // dark red, as on the glass
+    text-decoration: underline;
+  }
+
+  .gn-wm {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    font-size: 0.85rem;
+  }
+
+  li + li {
+    margin-top: 0.2rem;
+  }
+
+  .gn-close {
+    position: absolute;
+    top: 0.35rem;
+    right: 0.5rem;
+    border: 0;
+    background: none;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    color: $black-color;
+  }
 }
 
 // Typeface: Inter for all text (loaded by the Google Fonts link in _config.yml), the text in the content boxes

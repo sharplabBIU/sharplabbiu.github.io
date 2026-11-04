@@ -1,4 +1,5 @@
-// Home-page world-model hero: click (or press Enter/Space on) a part of the diagram to open its explanation bubble
+// Home-page world-model hero: click (or press Enter/Space on) a part of the diagram to open its explanation bubble.
+// A link to #wm-model, #wm-self, #wm-world, #wm-goals or #wm-tasks (as in the notes on the glass panes) opens that part
 (function () {
   var hero = document.querySelector('.wm-hero');
   if (!hero) return;
@@ -25,4 +26,15 @@
   });
   document.addEventListener('click', function (e) { if (!e.target.closest('.wm-pop')) closeAll(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+  function fromHash() {
+    var m = location.hash.match(/^#wm-(model|self|world|goals|tasks)$/);
+    if (!m) return;
+    var pop = hero.querySelector('.wm-pop[data-for="' + m[1] + '"]');
+    var node = hero.querySelector('.wm-node[data-wm="' + m[1] + '"]');
+    closeAll();
+    if (pop && node) { pop.hidden = false; node.classList.add('is-open'); }
+    hero.scrollIntoView({ block: 'center' });
+  }
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
 })();
