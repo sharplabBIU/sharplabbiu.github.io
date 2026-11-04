@@ -1,5 +1,5 @@
 // Glass panes along the left and right edges of the window (wider windows only), beside the text column: thin panes of
-// black glass with drawings on them in light cyan (as the header's text) and pale orange marker, and no writing. Left,
+// aliceblue glass with drawings on them in dark slate gray (as the text) and orange marker, and no writing. Left,
 // how to predict and plan: forward and backward prediction (successor and predecessor representations, Sharp & Eldar),
 // planning with one's own world model, and task construal in a grid world (Ho et al.).
 // Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
@@ -9,8 +9,8 @@
 (function () {
   'use strict';
 
-  var INK = '#e0ffff'; // light cyan, as the header's text
-  var ORANGE = '#ffc080'; // pale orange
+  var INK = '#2f4f4f'; // dark slate gray, as the text
+  var ORANGE = '#e07020'; // orange, deep enough to show on the light glass
   var DW = 120; // the width the drawings are made at, before scaling to the pane
   var PANE = 140; // the widest a pane gets
   var MIN_PANE = 104; // the narrowest open space that gets a pane
@@ -43,7 +43,7 @@
     predict: {
       title: 'Forward and backward prediction',
       text:
-        'Two ways to predict with a map of the world. From a state (filled), the successor representation predicts which states will follow it, and how soon (light cyan); the predecessor representation predicts which states came before it (orange). Each circle fills with how much that state is expected, discounted by how many steps away it is. Which is more efficient depends on the world: where paths diverge, possible futures outnumber the present, so it pays to predict backward from a goal to what leads to it; where paths converge, it pays to predict forward. People adapt accordingly, using more backward prediction where paths diverge and more forward prediction where they converge. Click a state to predict from it.',
+        'Two ways to predict with a map of the world. From a state (filled), the successor representation predicts which states will follow it, and how soon (gray); the predecessor representation predicts which states came before it (orange). Each circle fills with how much that state is expected, discounted by how many steps away it is. Which is more efficient depends on the world: where paths diverge, possible futures outnumber the present, so it pays to predict backward from a goal to what leads to it; where paths converge, it pays to predict forward. People adapt accordingly, using more backward prediction where paths diverge and more forward prediction where they converge. Click a state to predict from it.',
       eq: 'M<sub>SR</sub>(s,s′) = E[ Σ<sub>t</sub> γ<sup>t</sup> 𝟙(s<sub>t</sub> = s′) | s<sub>0</sub> = s ]<br>M<sub>PR</sub>(s,s′) = E[ Σ<sub>t</sub> γ<sup>t</sup> 𝟙(s<sub>−t</sub> = s′) | s<sub>0</sub> = s ]',
       links: [LAB.direction, REF.dayan1993],
     },
@@ -240,7 +240,7 @@
     var off = layer.width * 2 + 50; // the layer is drawn off the canvas so only its shadow lands
     g.save();
     g.setTransform(1, 0, 0, 1, 0, 0);
-    g.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    g.shadowColor = 'rgba(20, 40, 70, 0.22)';
     g.shadowBlur = 2.5 * dpr;
     g.shadowOffsetX = off + 2.5 * dpr;
     g.shadowOffsetY = 3.5 * dpr;
@@ -318,7 +318,7 @@
       g.beginPath();
       g.arc(x, y, r, 0, Math.PI * 2);
       g.clip();
-      g.globalAlpha = 0.7;
+      g.globalAlpha = 0.55;
       g.fillRect(x - r, y + r - 2 * r * full, 2 * r, 2 * r * full);
       g.restore();
     }
@@ -338,7 +338,7 @@
 
   // Forward and backward prediction (Sharp & Eldar): states in rows, time running down, paths converging into the
   // middle and diverging after it. From the state predicted from (filled), the successor representation runs forward
-  // to the states that follow it (light cyan) and the predecessor representation backward to the states that came
+  // to the states that follow it (dark slate gray) and the predecessor representation backward to the states that came
   // before it (orange), each state filling with how much it is expected there, discounted by the steps away. Click a
   // state to predict from it
   var ROWS = [[22, 60, 98], [40, 80], [60], [40, 80], [22, 60, 98]];
@@ -1020,32 +1020,32 @@
       lg.setLineDash([]);
       f.draw(lg);
     });
-    ink(g, this.layer, 0.08, 0.3);
+    ink(g, this.layer, 0.28, 0.4);
   };
 
-  // A tall pane of black glass against the window's edge, a sheen across it and its cut edge catching the light, with a
+  // A tall pane of aliceblue glass against the window's edge, a sheen across it and its cut edge a little blue, with a
   // soft shadow on the wall behind it, toward the text
   Pane.prototype.drawGlass = function () {
     var g = this.g;
     var p = this.pane;
     g.save();
-    g.shadowColor = 'rgba(0, 0, 0, 0.3)';
+    g.shadowColor = 'rgba(20, 40, 70, 0.18)';
     g.shadowBlur = 14;
     g.shadowOffsetX = this.side === 'left' ? 3 : -3;
     g.shadowOffsetY = 4;
     var tint = g.createLinearGradient(p.x, 0, p.x + p.w, this.h);
-    tint.addColorStop(0, 'rgba(8, 10, 12, 0.97)');
-    tint.addColorStop(1, 'rgba(30, 34, 38, 0.97)');
+    tint.addColorStop(0, 'rgba(240, 248, 255, 0.97)');
+    tint.addColorStop(1, 'rgba(226, 238, 252, 0.97)');
     g.fillStyle = tint;
     g.fillRect(p.x, 0, p.w, this.h);
     g.restore();
     var sheen = g.createLinearGradient(p.x, 0, p.x + p.w, p.w * 0.8);
     sheen.addColorStop(0, 'rgba(255, 255, 255, 0)');
-    sheen.addColorStop(0.45, 'rgba(255, 255, 255, 0.07)');
+    sheen.addColorStop(0.45, 'rgba(255, 255, 255, 0.6)');
     sheen.addColorStop(0.6, 'rgba(255, 255, 255, 0)');
     g.fillStyle = sheen;
     g.fillRect(p.x, 0, p.w, this.h);
-    g.strokeStyle = 'rgba(224, 255, 255, 0.3)';
+    g.strokeStyle = 'rgba(70, 110, 160, 0.35)';
     g.lineWidth = 1;
     g.beginPath();
     var edge = this.side === 'left' ? p.x + p.w - 0.5 : p.x + 0.5;
