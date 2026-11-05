@@ -1,8 +1,8 @@
-// Glass panes along the left and right edges of the window (wider windows only), beside the text column: thin panes of
-// aliceblue glass with drawings on them in dark slate gray (as the text) and orange marker, and no writing. Left,
-// how to predict and plan: forward and backward prediction (successor and predecessor representations, Sharp & Eldar),
-// planning with one's own world model, and task construal in a grid world (Ho et al.).
-// Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
+// Small panes of white glass down the left and right edges of the window (wider windows only), beside the text column,
+// standing off the wall and staggered from side to side, each with a drawing on it in dark slate gray (as the text) and
+// orange marker, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
+// predecessor representations, Sharp & Eldar), planning with one's own world model, and task construal in a grid world
+// (Ho et al.). Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
 // Eldar). Clicking a drawing opens a card describing it, with key papers, and most drawings also change when clicked
 // (on the home page, the parts of the world model open the matching part of the brain). Two canvases fixed below the
 // header, drawn again only when something changes.
@@ -12,9 +12,12 @@
   var INK = '#2f4f4f'; // dark slate gray, as the text
   var ORANGE = '#e07020'; // orange, deep enough to show on the light glass
   var DW = 120; // the width the drawings are made at, before scaling to the pane
-  var PANE = 140; // the widest a pane gets
-  var MIN_PANE = 104; // the narrowest open space that gets a pane
-  var GAP = 16; // between the panes and the text column
+  var PANE = 140; // the widest the space for the panes on each side gets
+  var MIN_PANE = 112; // the narrowest space that gets panes
+  var GAP = 16; // between that space and the text column
+  var SCALE = 0.75; // the largest the drawings are drawn, of DW
+  var PAD = 9; // the glass around a drawing
+  var STAGGER = { left: [0, 1, 0.4], right: [0.6, 0, 1] }; // where each pane sits, from side to side, in its space
 
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -968,8 +971,9 @@
     });
   }
 
-  // The pane runs the full height of the canvas against the window's edge; the drawings are scaled to its width and
-  // spread evenly down it, with as much space between them as above the first and below the last
+  // Each drawing on a pane of its own, the panes staggered from side to side and spread evenly down the canvas, with as
+  // much space between them as above the first and below the last. Room is left around them for their shadows, which
+  // fall down and to the right
   Pane.prototype.fit = function (x, w, top, h) {
     this.on = w >= MIN_PANE && h >= 320;
     this.canvas.style.display = this.on ? 'block' : 'none';
@@ -982,22 +986,23 @@
     this.canvas.width = Math.round(w * dpr);
     this.canvas.height = Math.round(h * dpr);
     this.layer = layerOf(this.canvas.width, this.canvas.height);
-    this.w = w;
-    this.h = h;
-    var pw = w - 4;
-    this.pane = { x: this.side === 'left' ? 0 : w - pw, w: pw };
     var n = this.figures.length;
     var sum = 0;
     this.figures.forEach(function (f) {
       sum += f.h;
     });
-    var scale = Math.min(1.1, (pw - 14) / DW, (h - (n + 1) * 24) / sum);
-    var gap = (h - sum * scale) / (n + 1);
+    var room = w - 18;
+    var scale = Math.min(SCALE, (room - 2 * PAD - 10) / DW, (h - (n + 1) * 40 - n * 2 * PAD) / sum);
+    var pw = DW * scale + 2 * PAD;
+    var gap = (h - sum * scale - n * 2 * PAD) / (n + 1);
     var y = gap;
-    var x0 = this.pane.x + (pw - DW * scale) / 2;
-    this.figures.forEach(function (f) {
-      f.at = { x: x0, y: y, s: scale };
-      y += f.h * scale + gap;
+    var stagger = STAGGER[this.side];
+    this.figures.forEach(function (f, k) {
+      var px = 6 + (room - pw) * stagger[k];
+      var ph = f.h * scale + 2 * PAD;
+      f.glass = { x: px, y: y, w: pw, h: ph };
+      f.at = { x: px + PAD, y: y + PAD, s: scale };
+      y += ph + gap;
     });
     this.draw();
   };
@@ -1007,7 +1012,9 @@
     g.setTransform(1, 0, 0, 1, 0, 0);
     g.clearRect(0, 0, this.canvas.width, this.canvas.height);
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
-    this.drawGlass();
+    this.figures.forEach(function (f) {
+      glass(g, f.glass);
+    });
     var lg = this.layer.getContext('2d');
     lg.setTransform(1, 0, 0, 1, 0, 0);
     lg.clearRect(0, 0, this.layer.width, this.layer.height);
@@ -1023,55 +1030,88 @@
     ink(g, this.layer, 0.28, 0.4);
   };
 
-  // A tall pane of aliceblue glass against the window's edge, a sheen across it and its cut edge a little blue, with a
-  // soft shadow on the wall behind it, toward the text
-  Pane.prototype.drawGlass = function () {
-    var g = this.g;
-    var p = this.pane;
-    g.save();
-    g.shadowColor = 'rgba(20, 40, 70, 0.18)';
-    g.shadowBlur = 14;
-    g.shadowOffsetX = this.side === 'left' ? 3 : -3;
-    g.shadowOffsetY = 4;
-    var tint = g.createLinearGradient(p.x, 0, p.x + p.w, this.h);
-    tint.addColorStop(0, 'rgba(240, 248, 255, 0.97)');
-    tint.addColorStop(1, 'rgba(226, 238, 252, 0.97)');
-    g.fillStyle = tint;
-    g.fillRect(p.x, 0, p.w, this.h);
-    g.restore();
-    var sheen = g.createLinearGradient(p.x, 0, p.x + p.w, p.w * 0.8);
-    sheen.addColorStop(0, 'rgba(255, 255, 255, 0)');
-    sheen.addColorStop(0.45, 'rgba(255, 255, 255, 0.6)');
-    sheen.addColorStop(0.6, 'rgba(255, 255, 255, 0)');
-    g.fillStyle = sheen;
-    g.fillRect(p.x, 0, p.w, this.h);
-    g.strokeStyle = 'rgba(70, 110, 160, 0.35)';
-    g.lineWidth = 1;
+  function slab(g, x, y, w, h, r) {
     g.beginPath();
-    var edge = this.side === 'left' ? p.x + p.w - 0.5 : p.x + 0.5;
-    g.moveTo(edge, 0);
-    g.lineTo(edge, this.h);
-    g.stroke();
-  };
+    g.moveTo(x + r, y);
+    g.arcTo(x + w, y, x + w, y + h, r);
+    g.arcTo(x + w, y + h, x, y + h, r);
+    g.arcTo(x, y + h, x, y, r);
+    g.arcTo(x, y, x + w, y, r);
+    g.closePath();
+  }
 
-  // The drawing under the pointer, if any: what a click there does, and where the drawing is on the screen
+  // A small pane of white glass held off the wall on a standoff at each corner: its shadow on the wall, well down and to
+  // the right as it stands out from it, its thickness showing along its lower and right edges, and a faint reflection
+  // across its face
+  function glass(g, p) {
+    g.save();
+    slab(g, p.x, p.y, p.w, p.h, 3);
+    g.fillStyle = '#ffffff';
+    g.shadowColor = 'rgba(30, 50, 70, 0.22)';
+    g.shadowBlur = 9;
+    g.shadowOffsetX = 4;
+    g.shadowOffsetY = 6;
+    g.fill();
+    g.shadowColor = 'rgba(30, 50, 70, 0.14)';
+    g.shadowBlur = 2;
+    g.shadowOffsetX = 1;
+    g.shadowOffsetY = 1.5;
+    g.fill();
+    g.restore();
+    g.fillStyle = 'rgb(196, 216, 216)';
+    slab(g, p.x + 1.5, p.y + 2, p.w, p.h, 3);
+    g.fill();
+    var face = g.createLinearGradient(p.x, p.y, p.x + p.w, p.y + p.h);
+    face.addColorStop(0, '#ffffff');
+    face.addColorStop(1, '#f5f8f9');
+    g.fillStyle = face;
+    slab(g, p.x, p.y, p.w, p.h, 3);
+    g.fill();
+    g.save();
+    g.clip();
+    var sheen = g.createLinearGradient(p.x, p.y, p.x + p.w, p.y + p.w * 0.9);
+    sheen.addColorStop(0.3, 'rgba(205, 225, 235, 0)');
+    sheen.addColorStop(0.42, 'rgba(205, 225, 235, 0.4)');
+    sheen.addColorStop(0.5, 'rgba(205, 225, 235, 0)');
+    g.fillStyle = sheen;
+    g.fillRect(p.x, p.y, p.w, p.h);
+    g.restore();
+    g.strokeStyle = 'rgba(140, 170, 175, 0.55)';
+    g.lineWidth = 0.75;
+    slab(g, p.x + 0.4, p.y + 0.4, p.w - 0.8, p.h - 0.8, 3);
+    g.stroke();
+    [[5, 5], [p.w - 5, 5], [5, p.h - 5], [p.w - 5, p.h - 5]].forEach(function (c) {
+      var cx = p.x + c[0];
+      var cy = p.y + c[1];
+      var cap = g.createRadialGradient(cx - 0.8, cy - 0.8, 0.3, cx, cy, 2.4);
+      cap.addColorStop(0, '#ffffff');
+      cap.addColorStop(0.5, '#c9d1d4');
+      cap.addColorStop(1, '#7f8c91');
+      g.fillStyle = cap;
+      g.beginPath();
+      g.arc(cx, cy, 2.2, 0, Math.PI * 2);
+      g.fill();
+    });
+  }
+
+  // The pane under the pointer, if any: what a click on its drawing there does, and where the pane is on the screen
   Pane.prototype.locate = function (e) {
     var box = this.canvas.getBoundingClientRect();
     var x = e.clientX - box.left;
     var y = e.clientY - box.top;
     for (var k = 0; k < this.figures.length; k++) {
       var f = this.figures[k];
+      var p = f.glass;
+      if (x < p.x || y < p.y || x > p.x + p.w || y > p.y + p.h) continue;
       var a = f.at;
-      var fx = (x - a.x) / a.s;
-      var fy = (y - a.y) / a.s;
-      if (fx < -6 || fy < -6 || fx > DW + 6 || fy > f.h + 6) continue;
-      return { f: f, hit: f.hit ? f.hit(fx, fy) : null, rect: { x: box.left, y: box.top + a.y, w: box.width, h: f.h * a.s } };
+      var hit = f.hit ? f.hit((x - a.x) / a.s, (y - a.y) / a.s) : null;
+      return { f: f, hit: hit, rect: { x: box.left + p.x, y: box.top + p.y, w: p.w, h: p.h } };
     }
     return null;
   };
 
   // A click on a drawing opens its card (or the card on the part clicked) and changes the drawing where it changes; a
-  // second click on a drawing that does not change closes the card. A click on the bare glass closes it too
+  // second click on a drawing that does not change closes the card. A click between the panes closes it too
   Pane.prototype.click = function (e) {
     var spot = this.locate(e);
     if (!spot) {
@@ -1182,8 +1222,7 @@
 
   var panes = [];
 
-  // Thin panes against the window's edges, in the open space either side of the text column (the content box's side
-  // padding, less a gap)
+  // The panes go in the open space either side of the text column (the content box's side padding, less a gap)
   function fit() {
     var card = document.querySelector('.main-content > .content-card');
     if (!card) return;
