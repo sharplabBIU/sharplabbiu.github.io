@@ -1,5 +1,5 @@
 // Small sheets of paper down the left and right edges of the window (wider windows only), beside the text column,
-// on the wall, tilted a little and staggered from side to side, each with a drawing on it in dark slate gray (as
+// stapled to the wall, tilted a little and staggered from side to side, each with a drawing on it in dark slate gray (as
 // the text) and orange marker, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
 // predecessor representations, Sharp & Eldar), planning with one's own world model, and task construal in a grid world
 // (Ho et al.). Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
@@ -1018,25 +1018,87 @@
     ink(g, this.layer, 0.15);
   };
 
-  // The paper's grain: faint flecks, light and dark, the same each time
-  var grain;
-  function grainOf(g) {
-    if (!grain) {
-      grain = layerOf(96, 96);
-      var gg = grain.getContext('2d');
-      var img = gg.createImageData(96, 96);
-      for (var i = 0; i < img.data.length; i += 4) {
-        var v = rnd(i * 0.37);
-        img.data[i] = img.data[i + 1] = img.data[i + 2] = v < 0.5 ? 110 : 255;
-        img.data[i + 3] = Math.round(Math.abs(v - 0.5) * 70);
+  // The paper's tooth: the faint relief of good drawing paper, small bumps over gentle hollows, lit from the upper left
+  // so each bump has a little shadow below and to the right of it (the same each time; the tile wraps around)
+  var tooth;
+  function toothOf(g) {
+    if (!tooth) {
+      var n = 128;
+      var noise = [];
+      for (var i = 0; i < n * n; i++) noise.push(rnd(i * 0.37));
+      var blur = function (src, r) {
+        var out = [];
+        for (var y = 0; y < n; y++) {
+          for (var x = 0; x < n; x++) {
+            var sum = 0;
+            for (var dy = -r; dy <= r; dy++) {
+              for (var dx = -r; dx <= r; dx++) sum += src[((y + dy + n) % n) * n + ((x + dx + n) % n)];
+            }
+            out.push(sum / ((2 * r + 1) * (2 * r + 1)));
+          }
+        }
+        return out;
+      };
+      var bumps = blur(noise, 1);
+      var hollows = blur(noise, 5);
+      tooth = layerOf(n, n);
+      var tg = tooth.getContext('2d');
+      var img = tg.createImageData(n, n);
+      for (var y = 0; y < n; y++) {
+        for (var x = 0; x < n; x++) {
+          var k = y * n + x;
+          var below = ((y + 1) % n) * n + ((x + 1) % n);
+          var lit = (bumps[k] - bumps[below]) * 2.4 + (hollows[k] - hollows[below]) * 12 + (hollows[k] - 0.5) * 1.2;
+          var j = k * 4;
+          img.data[j] = img.data[j + 1] = img.data[j + 2] = lit > 0 ? 255 : 96;
+          img.data[j + 3] = Math.round(Math.min(1, Math.abs(lit)) * (lit > 0 ? 80 : 42));
+        }
       }
-      gg.putImageData(img, 0, 0);
+      tg.putImageData(img, 0, 0);
     }
-    return g.createPattern(grain, 'repeat');
+    return g.createPattern(tooth, 'repeat');
   }
 
-  // A small sheet of paper on the wall, turned a little: its lower corners curl away from the wall, so its shadow shows
-  // most under them, and it has a faint grain
+  // A staple across a corner of the sheet, at (x, y), turned by a: steel, lit along its top, with its legs through the
+  // paper at either end and a little shadow
+  function staple(g, x, y, a) {
+    var dx = 3.6 * Math.cos(a);
+    var dy = 3.6 * Math.sin(a);
+    g.save();
+    g.lineCap = 'round';
+    g.strokeStyle = 'rgba(0, 0, 0, 0.28)';
+    g.lineWidth = 1.7;
+    g.beginPath();
+    g.moveTo(x - dx + 0.5, y - dy + 0.8);
+    g.lineTo(x + dx + 0.5, y + dy + 0.8);
+    g.stroke();
+    var steel = g.createLinearGradient(x - dx, y - dy, x + dx, y + dy);
+    steel.addColorStop(0, '#80898e');
+    steel.addColorStop(0.5, '#dfe4e6');
+    steel.addColorStop(1, '#8c959a');
+    g.strokeStyle = steel;
+    g.lineWidth = 1.4;
+    g.beginPath();
+    g.moveTo(x - dx, y - dy);
+    g.lineTo(x + dx, y + dy);
+    g.stroke();
+    g.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+    g.lineWidth = 0.4;
+    g.beginPath();
+    g.moveTo(x - dx * 0.8, y - dy * 0.8 - 0.35);
+    g.lineTo(x + dx * 0.8, y + dy * 0.8 - 0.35);
+    g.stroke();
+    g.fillStyle = 'rgba(50, 55, 60, 0.7)';
+    [-1, 1].forEach(function (e) {
+      g.beginPath();
+      g.arc(x + e * dx, y + e * dy, 0.7, 0, Math.PI * 2);
+      g.fill();
+    });
+    g.restore();
+  }
+
+  // A small sheet of white drawing paper stapled flat to the wall at its corners, turned a little, with a soft shadow
+  // and the tooth of good paper
   function sheet(g, p) {
     var w = p.w;
     var h = p.h;
@@ -1045,33 +1107,31 @@
     g.rotate(p.tilt);
     g.translate(-w / 2, -h / 2);
     g.save();
-    g.shadowColor = 'rgba(60, 45, 25, 0.3)';
-    g.shadowBlur = 6;
-    g.shadowOffsetY = 3;
-    g.fillStyle = '#f8eedb';
-    g.beginPath();
-    g.moveTo(2, 2);
-    g.lineTo(w - 2, 2);
-    g.lineTo(w - 0.5, h + 2);
-    g.quadraticCurveTo(w / 2, h - 4, 0.5, h + 2);
-    g.closePath();
-    g.fill();
+    g.fillStyle = '#ffffff';
+    g.shadowColor = 'rgba(40, 40, 40, 0.16)';
+    g.shadowBlur = 5;
+    g.shadowOffsetY = 2;
+    g.fillRect(0, 0, w, h);
+    g.shadowColor = 'rgba(40, 40, 40, 0.12)';
+    g.shadowBlur = 1;
+    g.shadowOffsetY = 0.5;
+    g.fillRect(0, 0, w, h);
     g.restore();
     var face = g.createLinearGradient(0, 0, w, h);
-    face.addColorStop(0, '#fef8ec');
-    face.addColorStop(1, '#f9efdc');
+    face.addColorStop(0, '#ffffff');
+    face.addColorStop(1, '#fbfbf8');
     g.fillStyle = face;
     g.fillRect(0, 0, w, h);
-    g.fillStyle = grainOf(g);
+    g.fillStyle = toothOf(g);
     g.fillRect(0, 0, w, h);
-    var curl = g.createLinearGradient(0, h - 12, 0, h);
-    curl.addColorStop(0, 'rgba(120, 95, 60, 0)');
-    curl.addColorStop(1, 'rgba(120, 95, 60, 0.07)');
-    g.fillStyle = curl;
-    g.fillRect(0, h - 12, w, 12);
-    g.strokeStyle = 'rgba(150, 125, 90, 0.3)';
+    g.strokeStyle = 'rgba(0, 0, 0, 0.07)';
     g.lineWidth = 0.5;
     g.strokeRect(0.25, 0.25, w - 0.5, h - 0.5);
+    var q = Math.PI / 4;
+    staple(g, 5.5, 5.5, -q);
+    staple(g, w - 5.5, 5.5, q);
+    staple(g, 5.5, h - 5.5, q);
+    staple(g, w - 5.5, h - 5.5, -q);
     g.restore();
   }
 
