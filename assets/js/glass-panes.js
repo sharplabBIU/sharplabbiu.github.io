@@ -1,4 +1,4 @@
-// Small panes of white glass down the left and right edges of the window (wider windows only), beside the text column,
+// Small panes of oldlace glass down the left and right edges of the window (wider windows only), beside the text column,
 // standing off the wall and staggered from side to side, each with a drawing on it in dark slate gray (as the text) and
 // orange marker, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
 // predecessor representations, Sharp & Eldar), planning with one's own world model, and task construal in a grid world
@@ -1040,43 +1040,43 @@
     g.closePath();
   }
 
-  // A small pane of white glass held off the wall on a standoff at each corner: its shadow on the wall, well down and to
+  // A small pane of oldlace glass held off the wall on a standoff at each corner: its shadow on the wall, well down and to
   // the right as it stands out from it, its thickness showing along its lower and right edges, and a faint reflection
   // across its face
   function glass(g, p) {
     g.save();
     slab(g, p.x, p.y, p.w, p.h, 3);
-    g.fillStyle = '#ffffff';
-    g.shadowColor = 'rgba(30, 50, 70, 0.22)';
+    g.fillStyle = '#fdf5e6';
+    g.shadowColor = 'rgba(60, 45, 25, 0.22)';
     g.shadowBlur = 9;
     g.shadowOffsetX = 4;
     g.shadowOffsetY = 6;
     g.fill();
-    g.shadowColor = 'rgba(30, 50, 70, 0.14)';
+    g.shadowColor = 'rgba(60, 45, 25, 0.14)';
     g.shadowBlur = 2;
     g.shadowOffsetX = 1;
     g.shadowOffsetY = 1.5;
     g.fill();
     g.restore();
-    g.fillStyle = 'rgb(196, 216, 216)';
+    g.fillStyle = 'rgb(218, 206, 182)';
     slab(g, p.x + 1.5, p.y + 2, p.w, p.h, 3);
     g.fill();
     var face = g.createLinearGradient(p.x, p.y, p.x + p.w, p.y + p.h);
-    face.addColorStop(0, '#ffffff');
-    face.addColorStop(1, '#f5f8f9');
+    face.addColorStop(0, '#fdf5e6');
+    face.addColorStop(1, '#f7eedc');
     g.fillStyle = face;
     slab(g, p.x, p.y, p.w, p.h, 3);
     g.fill();
     g.save();
     g.clip();
     var sheen = g.createLinearGradient(p.x, p.y, p.x + p.w, p.y + p.w * 0.9);
-    sheen.addColorStop(0.3, 'rgba(205, 225, 235, 0)');
-    sheen.addColorStop(0.42, 'rgba(205, 225, 235, 0.4)');
-    sheen.addColorStop(0.5, 'rgba(205, 225, 235, 0)');
+    sheen.addColorStop(0.3, 'rgba(255, 255, 250, 0)');
+    sheen.addColorStop(0.42, 'rgba(255, 255, 250, 0.55)');
+    sheen.addColorStop(0.5, 'rgba(255, 255, 250, 0)');
     g.fillStyle = sheen;
     g.fillRect(p.x, p.y, p.w, p.h);
     g.restore();
-    g.strokeStyle = 'rgba(140, 170, 175, 0.55)';
+    g.strokeStyle = 'rgba(175, 155, 120, 0.5)';
     g.lineWidth = 0.75;
     slab(g, p.x + 0.4, p.y + 0.4, p.w - 0.8, p.h - 0.8, 3);
     g.stroke();
