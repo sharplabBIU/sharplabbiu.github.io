@@ -1,6 +1,6 @@
-// Small panes of oldlace glass down the left and right edges of the window (wider windows only), beside the text column,
-// standing off the wall and staggered from side to side, each with a drawing on it in dark slate gray (as the text) and
-// orange marker, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
+// Small sheets of paper down the left and right edges of the window (wider windows only), beside the text column,
+// taped to the wall, tilted a little and staggered from side to side, each with a drawing on it in dark slate gray (as
+// the text) and orange marker, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
 // predecessor representations, Sharp & Eldar), planning with one's own world model, and task construal in a grid world
 // (Ho et al.). Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
 // Eldar). Clicking a drawing opens a card describing it, with key papers, and most drawings also change when clicked
@@ -10,14 +10,15 @@
   'use strict';
 
   var INK = '#2f4f4f'; // dark slate gray, as the text
-  var ORANGE = '#e07020'; // orange, deep enough to show on the light glass
-  var DW = 120; // the width the drawings are made at, before scaling to the pane
-  var PANE = 140; // the widest the space for the panes on each side gets
-  var MIN_PANE = 112; // the narrowest space that gets panes
+  var ORANGE = '#e07020'; // orange, deep enough to show on the paper
+  var DW = 120; // the width the drawings are made at, before scaling to the sheet
+  var PANE = 140; // the widest the space for the sheets on each side gets
+  var MIN_PANE = 112; // the narrowest space that gets sheets
   var GAP = 16; // between that space and the text column
   var SCALE = 0.75; // the largest the drawings are drawn, of DW
-  var PAD = 9; // the glass around a drawing
-  var STAGGER = { left: [0, 1, 0.4], right: [0.6, 0, 1] }; // where each pane sits, from side to side, in its space
+  var PAD = 9; // the paper around a drawing
+  var STAGGER = { left: [0, 1, 0.4], right: [0.6, 0, 1] }; // where each sheet sits, from side to side, in its space
+  var TILT = { left: [-1.4, 1.1, -0.7], right: [1.2, -0.9, 1.5] }; // and how far it is turned, in degrees
 
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -116,7 +117,7 @@
     return Math.max(a, Math.min(b, x));
   }
 
-  // A steady pseudo-random number for a seed, so hand-drawn wobbles stay the same each time the panes are drawn
+  // A steady pseudo-random number for a seed, so hand-drawn wobbles stay the same each time the sheets are drawn
   function rnd(n) {
     var x = Math.sin(n * 12.9898 + 78.233) * 43758.5453;
     return x - Math.floor(x);
@@ -220,7 +221,7 @@
     g.closePath();
   }
 
-  // Wipes the glass clear under a shape, so lines drawn earlier do not show through it
+  // Clears the ink under a shape, so lines drawn earlier do not show through it
   function wipe(g, fn) {
     g.save();
     g.globalCompositeOperation = 'destination-out';
@@ -237,22 +238,12 @@
     return c;
   }
 
-  // Lays a layer of ink (already in its colours) on the glass: first its shadow on the wall behind, then the ink, then
-  // a darker rim where the wet ink pools at the edges and a gloss along their upper left
-  function ink(g, layer, rim, gloss) {
-    var off = layer.width * 2 + 50; // the layer is drawn off the canvas so only its shadow lands
+  // Lays a layer of ink (already in its colours) on the paper, a little darker at the edges of the strokes, where a
+  // marker's ink soaks in most
+  function ink(g, layer, rim) {
     g.save();
     g.setTransform(1, 0, 0, 1, 0, 0);
-    g.shadowColor = 'rgba(20, 40, 70, 0.22)';
-    g.shadowBlur = 2.5 * dpr;
-    g.shadowOffsetX = off + 2.5 * dpr;
-    g.shadowOffsetY = 3.5 * dpr;
-    g.drawImage(layer, -off, 0);
-    g.restore();
-
-    g.save();
-    g.setTransform(1, 0, 0, 1, 0, 0);
-    g.globalAlpha = 0.94;
+    g.globalAlpha = 0.92;
     g.drawImage(layer, 0, 0);
     g.globalAlpha = 1;
     var r = Math.max(1, Math.round(0.8 * dpr));
@@ -272,17 +263,9 @@
     eg.fillStyle = 'rgba(0, 0, 0, ' + rim + ')';
     eg.fillRect(0, 0, edge.width, edge.height);
     g.drawImage(edge, 0, 0);
-    var shine = layerOf(layer.width, layer.height);
-    var sg = shine.getContext('2d');
-    sg.drawImage(core, 0, 0);
-    sg.globalCompositeOperation = 'destination-out';
-    sg.drawImage(core, r, r);
-    sg.globalCompositeOperation = 'source-in';
-    sg.fillStyle = 'rgba(255, 255, 255, ' + gloss + ')';
-    sg.fillRect(0, 0, shine.width, shine.height);
-    g.drawImage(shine, 0, 0);
     g.restore();
   }
+
 
   // A five-pointed star drawn by hand (the path is left closed for filling and stroking)
   function star(g, x, y, r, j) {
@@ -310,7 +293,7 @@
     g.stroke();
   }
 
-  // A state: the glass wiped clear inside a circle, ink filling it from the bottom up to full (0 to 1), and its outline
+  // A state: the ink cleared inside a circle, ink filling it from the bottom up to full (0 to 1), and its outline
   function state(g, x, y, r, full, j) {
     wipe(g, function () {
       g.beginPath();
@@ -971,7 +954,7 @@
     });
   }
 
-  // Each drawing on a pane of its own, the panes staggered from side to side and spread evenly down the canvas, with as
+  // Each drawing on a sheet of its own, the sheets staggered from side to side and spread evenly down the canvas, with as
   // much space between them as above the first and below the last. Room is left around them for their shadows, which
   // fall down and to the right
   Pane.prototype.fit = function (x, w, top, h) {
@@ -997,10 +980,11 @@
     var gap = (h - sum * scale - n * 2 * PAD) / (n + 1);
     var y = gap;
     var stagger = STAGGER[this.side];
+    var tilt = TILT[this.side];
     this.figures.forEach(function (f, k) {
       var px = 6 + (room - pw) * stagger[k];
       var ph = f.h * scale + 2 * PAD;
-      f.glass = { x: px, y: y, w: pw, h: ph };
+      f.sheet = { x: px, y: y, w: pw, h: ph, tilt: (tilt[k] * Math.PI) / 180 };
       f.at = { x: px + PAD, y: y + PAD, s: scale };
       y += ph + gap;
     });
@@ -1013,7 +997,7 @@
     g.clearRect(0, 0, this.canvas.width, this.canvas.height);
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
     this.figures.forEach(function (f) {
-      glass(g, f.glass);
+      sheet(g, f.sheet);
     });
     var lg = this.layer.getContext('2d');
     lg.setTransform(1, 0, 0, 1, 0, 0);
@@ -1021,97 +1005,123 @@
     lg.lineCap = 'round';
     lg.lineJoin = 'round';
     this.figures.forEach(function (f) {
-      var a = f.at;
-      lg.setTransform(dpr * a.s, 0, 0, dpr * a.s, dpr * a.x, dpr * a.y);
+      var p = f.sheet;
+      lg.setTransform(dpr, 0, 0, dpr, 0, 0);
+      lg.translate(p.x + p.w / 2, p.y + p.h / 2);
+      lg.rotate(p.tilt);
+      lg.translate(PAD - p.w / 2, PAD - p.h / 2);
+      lg.scale(f.at.s, f.at.s);
       lg.globalAlpha = 1;
       lg.setLineDash([]);
       f.draw(lg);
     });
-    ink(g, this.layer, 0.28, 0.4);
+    ink(g, this.layer, 0.15);
   };
 
-  function slab(g, x, y, w, h, r) {
+  // The paper's grain: faint flecks, light and dark, the same each time
+  var grain;
+  function grainOf(g) {
+    if (!grain) {
+      grain = layerOf(96, 96);
+      var gg = grain.getContext('2d');
+      var img = gg.createImageData(96, 96);
+      for (var i = 0; i < img.data.length; i += 4) {
+        var v = rnd(i * 0.37);
+        img.data[i] = img.data[i + 1] = img.data[i + 2] = v < 0.5 ? 110 : 255;
+        img.data[i + 3] = Math.round(Math.abs(v - 0.5) * 70);
+      }
+      gg.putImageData(img, 0, 0);
+    }
+    return g.createPattern(grain, 'repeat');
+  }
+
+  // A small sheet of paper taped to the wall by its top edge, turned a little: its lower corners curl away from the
+  // wall, so its shadow shows most under them, and it has a faint grain
+  function sheet(g, p) {
+    var w = p.w;
+    var h = p.h;
+    g.save();
+    g.translate(p.x + w / 2, p.y + h / 2);
+    g.rotate(p.tilt);
+    g.translate(-w / 2, -h / 2);
+    g.save();
+    g.shadowColor = 'rgba(60, 45, 25, 0.3)';
+    g.shadowBlur = 6;
+    g.shadowOffsetY = 3;
+    g.fillStyle = '#f8eedb';
     g.beginPath();
-    g.moveTo(x + r, y);
-    g.arcTo(x + w, y, x + w, y + h, r);
-    g.arcTo(x + w, y + h, x, y + h, r);
-    g.arcTo(x, y + h, x, y, r);
-    g.arcTo(x, y, x + w, y, r);
+    g.moveTo(2, 2);
+    g.lineTo(w - 2, 2);
+    g.lineTo(w - 0.5, h + 2);
+    g.quadraticCurveTo(w / 2, h - 4, 0.5, h + 2);
     g.closePath();
-  }
-
-  // A small pane of oldlace glass held off the wall on a standoff at each corner: its shadow on the wall, well down and to
-  // the right as it stands out from it, its thickness showing along its lower and right edges, and a faint reflection
-  // across its face
-  function glass(g, p) {
-    g.save();
-    slab(g, p.x, p.y, p.w, p.h, 3);
-    g.fillStyle = '#fdf5e6';
-    g.shadowColor = 'rgba(60, 45, 25, 0.22)';
-    g.shadowBlur = 9;
-    g.shadowOffsetX = 4;
-    g.shadowOffsetY = 6;
-    g.fill();
-    g.shadowColor = 'rgba(60, 45, 25, 0.14)';
-    g.shadowBlur = 2;
-    g.shadowOffsetX = 1;
-    g.shadowOffsetY = 1.5;
     g.fill();
     g.restore();
-    g.fillStyle = 'rgb(218, 206, 182)';
-    slab(g, p.x + 1.5, p.y + 2, p.w, p.h, 3);
-    g.fill();
-    var face = g.createLinearGradient(p.x, p.y, p.x + p.w, p.y + p.h);
-    face.addColorStop(0, '#fdf5e6');
-    face.addColorStop(1, '#f7eedc');
+    var face = g.createLinearGradient(0, 0, w, h);
+    face.addColorStop(0, '#fef8ec');
+    face.addColorStop(1, '#f9efdc');
     g.fillStyle = face;
-    slab(g, p.x, p.y, p.w, p.h, 3);
+    g.fillRect(0, 0, w, h);
+    g.fillStyle = grainOf(g);
+    g.fillRect(0, 0, w, h);
+    var curl = g.createLinearGradient(0, h - 12, 0, h);
+    curl.addColorStop(0, 'rgba(120, 95, 60, 0)');
+    curl.addColorStop(1, 'rgba(120, 95, 60, 0.07)');
+    g.fillStyle = curl;
+    g.fillRect(0, h - 12, w, 12);
+    g.strokeStyle = 'rgba(150, 125, 90, 0.3)';
+    g.lineWidth = 0.5;
+    g.strokeRect(0.25, 0.25, w - 0.5, h - 0.5);
+    // The tape: a translucent strip across the top edge, its ends torn
+    g.translate(w / 2, 0);
+    g.rotate(-2.5 * p.tilt);
+    g.shadowColor = 'rgba(60, 45, 25, 0.15)';
+    g.shadowBlur = 1.5;
+    g.shadowOffsetY = 0.5;
+    g.fillStyle = 'rgba(218, 210, 186, 0.85)';
+    var tw = 13;
+    var th = 4.5;
+    g.beginPath();
+    g.moveTo(-tw, -th);
+    g.lineTo(tw, -th);
+    g.lineTo(tw - 1.2, -th / 2);
+    g.lineTo(tw, 0);
+    g.lineTo(tw - 1.2, th / 2);
+    g.lineTo(tw, th);
+    g.lineTo(-tw, th);
+    g.lineTo(-tw + 1.2, th / 2);
+    g.lineTo(-tw, 0);
+    g.lineTo(-tw + 1.2, -th / 2);
+    g.closePath();
     g.fill();
-    g.save();
-    g.clip();
-    var sheen = g.createLinearGradient(p.x, p.y, p.x + p.w, p.y + p.w * 0.9);
-    sheen.addColorStop(0.3, 'rgba(255, 255, 250, 0)');
-    sheen.addColorStop(0.42, 'rgba(255, 255, 250, 0.55)');
-    sheen.addColorStop(0.5, 'rgba(255, 255, 250, 0)');
-    g.fillStyle = sheen;
-    g.fillRect(p.x, p.y, p.w, p.h);
     g.restore();
-    g.strokeStyle = 'rgba(175, 155, 120, 0.5)';
-    g.lineWidth = 0.75;
-    slab(g, p.x + 0.4, p.y + 0.4, p.w - 0.8, p.h - 0.8, 3);
-    g.stroke();
-    [[5, 5], [p.w - 5, 5], [5, p.h - 5], [p.w - 5, p.h - 5]].forEach(function (c) {
-      var cx = p.x + c[0];
-      var cy = p.y + c[1];
-      var cap = g.createRadialGradient(cx - 0.8, cy - 0.8, 0.3, cx, cy, 2.4);
-      cap.addColorStop(0, '#ffffff');
-      cap.addColorStop(0.5, '#c9d1d4');
-      cap.addColorStop(1, '#7f8c91');
-      g.fillStyle = cap;
-      g.beginPath();
-      g.arc(cx, cy, 2.2, 0, Math.PI * 2);
-      g.fill();
-    });
   }
 
-  // The pane under the pointer, if any: what a click on its drawing there does, and where the pane is on the screen
+  // The sheet under the pointer, if any: what a click on its drawing there does, and where the sheet is on the screen
   Pane.prototype.locate = function (e) {
     var box = this.canvas.getBoundingClientRect();
     var x = e.clientX - box.left;
     var y = e.clientY - box.top;
     for (var k = 0; k < this.figures.length; k++) {
       var f = this.figures[k];
-      var p = f.glass;
-      if (x < p.x || y < p.y || x > p.x + p.w || y > p.y + p.h) continue;
+      var p = f.sheet;
+      // The pointer on the sheet, turned back with it
+      var cx = p.x + p.w / 2;
+      var cy = p.y + p.h / 2;
+      var cos = Math.cos(p.tilt);
+      var sin = Math.sin(p.tilt);
+      var u = cx + (x - cx) * cos + (y - cy) * sin;
+      var v = cy - (x - cx) * sin + (y - cy) * cos;
+      if (u < p.x || v < p.y || u > p.x + p.w || v > p.y + p.h) continue;
       var a = f.at;
-      var hit = f.hit ? f.hit((x - a.x) / a.s, (y - a.y) / a.s) : null;
+      var hit = f.hit ? f.hit((u - a.x) / a.s, (v - a.y) / a.s) : null;
       return { f: f, hit: hit, rect: { x: box.left + p.x, y: box.top + p.y, w: p.w, h: p.h } };
     }
     return null;
   };
 
   // A click on a drawing opens its card (or the card on the part clicked) and changes the drawing where it changes; a
-  // second click on a drawing that does not change closes the card. A click between the panes closes it too
+  // second click on a drawing that does not change closes the card. A click between the sheets closes it too
   Pane.prototype.click = function (e) {
     var spot = this.locate(e);
     if (!spot) {
@@ -1135,7 +1145,7 @@
     }
   };
 
-  // ---- Cards: beside the pane, level with the drawing, with what it shows, its key equation and key papers ----
+  // ---- Cards: beside the sheet, level with the drawing, with what it shows, its key equation and key papers ----
 
   var note = {
     el: null,
@@ -1222,7 +1232,7 @@
 
   var panes = [];
 
-  // The panes go in the open space either side of the text column (the content box's side padding, less a gap)
+  // The sheets go in the open space either side of the text column (the content box's side padding, less a gap)
   function fit() {
     var card = document.querySelector('.main-content > .content-card');
     if (!card) return;

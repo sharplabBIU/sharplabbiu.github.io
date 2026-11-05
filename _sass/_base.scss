@@ -456,7 +456,7 @@ footer.fixed-bottom {
 }
 
 // The footer: a black bar the full width of the window at the end of the page, right below the content box
-// (and over the glass panes, which are fixed beside the content)
+// (and over the sheets of paper, which are fixed beside the content)
 footer.sticky-bottom {
   position: relative;
   z-index: 3;
@@ -1746,8 +1746,8 @@ footer > .container {
 
 // Page and content box
 // Between the black header and footer bars the page is white with a faint hint of cyan. Each page's text sits in a
-// column $text-column-width wide, centred in the window, with a pane of glass against each edge of the window in the
-// open space either side of it (assets/js/glass-panes.js: two canvases fixed below the header, over the content box's
+// column $text-column-width wide, centred in the window, with sheets of paper with drawings on them in the open space
+// either side of it (assets/js/glass-panes.js: two canvases fixed below the header, over the content box's
 // side padding, which they leave clear of the text, and under the footer; they respond to clicks)
 body {
   background-color: $card-color;
@@ -1759,7 +1759,7 @@ body {
   z-index: 2;
 }
 
-// A card describing a drawing on the glass, beside the pane: what it shows, its key equation and key papers
+// A card describing a drawing on a sheet of paper, beside the sheet: what it shows, its key equation and key papers
 .glass-note {
   position: fixed;
   z-index: 1040;
@@ -1804,7 +1804,7 @@ body {
   }
 
   a {
-    color: #8b0000; // dark red, as on the glass
+    color: #8b0000; // dark red
     text-decoration: underline;
   }
 
