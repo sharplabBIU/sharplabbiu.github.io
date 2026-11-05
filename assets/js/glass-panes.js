@@ -1,5 +1,5 @@
 // Small sheets of paper down the left and right edges of the window (wider windows only), beside the text column,
-// taped to the wall, tilted a little and staggered from side to side, each with a drawing on it in dark slate gray (as
+// on the wall, tilted a little and staggered from side to side, each with a drawing on it in dark slate gray (as
 // the text) and orange marker, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
 // predecessor representations, Sharp & Eldar), planning with one's own world model, and task construal in a grid world
 // (Ho et al.). Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
@@ -1035,8 +1035,8 @@
     return g.createPattern(grain, 'repeat');
   }
 
-  // A small sheet of paper taped to the wall by its top edge, turned a little: its lower corners curl away from the
-  // wall, so its shadow shows most under them, and it has a faint grain
+  // A small sheet of paper on the wall, turned a little: its lower corners curl away from the wall, so its shadow shows
+  // most under them, and it has a faint grain
   function sheet(g, p) {
     var w = p.w;
     var h = p.h;
@@ -1072,28 +1072,6 @@
     g.strokeStyle = 'rgba(150, 125, 90, 0.3)';
     g.lineWidth = 0.5;
     g.strokeRect(0.25, 0.25, w - 0.5, h - 0.5);
-    // The tape: a translucent strip across the top edge, its ends torn
-    g.translate(w / 2, 0);
-    g.rotate(-2.5 * p.tilt);
-    g.shadowColor = 'rgba(60, 45, 25, 0.15)';
-    g.shadowBlur = 1.5;
-    g.shadowOffsetY = 0.5;
-    g.fillStyle = 'rgba(218, 210, 186, 0.85)';
-    var tw = 13;
-    var th = 4.5;
-    g.beginPath();
-    g.moveTo(-tw, -th);
-    g.lineTo(tw, -th);
-    g.lineTo(tw - 1.2, -th / 2);
-    g.lineTo(tw, 0);
-    g.lineTo(tw - 1.2, th / 2);
-    g.lineTo(tw, th);
-    g.lineTo(-tw, th);
-    g.lineTo(-tw + 1.2, th / 2);
-    g.lineTo(-tw, 0);
-    g.lineTo(-tw + 1.2, -th / 2);
-    g.closePath();
-    g.fill();
     g.restore();
   }
 

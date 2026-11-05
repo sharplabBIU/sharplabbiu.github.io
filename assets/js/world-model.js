@@ -1,8 +1,12 @@
 // Home-page world-model hero: click (or press Enter/Space on) a part of the diagram to open its explanation bubble.
-// A link to #wm-model, #wm-self, #wm-world, #wm-goals or #wm-tasks (as in the notes on the glass panes) opens that part
+// A link to #wm-model, #wm-self, #wm-world, #wm-goals or #wm-tasks (as in the cards on the drawings beside the text)
+// opens that part
 (function () {
   var hero = document.querySelector('.wm-hero');
   if (!hero) return;
+  // The colours in the brain, and everything else moving in it, hold still for people who ask for less motion
+  var svg = hero.querySelector('svg');
+  if (svg && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) svg.pauseAnimations();
   var nodes = hero.querySelectorAll('.wm-node');
   var pops = hero.querySelectorAll('.wm-pop');
   function closeAll() {
