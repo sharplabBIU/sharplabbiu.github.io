@@ -1888,7 +1888,7 @@ textarea,
   }
 }
 
-// The content box: clear, so the trees show either side of the text, and padded to centre the text column
+// The content box: clear, so the sheets of paper show either side of the text, and padded to centre the text column
 .content-card {
   // All text inside the box is dark slate, links included (the site's colour variables are re-pointed here)
   --global-text-color: #{$card-text-color};
@@ -1899,6 +1899,26 @@ textarea,
   padding: 2rem;
   padding-left: unquote("max(2rem, calc((100% - #{$text-column-width}) / 2))");
   padding-right: unquote("max(2rem, calc((100% - #{$text-column-width}) / 2))");
+  position: relative;
+
+  // The text column stands out from the page: a raised panel a little paler than the page, with a faint outline and
+  // rounded corners, a little wider than the text and the height of the box
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0.9rem;
+    bottom: 0.9rem;
+    left: unquote("max(0.4rem, calc(max(2rem, (100% - #{$text-column-width}) / 2) - 1.25rem))");
+    right: unquote("max(0.4rem, calc(max(2rem, (100% - #{$text-column-width}) / 2) - 1.25rem))");
+    background-color: #f7fdf9;
+    border: 1px solid rgba(31, 51, 51, 0.13);
+    border-radius: 16px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 1px 2px rgba(31, 51, 51, 0.06),
+      0 8px 24px rgba(31, 51, 51, 0.09);
+  }
 
   > :first-child {
     margin-top: 0;
@@ -1917,6 +1937,13 @@ textarea,
 @media (max-width: 575.98px) {
   .content-card {
     padding: 1.5rem 1.1rem;
+
+    &::before {
+      top: 0.6rem;
+      bottom: 0.6rem;
+      left: 0.45rem;
+      right: 0.45rem;
+    }
   }
 }
 
