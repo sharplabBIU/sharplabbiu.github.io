@@ -12,13 +12,14 @@
   var INK = '#2f4f4f'; // dark slate gray, as the text
   var ORANGE = '#e07020'; // orange, deep enough to show on the paper
   var DW = 120; // the width the drawings are made at, before scaling to the sheet
-  var PANE = 140; // the widest the space for the sheets on each side gets
+  var PANE = 140; // the widest the space for the sheets on each side gets (the sheets are sized to it)
+  var ZIG = 70; // and the room added to it, where the window has it, for the sheets to zigzag from side to side
   var MIN_PANE = 112; // the narrowest space that gets sheets
   var GAP = 16; // between that space and the text column, at the least
   var NEAR = 48; // and at the most: the space sits this close to the text, however wide the window
   var SCALE = 0.75; // the largest the drawings are drawn, of DW
   var PAD = 9; // the paper around a drawing
-  var STAGGER = { left: [0, 1, 0.4], right: [0.6, 0, 1] }; // where each sheet sits, from side to side, in its space
+  var STAGGER = { left: [1, 0, 0.9], right: [0.9, 0, 1] }; // where each sheet sits, from side to side, in its space (zigzag)
   var DROP = { left: [-0.4, 0.3, -0.2], right: [0.35, -0.2, 0.3] }; // how far it is moved up or down, of the space between sheets
   var TILT = { left: [-1.4, 1.1, -0.7], right: [1.2, -0.9, 1.5] }; // and how far it is turned, in degrees
 
@@ -956,7 +957,7 @@
     });
   }
 
-  // Each drawing on a sheet of its own, the sheets staggered from side to side and spread down the canvas, each moved up
+  // Each drawing on a sheet of its own, the sheets zigzagging from side to side and spread down the canvas, each moved up
   // or down from even spacing (by DROP), so they don't line up with each other or with the sheets on the other side.
   // Room is left around them for their shadows, which fall down and to the right
   Pane.prototype.fit = function (x, w, top, h) {
@@ -977,7 +978,8 @@
       sum += f.h;
     });
     var room = w - 18;
-    var scale = Math.min(SCALE, (room - 2 * PAD - 10) / DW, (h - (n + 1) * 40 - n * 2 * PAD) / sum);
+    var size = Math.min(w, PANE) - 18;
+    var scale = Math.min(SCALE, (size - 2 * PAD - 10) / DW, (h - (n + 1) * 40 - n * 2 * PAD) / sum);
     var pw = DW * scale + 2 * PAD;
     var gap = (h - sum * scale - n * 2 * PAD) / (n + 1);
     var y = gap;
@@ -1285,8 +1287,8 @@
     var h = window.innerHeight - top;
     var pl = parseFloat(cs.paddingLeft);
     var pr = parseFloat(cs.paddingRight);
-    var lw = Math.min(PANE, Math.floor(pl - GAP));
-    var rw = Math.min(PANE, Math.floor(pr - GAP));
+    var lw = Math.min(PANE + ZIG, Math.floor(pl - GAP));
+    var rw = Math.min(PANE + ZIG, Math.floor(pr - GAP));
     var lx = Math.round(box.left + Math.max(0, pl - NEAR - lw));
     var rx = Math.round(box.right - Math.max(0, pr - NEAR - rw)) - rw;
     if (!panes.length) {
