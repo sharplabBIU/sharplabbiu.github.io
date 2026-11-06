@@ -30,7 +30,7 @@
     anxiety: ['Sharp 2024, Anxiety involves altered planning (Trends Cogn Sci)', 'https://www.sciencedirect.com/science/article/pii/S1364661324002924'],
     worldModel: ['Sharp et al., A world-model theory of trait anxiety (PsyArXiv)', 'https://osf.io/preprints/psyarxiv/98ktg_v4'],
     direction: ['Sharp & Eldar 2024, Humans adaptively deploy forward and backward prediction (Nat Hum Behav)', 'https://doi.org/10.1038/s41562-024-01930-8'],
-    delay: ['Sharp & Eldar, Humans adaptively delay planning using cognitive maps (PsyArXiv)', 'https://osf.io/preprints/psyarxiv/8ubct_v5'],
+    delay: ['Sharp & Eldar, Humans adaptively delay planning using cognitive maps (Psychol Sci, accepted)', 'https://osf.io/preprints/psyarxiv/8ubct_v5'],
     construal: ['Schiff & Sharp, anxiety and task generalization (Top Cogn Sci)', 'https://onlinelibrary.wiley.com/doi/full/10.1111/tops.70051'],
   };
   var REF = {
