@@ -1,6 +1,6 @@
 // Small sheets of paper down the left and right edges of the window (wider windows only), beside the text column,
-// stapled to the wall, tilted a little and staggered from side to side, each with a drawing on it in dark slate gray (as
-// the text) and orange marker, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
+// stapled to the wall, each turned a little to the left or right at random and staggered from side to side, each with
+// a drawing on it in dark slate gray (as the text) and orange marker, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
 // predecessor representations, Sharp & Eldar), planning with one's own world model, and task construal in a grid world
 // (Ho et al.). Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
 // Eldar). Clicking a drawing opens a card describing it, with key papers, and most drawings also change when clicked
@@ -12,15 +12,17 @@
   var INK = '#2f4f4f'; // dark slate gray, as the text
   var ORANGE = '#e07020'; // orange, deep enough to show on the paper
   var DW = 120; // the width the drawings are made at, before scaling to the sheet
-  var PANE = 140; // the widest the space for the sheets on each side gets (the sheets are sized to it)
+  var PANE = 152; // the widest the space for the sheets on each side gets (the sheets are sized to it)
   var ZIG = 70; // and the room added to it, where the window has it, for the sheets to zigzag from side to side
   var MIN_PANE = 112; // the narrowest space that gets sheets
   var GAP = 16; // between that space and the text column, at the least
   var NEAR = 48; // and at the most: the space sits this close to the text, however wide the window
-  var SCALE = 0.75; // the largest the drawings are drawn, of DW
+  var SCALE = 0.86; // the largest the drawings are drawn, of DW
   var PAD = 9; // the paper around a drawing
-  var STAGGER = { left: [1, 0, 0.9], right: [0.9, 0, 1] }; // where each sheet sits, from side to side, in its space (zigzag)
-  var TILT = { left: [-1.4, 1.1, -0.7], right: [1.2, -0.9, 1.5] }; // and how far it is turned, in degrees
+  // Where each sheet sits, from side to side, in its space (0 at the left, 1 at the right): a zigzag, the two sides
+  // mirroring each other, with the middle sheets out toward the window's edges and the others in near the text
+  var STAGGER = { left: [1, 0, 0.9], right: [0, 1, 0.1] };
+  var TILT = [1, 2.5]; // how far each sheet is turned, in degrees, to the left or right at random on each visit
 
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -936,6 +938,9 @@
   function Pane(side, figures) {
     this.side = side;
     this.figures = figures;
+    figures.forEach(function (f) {
+      f.tilt = (Math.random() < 0.5 ? -1 : 1) * (TILT[0] + Math.random() * (TILT[1] - TILT[0]));
+    });
     this.on = false;
     this.canvas = document.createElement('canvas');
     this.canvas.className = 'glass-pane';
@@ -983,11 +988,10 @@
     var gap = (h - sum * scale - n * 2 * PAD) / (n + 1);
     var y = gap;
     var stagger = STAGGER[this.side];
-    var tilt = TILT[this.side];
     this.figures.forEach(function (f, k) {
-      var px = 6 + (room - pw) * stagger[k];
+      var px = 9 + (room - pw) * stagger[k];
       var ph = f.h * scale + 2 * PAD;
-      f.sheet = { x: px, y: y, w: pw, h: ph, tilt: (tilt[k] * Math.PI) / 180 };
+      f.sheet = { x: px, y: y, w: pw, h: ph, tilt: (f.tilt * Math.PI) / 180 };
       f.at = { x: px + PAD, y: y + PAD, s: scale };
       y += ph + gap;
     });
