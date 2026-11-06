@@ -9,16 +9,20 @@
   if (svg && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) svg.pauseAnimations();
   var nodes = hero.querySelectorAll('.wm-node');
   var pops = hero.querySelectorAll('.wm-pop');
+  // An open bubble goes over the footer: the page content is raised above it while one is open
+  var page = hero.closest('.main-content');
+  function raise(on) { if (page) page.classList.toggle('wm-raised', on); }
   function closeAll() {
     pops.forEach(function (p) { p.hidden = true; });
     nodes.forEach(function (n) { n.classList.remove('is-open'); });
+    raise(false);
   }
   nodes.forEach(function (node) {
     function toggle() {
       var pop = hero.querySelector('.wm-pop[data-for="' + node.getAttribute('data-wm') + '"]');
       var wasOpen = pop && !pop.hidden;
       closeAll();
-      if (pop && !wasOpen) { pop.hidden = false; node.classList.add('is-open'); }
+      if (pop && !wasOpen) { pop.hidden = false; node.classList.add('is-open'); raise(true); }
     }
     node.addEventListener('click', function (e) { e.stopPropagation(); toggle(); });
     node.addEventListener('keydown', function (e) {
@@ -36,7 +40,7 @@
     var pop = hero.querySelector('.wm-pop[data-for="' + m[1] + '"]');
     var node = hero.querySelector('.wm-node[data-wm="' + m[1] + '"]');
     closeAll();
-    if (pop && node) { pop.hidden = false; node.classList.add('is-open'); }
+    if (pop && node) { pop.hidden = false; node.classList.add('is-open'); raise(true); }
     hero.scrollIntoView({ block: 'center' });
   }
   window.addEventListener('hashchange', fromHash);

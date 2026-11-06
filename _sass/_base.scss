@@ -1886,6 +1886,12 @@ textarea,
   > .content-card {
     flex: 1 0 auto;
   }
+
+  // While one of the brain's bubbles is open, the content goes over the footer, so a bubble near the end of the page
+  // shows whole (assets/js/world-model.js)
+  &.wm-raised {
+    z-index: 4;
+  }
 }
 
 // The content box: clear, so the sheets of paper show either side of the text, and padded to centre the text column
