@@ -14,10 +14,12 @@
   var DW = 120; // the width the drawings are made at, before scaling to the sheet
   var PANE = 140; // the widest the space for the sheets on each side gets
   var MIN_PANE = 112; // the narrowest space that gets sheets
-  var GAP = 16; // between that space and the text column
+  var GAP = 16; // between that space and the text column, at the least
+  var NEAR = 48; // and at the most: the space sits this close to the text, however wide the window
   var SCALE = 0.75; // the largest the drawings are drawn, of DW
   var PAD = 9; // the paper around a drawing
   var STAGGER = { left: [0, 1, 0.4], right: [0.6, 0, 1] }; // where each sheet sits, from side to side, in its space
+  var DROP = { left: [-0.4, 0.3, -0.2], right: [0.35, -0.2, 0.3] }; // how far it is moved up or down, of the space between sheets
   var TILT = { left: [-1.4, 1.1, -0.7], right: [1.2, -0.9, 1.5] }; // and how far it is turned, in degrees
 
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -954,9 +956,9 @@
     });
   }
 
-  // Each drawing on a sheet of its own, the sheets staggered from side to side and spread evenly down the canvas, with as
-  // much space between them as above the first and below the last. Room is left around them for their shadows, which
-  // fall down and to the right
+  // Each drawing on a sheet of its own, the sheets staggered from side to side and spread down the canvas, each moved up
+  // or down from even spacing (by DROP), so they don't line up with each other or with the sheets on the other side.
+  // Room is left around them for their shadows, which fall down and to the right
   Pane.prototype.fit = function (x, w, top, h) {
     this.on = w >= MIN_PANE && h >= 320;
     this.canvas.style.display = this.on ? 'block' : 'none';
@@ -980,12 +982,14 @@
     var gap = (h - sum * scale - n * 2 * PAD) / (n + 1);
     var y = gap;
     var stagger = STAGGER[this.side];
+    var drop = DROP[this.side];
     var tilt = TILT[this.side];
     this.figures.forEach(function (f, k) {
       var px = 6 + (room - pw) * stagger[k];
+      var py = y + drop[k] * gap;
       var ph = f.h * scale + 2 * PAD;
-      f.sheet = { x: px, y: y, w: pw, h: ph, tilt: (tilt[k] * Math.PI) / 180 };
-      f.at = { x: px + PAD, y: y + PAD, s: scale };
+      f.sheet = { x: px, y: py, w: pw, h: ph, tilt: (tilt[k] * Math.PI) / 180 };
+      f.at = { x: px + PAD, y: py + PAD, s: scale };
       y += ph + gap;
     });
     this.draw();
@@ -1270,7 +1274,7 @@
 
   var panes = [];
 
-  // The sheets go in the open space either side of the text column (the content box's side padding, less a gap)
+  // The sheets go in the open space either side of the text column (the content box's side padding), near the text
   function fit() {
     var card = document.querySelector('.main-content > .content-card');
     if (!card) return;
@@ -1279,8 +1283,12 @@
     var nav = document.getElementById('navbar');
     var top = nav ? Math.round(nav.getBoundingClientRect().bottom) : 0;
     var h = window.innerHeight - top;
-    var lw = Math.min(PANE, Math.floor(parseFloat(cs.paddingLeft) - GAP));
-    var rw = Math.min(PANE, Math.floor(parseFloat(cs.paddingRight) - GAP));
+    var pl = parseFloat(cs.paddingLeft);
+    var pr = parseFloat(cs.paddingRight);
+    var lw = Math.min(PANE, Math.floor(pl - GAP));
+    var rw = Math.min(PANE, Math.floor(pr - GAP));
+    var lx = Math.round(box.left + Math.max(0, pl - NEAR - lw));
+    var rx = Math.round(box.right - Math.max(0, pr - NEAR - rw)) - rw;
     if (!panes.length) {
       panes = [
         new Pane('left', [new PredictFigure(), new WorldFigure(), new GridFigure()]),
@@ -1288,8 +1296,8 @@
       ];
     }
     note.close();
-    panes[0].fit(Math.round(box.left), lw, top, h);
-    panes[1].fit(Math.round(box.right) - rw, rw, top, h);
+    panes[0].fit(lx, lw, top, h);
+    panes[1].fit(rx, rw, top, h);
   }
 
   var timer;

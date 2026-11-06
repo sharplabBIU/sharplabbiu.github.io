@@ -1859,6 +1859,22 @@ textarea,
   font-weight: 400;
 }
 
+// Headings on every page are bold (but not the home description's paragraphs, which are h3s)
+.content-card {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 700;
+  }
+
+  .home-intro h3 {
+    font-weight: 400;
+  }
+}
+
 // Main container: the content box fills short pages, so the footer stays at the bottom of the window
 .main-content {
   position: relative;
