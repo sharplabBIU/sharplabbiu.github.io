@@ -973,7 +973,7 @@ body {
     flex: 0 0 150px;
     padding: 8px;
     border: 2px solid $outline-color; // a black outline around each graphic
-    background: $card-color;
+    background: $white-color; // each graphic on white, on the dark panel
 
     svg {
       display: block;
@@ -1891,7 +1891,7 @@ textarea,
 
 // The content box: clear, so the sheets of paper show either side of the text, and padded to centre the text column
 .content-card {
-  // All text inside the box is black, links included (the site's colour variables are re-pointed here)
+  // All text inside the box is white, links included (the site's colour variables are re-pointed here)
   --global-text-color: #{$card-text-color};
   --global-text-color-light: #{$card-text-color};
   --global-theme-color: #{$card-text-color};
@@ -1902,7 +1902,7 @@ textarea,
   padding-right: unquote("max(2rem, calc((100% - #{$text-column-width}) / 2))");
   position: relative;
 
-  // The text column stands out from the page: a raised white panel, with a faint outline and rounded corners, a
+  // The text column stands out from the page: a raised dark navy panel, with a faint outline and rounded corners, a
   // little wider than the text and the height of the box
   &::before {
     content: "";
