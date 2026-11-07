@@ -1,6 +1,6 @@
 // Small sheets of paper down the left and right edges of the window (wider windows only), beside the text column,
 // stapled to the wall, each turned a little to the left or right at random and staggered from side to side, each with
-// a drawing on it in dark green, royal blue and dark orange marker, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
+// a drawing on it in medium sea green, dodger blue and light coral marker, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
 // predecessor representations, Sharp & Eldar), planning with one's own world model, and task construal in a grid world
 // (Ho et al.). Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
 // Eldar). Clicking a drawing opens a card describing it, with key papers, and most drawings also change when clicked
@@ -9,9 +9,10 @@
 (function () {
   'use strict';
 
-  var INK = '#006400'; // dark green: the drawings themselves
-  var BLUE = '#4169e1'; // royal blue: what is picked out in them (the plan, the replay, the backward prediction)
-  var ORANGE = '#ff8c00'; // dark orange: goals and rewards (the stars)
+  // The colours of the brain on the home page
+  var INK = '#3cb371'; // medium sea green: the drawings themselves
+  var BLUE = '#1e90ff'; // dodger blue: what is picked out in them (the plan, the replay, the backward prediction)
+  var CORAL = '#f08080'; // light coral: goals and rewards (the stars)
   var PAPER = '#ffffff'; // white: the sheets of paper
   var DW = 120; // the width the drawings are made at, before scaling to the sheet
   var PANE = 152; // the widest the space for the sheets on each side gets (the sheets are sized to it)
@@ -285,12 +286,12 @@
     g.closePath();
   }
 
-  // A goal or a reward: a star in dark orange
+  // A goal or a reward: a star in light coral
   function goal(g, x, y, r, j) {
     wipe(g, function () {
       star(g, x, y, r + 1, j);
     });
-    g.strokeStyle = g.fillStyle = ORANGE;
+    g.strokeStyle = g.fillStyle = CORAL;
     star(g, x, y, r, j);
     g.globalAlpha = 0.5;
     g.fill();
@@ -330,7 +331,7 @@
 
   // Forward and backward prediction (Sharp & Eldar): states in rows, time running down, paths converging into the
   // middle and diverging after it. From the state predicted from (filled), the successor representation runs forward
-  // to the states that follow it (dark green) and the predecessor representation backward to the states that came
+  // to the states that follow it (green) and the predecessor representation backward to the states that came
   // before it (blue), each state filling with how much it is expected there, discounted by the steps away. Click a
   // state to predict from it
   var ROWS = [[22, 60, 98], [40, 80], [60], [40, 80], [22, 60, 98]];

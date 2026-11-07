@@ -972,7 +972,7 @@ body {
   .research-diagram {
     flex: 0 0 150px;
     padding: 8px;
-    border: 1px solid $outline-color;
+    border: 2px solid $outline-color; // a black outline around each graphic
     background: $card-color;
 
     svg {
