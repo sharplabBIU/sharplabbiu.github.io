@@ -12,6 +12,7 @@
   var INK = '#006400'; // dark green: the drawings themselves
   var BLUE = '#4169e1'; // royal blue: what is picked out in them (the plan, the replay, the backward prediction)
   var ORANGE = '#ff8c00'; // dark orange: goals and rewards (the stars)
+  var PAPER = '#f8f8ff'; // ghostwhite: the sheets of paper
   var DW = 120; // the width the drawings are made at, before scaling to the sheet
   var PANE = 152; // the widest the space for the sheets on each side gets (the sheets are sized to it)
   var ZIG = 70; // and the room added to it, where the window has it, for the sheets to zigzag from side to side
@@ -1115,7 +1116,7 @@
     g.rotate(p.tilt);
     g.translate(-w / 2, -h / 2);
     g.save();
-    g.fillStyle = '#ffffff';
+    g.fillStyle = PAPER;
     g.shadowColor = 'rgba(40, 40, 40, 0.16)';
     g.shadowBlur = 5;
     g.shadowOffsetY = 2;
@@ -1126,8 +1127,8 @@
     g.fillRect(0, 0, w, h);
     g.restore();
     var face = g.createLinearGradient(0, 0, w, h);
-    face.addColorStop(0, '#ffffff');
-    face.addColorStop(1, '#fbfbf8');
+    face.addColorStop(0, PAPER);
+    face.addColorStop(1, '#f3f3fb');
     g.fillStyle = face;
     g.fillRect(0, 0, w, h);
     g.fillStyle = toothOf(g);
