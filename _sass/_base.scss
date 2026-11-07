@@ -972,8 +972,7 @@ body {
   .research-diagram {
     flex: 0 0 150px;
     padding: 8px;
-    border: 2px solid $outline-color; // a black outline around each graphic
-    background: $white-color; // each graphic on white, on the dark panel
+    border: 2px solid $outline-color; // a white outline around each graphic, drawn in white on the dark panel
 
     svg {
       display: block;
