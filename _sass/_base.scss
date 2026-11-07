@@ -1907,7 +1907,7 @@ textarea,
   padding-right: unquote("max(2rem, calc((100% - #{$text-column-width}) / 2))");
   position: relative;
 
-  // The text column stands out from the page: a raised lightsteelblue panel, with a faint outline and rounded corners, a
+  // The text column stands out from the page: a raised pale cornflowerblue panel, with a faint outline and rounded corners, a
   // little wider than the text and the height of the box
   &::before {
     content: "";
