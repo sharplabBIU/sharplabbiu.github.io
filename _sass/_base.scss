@@ -475,7 +475,7 @@ footer.sticky-bottom {
   }
 }
 
-// Footer contents: social icons centred in the bar, with the copyright centred below them. Icons are honeydew.
+// Footer contents: social icons centred in the bar, with the copyright centred below them. Icons are lightcyan.
 footer .footer-content {
   display: grid;
   grid-template-columns: 1fr;
@@ -483,7 +483,7 @@ footer .footer-content {
   align-items: center;
   gap: 0.25rem;
 
-  // A site-wide rule colors every div with the body text color; keep the footer text honeydew
+  // A site-wide rule colors every div with the body text color; keep the footer text lightcyan
   .footer-copyright {
     color: var(--global-footer-text-color);
   }
@@ -1573,7 +1573,7 @@ swiper-container {
 }
 
 // Header: a black bar the full width of the window, fixed to the top of it, with the lab logo at its left end and
-// honeydew page links centred in it (the logo keeps its own colours); the content box is right below it
+// lightcyan page links centred in it (the logo keeps its own colours); the content box is right below it
 #navbar {
   border-bottom: 0;
   opacity: 1;
@@ -1745,7 +1745,7 @@ footer > .container {
 }
 
 // Page and content box
-// Between the black header and footer bars the page is darkseagreen, with the text on a pale panel. Each page's
+// Between the black header and footer bars the page is darkcyan, with the text on a pale panel. Each page's
 // text sits in a column $text-column-width wide, centred in the window, with sheets of paper with drawings on them in the open space
 // either side of it (assets/js/glass-panes.js: two canvases fixed below the header, over the content box's
 // side padding, which they leave clear of the text, and under the footer; they respond to clicks)
@@ -1907,7 +1907,7 @@ textarea,
   padding-right: unquote("max(2rem, calc((100% - #{$text-column-width}) / 2))");
   position: relative;
 
-  // The text column stands out from the page: a raised honeydew panel, with a faint outline and rounded corners, a
+  // The text column stands out from the page: a raised lightcyan panel, with a faint outline and rounded corners, a
   // little wider than the text and the height of the box
   &::before {
     content: "";

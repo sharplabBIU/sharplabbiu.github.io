@@ -10,9 +10,9 @@ $orange-color: #f29105 !default;
 $blue-color: #0076df !default;
 $blue-color-dark: #00369f !default;
 $bar-color: #000000 !default; // black: the header and footer bars
-$card-color: #f0fff0 !default; // honeydew: the panel behind the text and the diagrams on it, and the header and footer text
-$page-color: #8fbc8f !default; // darkseagreen: the page either side of the text, where the sheets of paper are
-$bar-text-color: $card-color !default; // honeydew: the page links in the header, and the footer text and icons
+$card-color: #e0ffff !default; // lightcyan: the panel behind the text and the diagrams on it, and the header and footer text
+$page-color: #008b8b !default; // darkcyan: the page either side of the text, where the sheets of paper are
+$bar-text-color: $card-color !default; // lightcyan: the page links in the header, and the footer text and icons
 $outline-color: #000000 !default; // black: the thin line around the project diagrams
 $cyan-color: #2698ba !default;
 $light-cyan-color: lighten($cyan-color, 25%);

@@ -4,11 +4,11 @@
     <path stroke="#000000" d="M72 18 L40 48 M72 18 L104 48 M40 48 L22 80 M40 48 L58 80 M104 48 L86 80 M104 48 L122 80" />
     <path stroke="#008080" stroke-width="3" d="M72 18 L40 48 L22 80" />
     <circle cx="72" cy="18" r="5" fill="#008080" stroke="#008080" />
-    <circle cx="40" cy="48" r="5" fill="#f0fff0" stroke="#008080" />
-    <circle cx="104" cy="48" r="5" fill="#f0fff0" stroke="#000000" />
+    <circle cx="40" cy="48" r="5" fill="#e0ffff" stroke="#008080" />
+    <circle cx="104" cy="48" r="5" fill="#e0ffff" stroke="#000000" />
     <rect x="18" y="80" width="8" height="8" fill="#008080" stroke="#008080" />
-    <rect x="54" y="80" width="8" height="8" fill="#f0fff0" stroke="#000000" />
-    <rect x="82" y="80" width="8" height="8" fill="#f0fff0" stroke="#000000" />
-    <rect x="118" y="80" width="8" height="8" fill="#f0fff0" stroke="#000000" />
+    <rect x="54" y="80" width="8" height="8" fill="#e0ffff" stroke="#000000" />
+    <rect x="82" y="80" width="8" height="8" fill="#e0ffff" stroke="#000000" />
+    <rect x="118" y="80" width="8" height="8" fill="#e0ffff" stroke="#000000" />
   </g>
 </svg>
