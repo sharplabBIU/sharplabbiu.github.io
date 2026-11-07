@@ -455,7 +455,7 @@ footer.fixed-bottom {
   }
 }
 
-// The footer: a black bar the full width of the window at the end of the page, right below the content box
+// The footer: a dark navy bar the full width of the window at the end of the page, right below the content box
 // (and over the sheets of paper, which are fixed beside the content)
 footer.sticky-bottom {
   position: relative;
@@ -1571,7 +1571,7 @@ swiper-container {
   }
 }
 
-// Header: a black bar the full width of the window, fixed to the top of it, with the lab logo at its left end and
+// Header: a dark navy bar the full width of the window, fixed to the top of it, with the lab logo at its left end and
 // white page links centred in it (the logo keeps its own colours); the content box is right below it
 #navbar {
   border-bottom: 0;
@@ -1672,7 +1672,7 @@ footer > .container {
   }
 }
 
-// Lab logo at the left end of the header on every page: "Sharp Lab" in snow on the black of the bar, with the brain
+// Lab logo at the left end of the header on every page: "Sharp Lab" in snow on the dark navy of the bar, with the brain
 // from the lab's emblem to its right (assets/img/lab_brain_dark.png: its dark lines lightened to show on black). It is
 // taken out of the row, and the page links are centred in the bar beside it
 #navbar .navbar-logo {
@@ -1738,7 +1738,7 @@ footer > .container {
 }
 
 // Page and content box
-// Between the black header and footer bars the page is Bluesky's blue, with the text on a pale panel. Each page's
+// Between the dark navy header and footer bars the page is Bluesky's blue, with the text on a dark navy panel. Each page's
 // text sits in a column $text-column-width wide, centred in the window, with sheets of paper with drawings on them in the open space
 // either side of it (assets/js/glass-panes.js: two canvases fixed below the header, over the content box's
 // side padding, which they leave clear of the text, and under the footer; they respond to clicks)
