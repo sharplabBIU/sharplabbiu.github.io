@@ -1,6 +1,6 @@
 // Small sheets of paper down the left and right edges of the window (wider windows only), beside the text column,
 // stapled to the wall, each turned a little to the left or right at random and staggered from side to side, each with
-// a drawing on it in dark slate gray (as the text) and orange marker, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
+// a drawing on it in dark green, royal blue and dark orange marker, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
 // predecessor representations, Sharp & Eldar), planning with one's own world model, and task construal in a grid world
 // (Ho et al.). Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
 // Eldar). Clicking a drawing opens a card describing it, with key papers, and most drawings also change when clicked
@@ -9,8 +9,9 @@
 (function () {
   'use strict';
 
-  var INK = '#2f4f4f'; // dark slate gray, as the text
-  var ORANGE = '#e07020'; // orange, deep enough to show on the paper
+  var INK = '#006400'; // dark green: the drawings themselves
+  var BLUE = '#4169e1'; // royal blue: what is picked out in them (the plan, the replay, the backward prediction)
+  var ORANGE = '#ff8c00'; // dark orange: goals and rewards (the stars)
   var DW = 120; // the width the drawings are made at, before scaling to the sheet
   var PANE = 152; // the widest the space for the sheets on each side gets (the sheets are sized to it)
   var ZIG = 70; // and the room added to it, where the window has it, for the sheets to zigzag from side to side
@@ -51,7 +52,7 @@
     predict: {
       title: 'Forward and backward prediction',
       text:
-        'Two ways to predict with a map of the world. From a state (filled), the successor representation predicts which states will follow it, and how soon (gray); the predecessor representation predicts which states came before it (orange). Each circle fills with how much that state is expected, discounted by how many steps away it is. Which is more efficient depends on the world: where paths diverge, possible futures outnumber the present, so it pays to predict backward from a goal to what leads to it; where paths converge, it pays to predict forward. People adapt accordingly, using more backward prediction where paths diverge and more forward prediction where they converge. Click a state to predict from it.',
+        'Two ways to predict with a map of the world. From a state (filled), the successor representation predicts which states will follow it, and how soon (green); the predecessor representation predicts which states came before it (blue). Each circle fills with how much that state is expected, discounted by how many steps away it is. Which is more efficient depends on the world: where paths diverge, possible futures outnumber the present, so it pays to predict backward from a goal to what leads to it; where paths converge, it pays to predict forward. People adapt accordingly, using more backward prediction where paths diverge and more forward prediction where they converge. Click a state to predict from it.',
       eq: 'M<sub>SR</sub>(s,s′) = E[ Σ<sub>t</sub> γ<sup>t</sup> 𝟙(s<sub>t</sub> = s′) | s<sub>0</sub> = s ]<br>M<sub>PR</sub>(s,s′) = E[ Σ<sub>t</sub> γ<sup>t</sup> 𝟙(s<sub>−t</sub> = s′) | s<sub>0</sub> = s ]',
       links: [LAB.direction, REF.dayan1993],
     },
@@ -59,7 +60,7 @@
       wm: 'model',
       title: 'Planning with one’s own world model',
       text:
-        'Each person plans with their own model of the world: beliefs about what leads to what (the map, its arrows as thick as they are likely) and about what is worth having (the star). Planning looks ahead through this model and takes the best action at each step (the orange branch). The equation is the same for everyone; what differs is the model it is solved with, as in the brain on our home page, and biases in it, as in anxiety, reshape every plan. Click the map, the star or the branches for each part.',
+        'Each person plans with their own model of the world: beliefs about what leads to what (the map, its arrows as thick as they are likely) and about what is worth having (the star). Planning looks ahead through this model and takes the best action at each step (the blue branch). The equation is the same for everyone; what differs is the model it is solved with, as in the brain on our home page, and biases in it, as in anxiety, reshape every plan. Click the map, the star or the branches for each part.',
       eq: 'Q<sub>i</sub>(s,a) = r<sub>i</sub>(s) + γ Σ<sub>s′</sub> p<sub>i</sub>(s′|s,a) max<sub>a′</sub> Q<sub>i</sub>(s′,a′)',
       links: [LAB.worldModel, LAB.anxiety, REF.dawNivDayan, REF.suttonBarto],
     },
@@ -83,14 +84,14 @@
       wm: 'tasks',
       title: 'The plan: values of actions',
       text:
-        'The value person i expects from taking action a in state s and acting well afterwards, worked out with their own world model; the plan takes the best action (the orange branch). In the brain on our home page this is a task representation, built for the task at hand from the beliefs and goals above it.',
+        'The value person i expects from taking action a in state s and acting well afterwards, worked out with their own world model; the plan takes the best action (the blue branch). In the brain on our home page this is a task representation, built for the task at hand from the beliefs and goals above it.',
       eq: 'π<sub>i</sub>(s) = argmax<sub>a</sub> Q<sub>i</sub>(s,a)',
       links: [REF.dawNivDayan, LAB.worldModel],
     },
     construal: {
       title: 'Task construal',
       text:
-        'To plan, people build a simplified representation of the task, keeping only what matters. Here the plan from the dot to the star (orange) keeps the wall in its way and ignores the obstacles drawn dashed, which do not change the best route. Representing more costs effort, so the best construal trades how well its plan does against its cost. We ask how anxiety distorts construals. Click an obstacle to keep it or leave it out: leave out the wall and the plan runs into it.',
+        'To plan, people build a simplified representation of the task, keeping only what matters. Here the plan from the dot to the star (blue) keeps the wall in its way and ignores the obstacles drawn dashed, which do not change the best route. Representing more costs effort, so the best construal trades how well its plan does against its cost. We ask how anxiety distorts construals. Click an obstacle to keep it or leave it out: leave out the wall and the plan runs into it.',
       eq: 'VOR(c) = U(π<sub>c</sub>) − C(c)',
       links: [REF.ho2022, REF.lieder, LAB.anxiety, LAB.construal],
     },
@@ -104,14 +105,14 @@
     needgain: {
       title: 'What to replay or plan: need × gain',
       text:
-        'Mattar and Daw’s answer to which memory to replay, or which step to plan, next: the one whose update would improve future reward the most. That is the product of gain, how much better one would act in that state after the update (high next to a newly found reward, the star), and need, how often one expects to be there (the larger circles, near you, the filled dot). The orange ring marks the winner. Click a state to move yourself there.',
+        'Mattar and Daw’s answer to which memory to replay, or which step to plan, next: the one whose update would improve future reward the most. That is the product of gain, how much better one would act in that state after the update (high next to a newly found reward, the star), and need, how often one expects to be there (the larger circles, near you, the filled dot). The blue ring marks the winner. Click a state to move yourself there.',
       eq: 'EVB(s<sub>k</sub>) = Gain(s<sub>k</sub>) × Need(s<sub>k</sub>)',
       links: [REF.mattarDaw, REF.dayan1993, LAB.direction],
     },
     when: {
       title: 'When to plan',
       text:
-        'In our task people moved three steps down a decision tree toward a goal (the star). At each step they could plan the move themselves, or let the computer choose at random for a small sure reward. Planning pays only where the choice decides whether the goal is reached (orange); where both moves keep the goal in reach (dashed), it is better to delay. People learned to delay planning adaptively, as a meta-controller that searches a cognitive map of the task predicts. Click an end state to make it the goal.',
+        'In our task people moved three steps down a decision tree toward a goal (the star). At each step they could plan the move themselves, or let the computer choose at random for a small sure reward. Planning pays only where the choice decides whether the goal is reached (blue); where both moves keep the goal in reach (dashed), it is better to delay. People learned to delay planning adaptively, as a meta-controller that searches a cognitive map of the task predicts. Click an end state to make it the goal.',
       eq: 'V<sub>take</sub> = R<sub>g</sub> γ<sup>Δ</sup>,  V<sub>relinquish</sub> = 1 (+ R<sub>g</sub> γ<sup>Δ</sup>)',
       links: [LAB.delay, REF.callaway, ['Planning efficiency, on our projects page', '/projects/#planning-efficiency']],
     },
@@ -283,7 +284,7 @@
     g.closePath();
   }
 
-  // A goal or a reward: a star in pale orange
+  // A goal or a reward: a star in dark orange
   function goal(g, x, y, r, j) {
     wipe(g, function () {
       star(g, x, y, r + 1, j);
@@ -328,8 +329,8 @@
 
   // Forward and backward prediction (Sharp & Eldar): states in rows, time running down, paths converging into the
   // middle and diverging after it. From the state predicted from (filled), the successor representation runs forward
-  // to the states that follow it (dark slate gray) and the predecessor representation backward to the states that came
-  // before it (orange), each state filling with how much it is expected there, discounted by the steps away. Click a
+  // to the states that follow it (dark green) and the predecessor representation backward to the states that came
+  // before it (blue), each state filling with how much it is expected there, discounted by the steps away. Click a
   // state to predict from it
   var ROWS = [[22, 60, 98], [40, 80], [60], [40, 80], [22, 60, 98]];
   var MOVES = [[0, 3], [1, 3], [1, 4], [2, 4], [3, 5], [4, 5], [5, 6], [5, 7], [6, 8], [6, 9], [7, 9], [7, 10]];
@@ -395,7 +396,7 @@
         g.strokeStyle = INK;
         arrowBetween(g, [a.x, a.y], [b.x, b.y], 6.5, 7.5, 3.2);
       } else if (r.behind[m[0]] && r.behind[m[1]]) {
-        g.strokeStyle = ORANGE;
+        g.strokeStyle = BLUE;
         arrowBetween(g, [b.x, b.y], [a.x, a.y], 6.5, 7.5, 3.2);
       } else {
         g.strokeStyle = INK;
@@ -406,7 +407,7 @@
     });
     states.forEach(function (s, i) {
       var full = r.ahead[i] || r.behind[i];
-      g.strokeStyle = g.fillStyle = i !== f && r.behind[i] ? ORANGE : INK;
+      g.strokeStyle = g.fillStyle = i !== f && r.behind[i] ? BLUE : INK;
       g.globalAlpha = full ? 1 : 0.45;
       g.lineWidth = i === f ? 1.8 : 1.3;
       state(g, s.x, s.y, i === f ? 6.5 : 5.5, full, s.j);
@@ -433,7 +434,7 @@
 
   // Planning with one's own world model: a head in profile with, inside it, a map of what leads to what (arrows as
   // thick as they are likely), a star for what is worth having, and a plan branching from a state, its best branch in
-  // orange. The map, the star and the plan each have a card, tied to the matching part of the home page's brain
+  // blue. The map, the star and the plan each have a card, tied to the matching part of the home page's brain
   var HEAD = [
     [38, 116, 38, 104, 22, 96, 18, 74],
     [18, 74, 12, 40, 30, 8, 62, 8],
@@ -475,7 +476,7 @@
     g.lineWidth = 1.3;
     marker(g, straight(root[0], root[1], other[0], other[1]), jit(91));
     g.globalAlpha = 1;
-    g.strokeStyle = ORANGE;
+    g.strokeStyle = BLUE;
     g.lineWidth = 2.6;
     marker(g, straight(root[0], root[1], best[0], best[1]), jit(92));
     g.strokeStyle = g.fillStyle = INK;
@@ -483,7 +484,7 @@
     state(g, root[0], root[1], 3.6, 1, jit(93));
     g.lineWidth = 1.3;
     state(g, other[0], other[1], 3, 0, jit(94));
-    g.strokeStyle = g.fillStyle = ORANGE;
+    g.strokeStyle = g.fillStyle = BLUE;
     g.lineWidth = 1.5;
     state(g, best[0], best[1], 3.4, 1, jit(95));
   };
@@ -496,7 +497,7 @@
   };
 
   // A grid world: a plan from the dot to the star made with a construal that keeps only some obstacles (Ho et al.).
-  // Click an obstacle to add it to the construal or leave it out; the plan is made again, and fails (an orange cross) if it
+  // Click an obstacle to add it to the construal or leave it out; the plan is made again, and fails (a blue cross) if it
   // runs into one left out
   function GridFigure() {
     this.h = 96;
@@ -612,7 +613,7 @@
         }
       });
     });
-    g.strokeStyle = ORANGE;
+    g.strokeStyle = BLUE;
     g.lineWidth = 2.1;
     var pts = this.path.map(function (k) {
       var p = self.cellXY(k[0], k[1]);
@@ -630,7 +631,7 @@
     }
     this.crashes.forEach(function (k) {
       var p = self.cellXY(k[0], k[1]);
-      g.strokeStyle = ORANGE;
+      g.strokeStyle = BLUE;
       g.lineWidth = 2.3;
       line(g, p[0] + 3, p[1] + 3, p[0] + s - 3, p[1] + s - 3);
       line(g, p[0] + s - 3, p[1] + 3, p[0] + 3, p[1] + s - 3);
@@ -666,7 +667,7 @@
     };
   };
 
-  // Offline learning: at rest (the moon), the steps taken on the way to a reward (the star) are replayed backward (orange
+  // Offline learning: at rest (the moon), the steps taken on the way to a reward (the star) are replayed backward (blue
   // hops, the latest darkest), and each replayed step fills the state it leads back to with value. Click to replay the
   // next step
   function OfflineFigure() {
@@ -700,7 +701,7 @@
       state(g, xs[i], y, 5.5, i >= 4 - this.k ? Math.pow(0.8, 4 - i) : 0, jit(i + 20));
     }
     goal(g, xs[4], y, 7.5, jit(29));
-    g.strokeStyle = ORANGE;
+    g.strokeStyle = BLUE;
     for (var m = 1; m <= this.k; m++) {
       var a = xs[5 - m];
       var b = xs[4 - m];
@@ -724,8 +725,8 @@
   };
 
   // Need and gain (Mattar & Daw): states on a grid, as large as they are needed (how soon and how often one expects to
-  // be there from where one is, the filled dot), orange arrows into a newly found reward (the star) from the states where
-  // an update would gain the most, and an orange ring on the state to replay next, where need × gain is largest. Click a
+  // be there from where one is, the filled dot), blue arrows into a newly found reward (the star) from the states where
+  // an update would gain the most, and a blue ring on the state to replay next, where need × gain is largest. Click a
   // state to move there
   function NeedGainFigure() {
     this.h = 90;
@@ -775,7 +776,7 @@
     cells.forEach(function (k) {
       if (k.need * k.gain > best.need * best.gain) best = k;
       if (!k.next) return;
-      g.strokeStyle = ORANGE;
+      g.strokeStyle = BLUE;
       g.lineWidth = 1.6;
       arrowBetween(g, self.xy(k.c, k.r), sp, k.size + 1.5, 9, 3.5);
     });
@@ -797,7 +798,7 @@
     });
     goal(g, sp[0], sp[1], 7.5, jit(57));
     var bp = this.xy(best.c, best.r);
-    g.strokeStyle = ORANGE;
+    g.strokeStyle = BLUE;
     g.lineWidth = 2;
     circle(g, bp[0], bp[1], best.size + 4.5, jit(58));
   };
@@ -818,7 +819,7 @@
   };
 
   // When to plan (Sharp & Eldar): a three-step decision tree whose paths cross over, with the goal at one end (the
-  // star). A state is orange where the choice decides whether the goal is reached: plan there. It is dashed where both
+  // star). A state is blue where the choice decides whether the goal is reached: plan there. It is dashed where both
   // moves keep the goal in reach: better to let chance choose, delaying planning. Click an end state to make it the goal
   var STEPS = {
     A: { at: [60, 8], kids: ['B', 'C'] },
@@ -866,7 +867,7 @@
         var b = STEPS[c].at;
         var cv = curve(n.at[0], n.at[1], b[0], b[1]);
         var on = live && self.reaches(c);
-        g.strokeStyle = on ? ORANGE : INK;
+        g.strokeStyle = on ? BLUE : INK;
         g.globalAlpha = on ? 0.95 : 0.4;
         g.lineWidth = on ? 1.9 : 1.3;
         marker(g, cv, jit(i * 4 + m + 70));
@@ -898,7 +899,7 @@
       }
       var live = self.live(k);
       if (live === 1) {
-        g.strokeStyle = g.fillStyle = ORANGE;
+        g.strokeStyle = g.fillStyle = BLUE;
         g.lineWidth = 1.8;
         state(g, x, y, 5.2, 1, jit(i + 80));
       } else if (live === 2) {
