@@ -475,7 +475,7 @@ footer.sticky-bottom {
   }
 }
 
-// Footer contents: social icons centred in the bar, with the copyright centred below them. Icons are ghostwhite.
+// Footer contents: social icons centred in the bar, with the copyright centred below them. Icons are lightsteelblue.
 footer .footer-content {
   display: grid;
   grid-template-columns: 1fr;
@@ -483,7 +483,7 @@ footer .footer-content {
   align-items: center;
   gap: 0.25rem;
 
-  // A site-wide rule colors every div with the body text color; keep the footer text ghostwhite
+  // A site-wide rule colors every div with the body text color; keep the footer text lightsteelblue
   .footer-copyright {
     color: var(--global-footer-text-color);
   }
@@ -1573,7 +1573,7 @@ swiper-container {
 }
 
 // Header: a black bar the full width of the window, fixed to the top of it, with the lab logo at its left end and
-// ghostwhite page links centred in it (the logo keeps its own colours); the content box is right below it
+// lightsteelblue page links centred in it (the logo keeps its own colours); the content box is right below it
 #navbar {
   border-bottom: 0;
   opacity: 1;
@@ -1907,7 +1907,7 @@ textarea,
   padding-right: unquote("max(2rem, calc((100% - #{$text-column-width}) / 2))");
   position: relative;
 
-  // The text column stands out from the page: a raised ghostwhite panel, with a faint outline and rounded corners, a
+  // The text column stands out from the page: a raised lightsteelblue panel, with a faint outline and rounded corners, a
   // little wider than the text and the height of the box
   &::before {
     content: "";

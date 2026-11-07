@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="136" height="146" viewBox="0 0 136 146" role="img" aria-label="Dyna architecture: acting on experience, direct RL, model learning and planning from simulated experience">
   <!-- Offline learning in the Dyna architecture; drawn for the white content boxes -->
   <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-    <rect x="30" y="4" width="76" height="24" rx="6" fill="#f8f8ff" stroke="#000000" stroke-width="1.6" />
-    <rect x="2" y="104" width="58" height="24" rx="6" fill="#f8f8ff" stroke="#008080" stroke-width="1.6" />
-    <rect x="84" y="104" width="50" height="24" rx="6" fill="#f8f8ff" stroke="#000000" stroke-width="1.6" />
+    <rect x="30" y="4" width="76" height="24" rx="6" fill="#b0c4de" stroke="#000000" stroke-width="1.6" />
+    <rect x="2" y="104" width="58" height="24" rx="6" fill="#b0c4de" stroke="#008080" stroke-width="1.6" />
+    <rect x="84" y="104" width="50" height="24" rx="6" fill="#b0c4de" stroke="#000000" stroke-width="1.6" />
     <g font-size="9.5" stroke="none" text-anchor="middle">
       <text x="68" y="20" fill="#000000">value / policy</text>
       <text x="31" y="120" fill="#008080">experience</text>
