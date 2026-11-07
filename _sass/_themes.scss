@@ -3,14 +3,14 @@
  ******************************************************************************/
 
 :root {
-  --global-bg-color: #{$card-color}; // pale cornflowerblue
+  --global-bg-color: #{$card-color}; // white
   --global-code-bg-color: #{$code-bg-color-light};
   --global-text-color: #{$black-color};
   --global-text-color-light: #{$black-color};
   --global-theme-color: #{$black-color}; // links are black like the rest of the text
   --global-hover-color: #{$black-color};
   --global-hover-text-color: #{$white-color};
-  // Footer: a black bar (drawn in _base.scss) the full width of the window, with lightsteelblue text and icons, like the header's page links
+  // Footer: a black bar (drawn in _base.scss) the full width of the window, with white text and icons, like the header's page links
   --global-footer-bg-color: #{$bar-color};
   --global-footer-text-color: #{$bar-text-color};
   --global-footer-link-color: #{$bar-text-color};

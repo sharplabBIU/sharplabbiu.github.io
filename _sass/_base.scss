@@ -475,7 +475,7 @@ footer.sticky-bottom {
   }
 }
 
-// Footer contents: social icons centred in the bar, with the copyright centred below them. Icons are lightsteelblue.
+// Footer contents: social icons centred in the bar, with the copyright centred below them. Icons are white.
 footer .footer-content {
   display: grid;
   grid-template-columns: 1fr;
@@ -483,7 +483,7 @@ footer .footer-content {
   align-items: center;
   gap: 0.25rem;
 
-  // A site-wide rule colors every div with the body text color; keep the footer text lightsteelblue
+  // A site-wide rule colors every div with the body text color; keep the footer text white
   .footer-copyright {
     color: var(--global-footer-text-color);
   }
@@ -1573,7 +1573,7 @@ swiper-container {
 }
 
 // Header: a black bar the full width of the window, fixed to the top of it, with the lab logo at its left end and
-// lightsteelblue page links centred in it (the logo keeps its own colours); the content box is right below it
+// white page links centred in it (the logo keeps its own colours); the content box is right below it
 #navbar {
   border-bottom: 0;
   opacity: 1;
@@ -1738,12 +1738,6 @@ footer > .container {
   }
 }
 
-// Papers page: source and date of the citation counts
-.publications p.citation-note {
-  margin-bottom: 0;
-  font-size: 0.85rem;
-}
-
 // Page and content box
 // Between the black header and footer bars the page is cornflowerblue, with the text on a pale panel. Each page's
 // text sits in a column $text-column-width wide, centred in the window, with sheets of paper with drawings on them in the open space
@@ -1859,7 +1853,8 @@ textarea,
   font-weight: 400;
 }
 
-// Headings on every page are bold (but not the home description's paragraphs, which are h3s)
+// Headings on every page are bold (but not the home description's paragraphs, which are h3s: they are a little
+// bolder than the rest of the text)
 .content-card {
   h1,
   h2,
@@ -1871,7 +1866,7 @@ textarea,
   }
 
   .home-intro h3 {
-    font-weight: 400;
+    font-weight: 500;
   }
 }
 
@@ -1907,7 +1902,7 @@ textarea,
   padding-right: unquote("max(2rem, calc((100% - #{$text-column-width}) / 2))");
   position: relative;
 
-  // The text column stands out from the page: a raised pale cornflowerblue panel, with a faint outline and rounded corners, a
+  // The text column stands out from the page: a raised white panel, with a faint outline and rounded corners, a
   // little wider than the text and the height of the box
   &::before {
     content: "";

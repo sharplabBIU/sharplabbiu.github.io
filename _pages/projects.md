@@ -39,8 +39,8 @@ nav_order: 4
           a model of the world to simulate actions and outcomes, for example between decisions or during rest. In work in progress presented at the
           2026 Computational Psychiatry Conference (Best Poster Award), we asked how the few seconds between choices shape learning. Rather than
           consolidating what was just learned, longer inter-trial intervals made people more likely to abandon an option that had just paid off,
-          across four studies including two preregistered replications, as if the wait were a cost charged to that choice (Yadid, Linkovski &amp;
-          Sharp, in preparation).
+          across four studies including two preregistered replications, as if the wait were a cost charged to that choice (<a href="https://osf.io/preprints/psyarxiv/2s3cz_v1">Yadid,
+          Linkovski &amp; Sharp</a>).
         </p>
       </div>
     </div>

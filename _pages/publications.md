@@ -9,10 +9,6 @@ nav_order: 5
 <!-- _pages/publications.md: preprints (unnumbered) followed by published papers numbered counting down -->
 <div class="publications">
   <div>
-    <p class="citation-note">
-      Citation counts from <a href="https://scholar.google.com/citations?user={{ site.scholar_userid }}">Google Scholar</a>, updated
-      {{ site.data.citations.updated | date: '%B %-d, %Y' }}.
-    </p>
     <h2 id="preprints">Preprints</h2>
     <div class="preprints">
       {% bibliography --file preprints %}
