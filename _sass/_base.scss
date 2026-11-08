@@ -1764,6 +1764,85 @@ body {
   display: none;
   position: fixed;
   z-index: 2;
+  // Put away (rolled up) until the tab above it is clicked; then it rolls down from the top
+  clip-path: inset(0 0 100% 0);
+  pointer-events: none;
+  transition: clip-path 1.2s cubic-bezier(0.25, 0.8, 0.3, 1);
+}
+
+body.board-open .glass-pane {
+  clip-path: inset(0 0 0 0);
+  pointer-events: auto;
+}
+
+body.board-instant .glass-pane {
+  transition: none;
+}
+
+// The pull-down tab at the top of either side, hanging from the header with a cord and ring below it, that rolls the
+// boards down (and, once they are down, back up)
+.board-pull {
+  display: none;
+  position: fixed;
+  z-index: 3;
+  transform: translateX(-50%);
+  padding: 0.45rem 0.7rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  background-color: $bar-color;
+  color: $white-color;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -14px;
+    width: 2px;
+    height: 14px;
+    margin-left: -1px;
+    background-color: $white-color;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -25px;
+    width: 12px;
+    height: 12px;
+    margin-left: -6px;
+    border: 2px solid $white-color;
+    border-radius: 50%;
+  }
+
+  &:hover {
+    background-color: lighten($bar-color, 8%);
+  }
+}
+
+// Once the boards are down, the tab is just a small handle on the board's top edge
+body.board-open .board-pull {
+  padding: 0.15rem 0.6rem 0.25rem;
+  font-size: 0.75rem;
+  box-shadow: none;
+
+  &::before,
+  &::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-pane {
+    transition: none;
+  }
 }
 
 // A card describing a drawing on a sheet of paper, beside the sheet: what it shows, its key equation and key papers

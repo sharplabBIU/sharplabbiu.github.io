@@ -1,6 +1,7 @@
 // A black board down each side of the window (wider windows only), beside the text column, like a computational lab's
 // board: three drawings on each, in neon marker in the logo's colours, zigzagging down it, with equations scrawled
-// around them. Left, how to predict and plan: forward and backward prediction (successor and
+// around them. The boards are put away until a tab at the top of either side is clicked: then they roll down (and
+// back up when it is clicked again), and stay down from page to page for the rest of the visit. Left, how to predict and plan: forward and backward prediction (successor and
 // predecessor representations, Sharp & Eldar), planning with one's own world model, and task construal in a grid world
 // (Ho et al.). Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
 // Eldar). Clicking a drawing opens a card describing it, with key papers, and most drawings also change when clicked
@@ -958,6 +959,15 @@
     this.canvas.className = 'glass-pane';
     this.canvas.setAttribute('aria-hidden', 'true');
     document.body.appendChild(this.canvas);
+    // The pull-down tab above the board, which rolls both boards down, or back up
+    this.pull = document.createElement('button');
+    this.pull.type = 'button';
+    this.pull.className = 'board-pull';
+    this.pull.addEventListener('click', function (e) {
+      e.stopPropagation();
+      roll(!document.body.classList.contains('board-open'), true);
+    });
+    document.body.appendChild(this.pull);
     this.g = this.canvas.getContext('2d');
     var self = this;
     this.canvas.addEventListener('click', function (e) {
@@ -979,7 +989,11 @@
   Pane.prototype.fit = function (x, w, top, h) {
     this.on = w >= MIN_PANE && h >= 320;
     this.canvas.style.display = this.on ? 'block' : 'none';
+    this.pull.style.display = this.on ? 'block' : 'none';
     if (!this.on) return;
+    this.pull.style.left = x + w / 2 + 'px';
+    this.pull.style.top = top + 'px';
+    this.pull.style.width = Math.min(w - 16, 200) + 'px';
     var st = this.canvas.style;
     st.left = x + 'px';
     st.top = top + 'px';
@@ -1237,6 +1251,29 @@
     }
   };
 
+  // Rolls both boards down (open) or back up, at once or (animate) as if pulled down, and remembers which for the rest of
+  // the visit
+  function roll(open, animate) {
+    var b = document.body.classList;
+    if (!animate) b.add('board-instant');
+    b.toggle('board-open', open);
+    panes.forEach(function (p) {
+      p.pull.textContent = open ? 'Roll up the whiteboard ▴' : 'Open the whiteboard to see what we’re working on ▾';
+      p.pull.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    if (!open) note.close();
+    try {
+      sessionStorage.setItem('board-open', open ? '1' : '');
+    } catch (e) {}
+    if (!animate) {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          b.remove('board-instant');
+        });
+      });
+    }
+  }
+
   // ---- Cards: beside the drawing, level with it, with what it shows, its key equation and key papers ----
 
   var note = {
@@ -1344,6 +1381,11 @@
         new Pane('left', [new PredictFigure(), new WorldFigure(), new GridFigure()]),
         new Pane('right', [new OfflineFigure(), new NeedGainFigure(), new WhenFigure()]),
       ];
+      var open = false;
+      try {
+        open = sessionStorage.getItem('board-open') === '1';
+      } catch (e) {}
+      roll(open, false);
       // The equations are written in a handwriting font: once it has loaded, they are written again in it
       if (document.fonts && document.fonts.load) {
         document.fonts.load('600 17px Caveat').then(function () {
