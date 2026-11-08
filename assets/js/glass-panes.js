@@ -1,6 +1,6 @@
-// Small sheets of paper down the left and right edges of the window (wider windows only), beside the text column,
-// stapled to the wall, each turned a little to the left or right and staggered from side to side, each with a drawing
-// on it in white, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
+// A black board down each side of the window (wider windows only), beside the text column, like a computational lab's
+// board: three drawings on each, in neon marker in the logo's colours, zigzagging down it, with equations scrawled
+// around them. Left, how to predict and plan: forward and backward prediction (successor and
 // predecessor representations, Sharp & Eldar), planning with one's own world model, and task construal in a grid world
 // (Ho et al.). Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
 // Eldar). Clicking a drawing opens a card describing it, with key papers, and most drawings also change when clicked
@@ -9,20 +9,59 @@
 (function () {
   'use strict';
 
-  var INK = '#ffffff'; // white: the drawings
-  var PAPER = '#151d28'; // dark navy, as the text panel: the sheets of paper
-  var DW = 120; // the width the drawings are made at, before scaling to the sheet
-  var PANE = 152; // the widest the space for the sheets on each side gets (the sheets are sized to it)
-  var ZIG = 70; // and the room added to it, where the window has it, for the sheets to zigzag from side to side
-  var MIN_PANE = 112; // the narrowest space that gets sheets
-  var GAP = 16; // between that space and the text column, at the least
-  var NEAR = 48; // and at the most: the space sits this close to the text, however wide the window
+  // Neon marker: the logo's dodger blue, medium sea green and light coral, made bright
+  var BLUE = '#2fa4ff';
+  var GREEN = '#3cf08c';
+  var CORAL = '#ff7a7a';
+  var INK = BLUE; // what a drawing is drawn in (set for each drawing as it is drawn)
+  var PICK = GREEN; // what is picked out in it (the plan, the replay, the backward prediction)
+  var STAR = CORAL; // goals and rewards (the stars)
+  var COLOURS = { left: [[BLUE, GREEN], [GREEN, BLUE], [BLUE, GREEN]], right: [[GREEN, BLUE], [BLUE, GREEN], [GREEN, BLUE]] };
+  var BOARD = '#0c0f13'; // the black board
+  var HAND = '"Caveat", "Comic Sans MS", "Chalkboard SE", cursive'; // handwriting, for the equations
+  var DW = 120; // the width the drawings are made at, before scaling to the board
+  var PANE = 152; // the drawings are sized to this much of the board's width
+  var ZIG = 70; // and the board is this much wider, where the window has room, for them to zigzag from side to side
+  var MIN_PANE = 112; // the narrowest space that gets a board
+  var GAP = 16; // between the board and the text column, at the least
+  var NEAR = 48; // and at the most: the board sits this close to the text, however wide the window
   var SCALE = 0.86; // the largest the drawings are drawn, of DW
-  var PAD = 9; // the paper around a drawing
-  // Where each sheet sits, from side to side, in its space (0 at the left, 1 at the right): a zigzag, the two sides
-  // mirroring each other, with the middle sheets out toward the window's edges and the others in near the text
+  var PAD = 9; // the room around a drawing that a click on it counts in
+  // Where each drawing sits, from side to side, on its board (0 at the left, 1 at the right): a zigzag, the two boards
+  // mirroring each other, with the middle drawings out toward the window's edges and the others in near the text
   var STAGGER = { left: [1, 0, 0.9], right: [0, 1, 0.1] };
-  var TILT = { left: [-1.8, 1.4, -1.1], right: [1.5, -2.2, 1.2] }; // how far each sheet is turned, in degrees, always the same
+  var TILT = { left: [-1.8, 1.4, -1.1], right: [1.5, -2.2, 1.2] }; // how far each drawing is turned, in degrees
+  // The equations scrawled on each board, around the drawings
+  var EQUATIONS = {
+    left: [
+      'M = (I − γT)^-1',
+      'V = M r',
+      'Q(s,a) = r + γ Σ p(s′|s,a) V(s′)',
+      'π(a|s) ∝ exp(β Q(s,a))',
+      'V(s) = max_a Q(s,a)',
+      'VOR(c) = U(π_c) − C(c)',
+      'p(s′|s,a) ~ Dir(α)',
+      'M_PR ∝ M_SR^T ?',
+      'b′(s′) ∝ Σ p(s′|s,a) b(s)',
+      'H(π) = −Σ π log π',
+      'γ = 0.85',
+      'argmax_a Q !',
+    ],
+    right: [
+      'δ = r + γV(s′) − V(s)',
+      'V(s) ← V(s) + α δ',
+      'EVB = Gain × Need',
+      'Need(s) = Σ_t γ^t P(s_t = s)',
+      'Gain = Σ_a (π_new − π_old) Q',
+      'V_take = R γ^Δ',
+      'VOC = E[ΔU] − cost',
+      'P(plan) = σ(β · VOC)',
+      'ITI ↑ ⇒ lose-shift ↑',
+      'Q ← Q + α(r − Q)',
+      'replay: s3 → s2 → s1',
+      'Δt = cost?',
+    ],
+  };
 
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -121,7 +160,7 @@
     return Math.max(a, Math.min(b, x));
   }
 
-  // A steady pseudo-random number for a seed, so hand-drawn wobbles stay the same each time the sheets are drawn
+  // A steady pseudo-random number for a seed, so hand-drawn wobbles stay the same each time the boards are drawn
   function rnd(n) {
     var x = Math.sin(n * 12.9898 + 78.233) * 43758.5453;
     return x - Math.floor(x);
@@ -242,35 +281,6 @@
     return c;
   }
 
-  // Lays a layer of ink (already in its colours) on the paper, a little darker at the edges of the strokes, where a
-  // marker's ink soaks in most
-  function ink(g, layer, rim) {
-    g.save();
-    g.setTransform(1, 0, 0, 1, 0, 0);
-    g.globalAlpha = 0.92;
-    g.drawImage(layer, 0, 0);
-    g.globalAlpha = 1;
-    var r = Math.max(1, Math.round(0.8 * dpr));
-    var core = layerOf(layer.width, layer.height);
-    var cg = core.getContext('2d');
-    cg.drawImage(layer, 0, 0);
-    cg.globalCompositeOperation = 'destination-in';
-    [[r, 0], [-r, 0], [0, r], [0, -r]].forEach(function (o) {
-      cg.drawImage(layer, o[0], o[1]);
-    });
-    var edge = layerOf(layer.width, layer.height);
-    var eg = edge.getContext('2d');
-    eg.drawImage(layer, 0, 0);
-    eg.globalCompositeOperation = 'destination-out';
-    eg.drawImage(core, 0, 0);
-    eg.globalCompositeOperation = 'source-in';
-    eg.fillStyle = 'rgba(0, 0, 0, ' + rim + ')';
-    eg.fillRect(0, 0, edge.width, edge.height);
-    g.drawImage(edge, 0, 0);
-    g.restore();
-  }
-
-
   // A five-pointed star drawn by hand (the path is left closed for filling and stroking)
   function star(g, x, y, r, j) {
     g.beginPath();
@@ -288,7 +298,7 @@
     wipe(g, function () {
       star(g, x, y, r + 1, j);
     });
-    g.strokeStyle = g.fillStyle = INK;
+    g.strokeStyle = g.fillStyle = STAR;
     star(g, x, y, r, j);
     g.globalAlpha = 0.5;
     g.fill();
@@ -395,7 +405,7 @@
         g.strokeStyle = INK;
         arrowBetween(g, [a.x, a.y], [b.x, b.y], 6.5, 7.5, 3.2);
       } else if (r.behind[m[0]] && r.behind[m[1]]) {
-        g.strokeStyle = INK;
+        g.strokeStyle = PICK;
         arrowBetween(g, [b.x, b.y], [a.x, a.y], 6.5, 7.5, 3.2);
       } else {
         g.strokeStyle = INK;
@@ -406,7 +416,7 @@
     });
     states.forEach(function (s, i) {
       var full = r.ahead[i] || r.behind[i];
-      g.strokeStyle = g.fillStyle = INK;
+      g.strokeStyle = g.fillStyle = i !== f && r.behind[i] ? PICK : INK;
       g.globalAlpha = full ? 1 : 0.45;
       g.lineWidth = i === f ? 1.8 : 1.3;
       state(g, s.x, s.y, i === f ? 6.5 : 5.5, full, s.j);
@@ -475,7 +485,7 @@
     g.lineWidth = 1.3;
     marker(g, straight(root[0], root[1], other[0], other[1]), jit(91));
     g.globalAlpha = 1;
-    g.strokeStyle = INK;
+    g.strokeStyle = PICK;
     g.lineWidth = 2.6;
     marker(g, straight(root[0], root[1], best[0], best[1]), jit(92));
     g.strokeStyle = g.fillStyle = INK;
@@ -483,7 +493,7 @@
     state(g, root[0], root[1], 3.6, 1, jit(93));
     g.lineWidth = 1.3;
     state(g, other[0], other[1], 3, 0, jit(94));
-    g.strokeStyle = g.fillStyle = INK;
+    g.strokeStyle = g.fillStyle = PICK;
     g.lineWidth = 1.5;
     state(g, best[0], best[1], 3.4, 1, jit(95));
   };
@@ -612,7 +622,7 @@
         }
       });
     });
-    g.strokeStyle = INK;
+    g.strokeStyle = PICK;
     g.lineWidth = 2.1;
     var pts = this.path.map(function (k) {
       var p = self.cellXY(k[0], k[1]);
@@ -630,7 +640,7 @@
     }
     this.crashes.forEach(function (k) {
       var p = self.cellXY(k[0], k[1]);
-      g.strokeStyle = INK;
+      g.strokeStyle = PICK;
       g.lineWidth = 2.3;
       line(g, p[0] + 3, p[1] + 3, p[0] + s - 3, p[1] + s - 3);
       line(g, p[0] + s - 3, p[1] + 3, p[0] + 3, p[1] + s - 3);
@@ -700,7 +710,7 @@
       state(g, xs[i], y, 5.5, i >= 4 - this.k ? Math.pow(0.8, 4 - i) : 0, jit(i + 20));
     }
     goal(g, xs[4], y, 7.5, jit(29));
-    g.strokeStyle = INK;
+    g.strokeStyle = PICK;
     for (var m = 1; m <= this.k; m++) {
       var a = xs[5 - m];
       var b = xs[4 - m];
@@ -775,7 +785,7 @@
     cells.forEach(function (k) {
       if (k.need * k.gain > best.need * best.gain) best = k;
       if (!k.next) return;
-      g.strokeStyle = INK;
+      g.strokeStyle = PICK;
       g.lineWidth = 1.6;
       arrowBetween(g, self.xy(k.c, k.r), sp, k.size + 1.5, 9, 3.5);
     });
@@ -797,7 +807,7 @@
     });
     goal(g, sp[0], sp[1], 7.5, jit(57));
     var bp = this.xy(best.c, best.r);
-    g.strokeStyle = INK;
+    g.strokeStyle = PICK;
     g.lineWidth = 2;
     circle(g, bp[0], bp[1], best.size + 4.5, jit(58));
   };
@@ -866,7 +876,7 @@
         var b = STEPS[c].at;
         var cv = curve(n.at[0], n.at[1], b[0], b[1]);
         var on = live && self.reaches(c);
-        g.strokeStyle = INK;
+        g.strokeStyle = on ? PICK : INK;
         g.globalAlpha = on ? 0.95 : 0.4;
         g.lineWidth = on ? 1.9 : 1.3;
         marker(g, cv, jit(i * 4 + m + 70));
@@ -898,7 +908,7 @@
       }
       var live = self.live(k);
       if (live === 1) {
-        g.strokeStyle = g.fillStyle = INK;
+        g.strokeStyle = g.fillStyle = PICK;
         g.lineWidth = 1.8;
         state(g, x, y, 5.2, 1, jit(i + 80));
       } else if (live === 2) {
@@ -940,6 +950,8 @@
     this.figures = figures;
     figures.forEach(function (f, k) {
       f.tilt = TILT[side][k];
+      f.ink = COLOURS[side][k][0];
+      f.pick = COLOURS[side][k][1];
     });
     this.on = false;
     this.canvas = document.createElement('canvas');
@@ -961,9 +973,9 @@
     });
   }
 
-  // Each drawing on a sheet of its own, the sheets zigzagging from side to side and spread evenly down the canvas, with as
-  // much space between them as above the first and below the last. Room is left around them for their shadows, which
-  // fall down and to the right
+  // One board the height of the canvas, with the drawings zigzagging from side to side down it, spread evenly, with as
+  // much space between them as above the first and below the last. The equations go in the space left: the rows
+  // between the drawings, and beside each drawing where there is room
   Pane.prototype.fit = function (x, w, top, h) {
     this.on = w >= MIN_PANE && h >= 320;
     this.canvas.style.display = this.on ? 'block' : 'none';
@@ -995,17 +1007,35 @@
       f.at = { x: px + PAD, y: y + PAD, s: scale };
       y += ph + gap;
     });
+    // Where the equations can go: rows across the board between the drawings, and rows beside each drawing
+    var slots = [];
+    var left = 16;
+    var right = w - 16;
+    var rows = function (top, bottom, x0, x1, step) {
+      var k = Math.floor((bottom - top) / step);
+      for (var i = 0; i < k; i++) slots.push({ x: x0, y: top + (bottom - top) * ((i + 0.5) / k), w: x1 - x0 });
+    };
+    var above = 16;
+    this.figures.forEach(function (f) {
+      var p = f.sheet;
+      rows(above, p.y, left, right, 27);
+      if (p.x - left > 48) rows(p.y, p.y + p.h, left, p.x - 4, 25);
+      else if (right - (p.x + p.w) > 48) rows(p.y, p.y + p.h, p.x + p.w + 4, right, 25);
+      above = p.y + p.h;
+    });
+    rows(above, h - 16, left, right, 27);
+    this.slots = slots;
     this.draw();
   };
 
   Pane.prototype.draw = function () {
     var g = this.g;
+    var w = this.canvas.width / dpr;
+    var h = this.canvas.height / dpr;
     g.setTransform(1, 0, 0, 1, 0, 0);
     g.clearRect(0, 0, this.canvas.width, this.canvas.height);
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
-    this.figures.forEach(function (f) {
-      sheet(g, f.sheet);
-    });
+    board(g, w, h);
     var lg = this.layer.getContext('2d');
     lg.setTransform(1, 0, 0, 1, 0, 0);
     lg.clearRect(0, 0, this.layer.width, this.layer.height);
@@ -1020,129 +1050,146 @@
       lg.scale(f.at.s, f.at.s);
       lg.globalAlpha = 1;
       lg.setLineDash([]);
+      INK = f.ink;
+      PICK = f.pick;
       f.draw(lg);
     });
-    ink(g, this.layer, 0.15);
+    lg.setTransform(dpr, 0, 0, dpr, 0, 0);
+    scrawl(lg, this.slots, EQUATIONS[this.side], this.side === 'left' ? 0 : 1);
+    neon(g, this.layer);
   };
 
-  // The paper's tooth: the faint relief of good drawing paper, small bumps over gentle hollows, lit from the upper left
-  // so each bump has a little shadow below and to the right of it (the same each time; the tile wraps around)
-  var tooth;
-  function toothOf(g) {
-    if (!tooth) {
-      var n = 128;
-      var noise = [];
-      for (var i = 0; i < n * n; i++) noise.push(rnd(i * 0.37));
-      var blur = function (src, r) {
-        var out = [];
-        for (var y = 0; y < n; y++) {
-          for (var x = 0; x < n; x++) {
-            var sum = 0;
-            for (var dy = -r; dy <= r; dy++) {
-              for (var dx = -r; dx <= r; dx++) sum += src[((y + dy + n) % n) * n + ((x + dx + n) % n)];
-            }
-            out.push(sum / ((2 * r + 1) * (2 * r + 1)));
-          }
-        }
-        return out;
-      };
-      var bumps = blur(noise, 1);
-      var hollows = blur(noise, 5);
-      tooth = layerOf(n, n);
-      var tg = tooth.getContext('2d');
-      var img = tg.createImageData(n, n);
-      for (var y = 0; y < n; y++) {
-        for (var x = 0; x < n; x++) {
-          var k = y * n + x;
-          var below = ((y + 1) % n) * n + ((x + 1) % n);
-          var lit = (bumps[k] - bumps[below]) * 2.4 + (hollows[k] - hollows[below]) * 12 + (hollows[k] - 0.5) * 1.2;
-          var j = k * 4;
-          img.data[j] = img.data[j + 1] = img.data[j + 2] = lit > 0 ? 255 : 0;
-          img.data[j + 3] = Math.round(Math.min(1, Math.abs(lit)) * (lit > 0 ? 22 : 60));
-        }
-      }
-      tg.putImageData(img, 0, 0);
-    }
-    return g.createPattern(tooth, 'repeat');
-  }
-
-  // A staple across a corner of the sheet, at (x, y), turned by a: steel, lit along its top, with its legs through the
-  // paper at either end and a little shadow
-  function staple(g, x, y, a) {
-    var dx = 3.6 * Math.cos(a);
-    var dy = 3.6 * Math.sin(a);
-    g.save();
-    g.lineCap = 'round';
-    g.strokeStyle = 'rgba(0, 0, 0, 0.28)';
-    g.lineWidth = 1.7;
-    g.beginPath();
-    g.moveTo(x - dx + 0.5, y - dy + 0.8);
-    g.lineTo(x + dx + 0.5, y + dy + 0.8);
-    g.stroke();
-    var steel = g.createLinearGradient(x - dx, y - dy, x + dx, y + dy);
-    steel.addColorStop(0, '#80898e');
-    steel.addColorStop(0.5, '#dfe4e6');
-    steel.addColorStop(1, '#8c959a');
-    g.strokeStyle = steel;
-    g.lineWidth = 1.4;
-    g.beginPath();
-    g.moveTo(x - dx, y - dy);
-    g.lineTo(x + dx, y + dy);
-    g.stroke();
-    g.strokeStyle = 'rgba(255, 255, 255, 0.75)';
-    g.lineWidth = 0.4;
-    g.beginPath();
-    g.moveTo(x - dx * 0.8, y - dy * 0.8 - 0.35);
-    g.lineTo(x + dx * 0.8, y + dy * 0.8 - 0.35);
-    g.stroke();
-    g.fillStyle = 'rgba(50, 55, 60, 0.7)';
-    [-1, 1].forEach(function (e) {
-      g.beginPath();
-      g.arc(x + e * dx, y + e * dy, 0.7, 0, Math.PI * 2);
-      g.fill();
+  // The equations, in a hurried hand, spread evenly down the board: in each space, the longest that still fits (smaller
+  // if need be), each a little askew and shifted, in turn in the three colours, some underlined and some boxed
+  function scrawl(g, slots, list, turn) {
+    var n = Math.min(slots.length, list.length);
+    var spread = [];
+    for (var j = 0; j < n; j++) spread.push(slots[Math.floor(((j + 0.5) * slots.length) / n)]);
+    var BASE = 17;
+    g.textBaseline = 'middle';
+    g.font = '600 ' + BASE + 'px ' + HAND;
+    var pool = list.map(function (t) {
+      return { t: t, w: g.measureText(t).width };
     });
+    pool.sort(function (a, b) {
+      return b.w - a.w;
+    });
+    spread.forEach(function (slot, i) {
+      if (!pool.length) return;
+      var k = 0;
+      while (k < pool.length && pool[k].w > slot.w) k++;
+      var size = BASE;
+      if (k === pool.length) {
+        k = pool.length - 1;
+        size = (BASE * slot.w) / pool[k].w;
+        if (size < 11) return;
+      }
+      var e = pool.splice(k, 1)[0];
+      var tw = (e.w * size) / BASE;
+      var x = slot.x + (slot.w - tw) * rnd(i * 3.1 + turn * 17);
+      var c = [BLUE, GREEN, CORAL][(i + turn) % 3];
+      g.save();
+      g.translate(x, slot.y);
+      g.rotate((rnd(i * 5.7 + turn * 11) - 0.5) * 0.09);
+      g.font = '600 ' + size.toFixed(1) + 'px ' + HAND;
+      g.fillStyle = g.strokeStyle = c;
+      g.fillText(e.t, 0, 0);
+      g.lineWidth = 1.3;
+      g.lineCap = 'round';
+      if (i % 4 === 1) {
+        g.beginPath();
+        g.moveTo(-2, size * 0.55);
+        g.quadraticCurveTo(tw / 2, size * 0.7, tw + 3, size * 0.5);
+        g.stroke();
+      } else if (i % 5 === 3) {
+        g.beginPath();
+        g.moveTo(-4, -size * 0.6);
+        g.lineTo(tw + 4, -size * 0.66);
+        g.lineTo(tw + 5, size * 0.62);
+        g.lineTo(-3, size * 0.66);
+        g.closePath();
+        g.stroke();
+      }
+      g.restore();
+    });
+  }
+
+  // A path around a rectangle with rounded corners
+  function rounded(g, x, y, w, h, r) {
+    g.beginPath();
+    g.moveTo(x + r, y);
+    g.arcTo(x + w, y, x + w, y + h, r);
+    g.arcTo(x + w, y + h, x, y + h, r);
+    g.arcTo(x, y + h, x, y, r);
+    g.arcTo(x, y, x + w, y, r);
+    g.closePath();
+  }
+
+  // The black board: a black surface the height of the window in a thin aluminium frame, with a soft shadow on the
+  // wall, the faint haze of old writing wiped off it, and a few ghosts of it not quite wiped off (the same each time)
+  function board(g, w, h) {
+    var x = 4;
+    var y = 6;
+    var bw = w - 8;
+    var bh = h - 12;
+    var f = 5;
+    g.save();
+    g.shadowColor = 'rgba(0, 0, 0, 0.35)';
+    g.shadowBlur = 9;
+    g.shadowOffsetY = 3;
+    var frame = g.createLinearGradient(x, 0, x + bw, 0);
+    frame.addColorStop(0, '#8d969c');
+    frame.addColorStop(0.5, '#e1e5e8');
+    frame.addColorStop(1, '#8d969c');
+    g.fillStyle = frame;
+    rounded(g, x, y, bw, bh, 5);
+    g.fill();
+    g.restore();
+    g.save();
+    rounded(g, x + f, y + f, bw - 2 * f, bh - 2 * f, 2);
+    g.fillStyle = BOARD;
+    g.fill();
+    g.clip();
+    for (var i = 0; i < 10; i++) {
+      var cx = x + f + rnd(i * 7.1 + 1) * (bw - 2 * f);
+      var cy = y + f + rnd(i * 3.7 + 2) * (bh - 2 * f);
+      var r = 30 + rnd(i * 5.3 + 3) * 70;
+      var haze = g.createRadialGradient(cx, cy, 0, cx, cy, r);
+      haze.addColorStop(0, 'rgba(255, 255, 255, 0.045)');
+      haze.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      g.fillStyle = haze;
+      g.fillRect(cx - r, cy - r, 2 * r, 2 * r);
+    }
+    g.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    g.lineWidth = 1.4;
+    g.lineCap = 'round';
+    for (var k = 0; k < 7; k++) {
+      var gx = x + f + rnd(k * 9.3 + 4) * (bw - 2 * f) - 20;
+      var gy = y + f + rnd(k * 4.9 + 5) * (bh - 2 * f);
+      g.beginPath();
+      g.moveTo(gx, gy);
+      for (var j = 1; j <= 6; j++) g.lineTo(gx + j * 9, gy + (rnd(k * 13 + j) - 0.5) * 8);
+      g.stroke();
+    }
     g.restore();
   }
 
-  // A small sheet of dark navy paper stapled flat to the wall at its corners, turned a little, with a soft shadow
-  // and the tooth of good paper
-  function sheet(g, p) {
-    var w = p.w;
-    var h = p.h;
+  // Neon marker on the board: the drawings and the writing, each with a soft glow of its own colour around it
+  function neon(g, layer) {
     g.save();
-    g.translate(p.x + w / 2, p.y + h / 2);
-    g.rotate(p.tilt);
-    g.translate(-w / 2, -h / 2);
-    g.save();
-    g.fillStyle = PAPER;
-    g.shadowColor = 'rgba(40, 40, 40, 0.16)';
-    g.shadowBlur = 5;
-    g.shadowOffsetY = 2;
-    g.fillRect(0, 0, w, h);
-    g.shadowColor = 'rgba(40, 40, 40, 0.12)';
-    g.shadowBlur = 1;
-    g.shadowOffsetY = 0.5;
-    g.fillRect(0, 0, w, h);
-    g.restore();
-    var face = g.createLinearGradient(0, 0, w, h);
-    face.addColorStop(0, PAPER);
-    face.addColorStop(1, '#111822');
-    g.fillStyle = face;
-    g.fillRect(0, 0, w, h);
-    g.fillStyle = toothOf(g);
-    g.fillRect(0, 0, w, h);
-    g.strokeStyle = 'rgba(0, 0, 0, 0.07)';
-    g.lineWidth = 0.5;
-    g.strokeRect(0.25, 0.25, w - 0.5, h - 0.5);
-    var q = Math.PI / 4;
-    staple(g, 5.5, 5.5, -q);
-    staple(g, w - 5.5, 5.5, q);
-    staple(g, 5.5, h - 5.5, q);
-    staple(g, w - 5.5, h - 5.5, -q);
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    if ('filter' in g) {
+      g.filter = 'blur(' + 3 * dpr + 'px)';
+      g.globalAlpha = 0.8;
+      g.drawImage(layer, 0, 0);
+      g.filter = 'none';
+    }
+    g.globalAlpha = 1;
+    g.drawImage(layer, 0, 0);
     g.restore();
   }
 
-  // The sheet under the pointer, if any: what a click on its drawing there does, and where the sheet is on the screen
+  // The drawing under the pointer, if any: what a click on it there does, and where the drawing is on the screen
   Pane.prototype.locate = function (e) {
     var box = this.canvas.getBoundingClientRect();
     var x = e.clientX - box.left;
@@ -1150,7 +1197,7 @@
     for (var k = 0; k < this.figures.length; k++) {
       var f = this.figures[k];
       var p = f.sheet;
-      // The pointer on the sheet, turned back with it
+      // The pointer on the drawing, turned back with it
       var cx = p.x + p.w / 2;
       var cy = p.y + p.h / 2;
       var cos = Math.cos(p.tilt);
@@ -1166,7 +1213,7 @@
   };
 
   // A click on a drawing opens its card (or the card on the part clicked) and changes the drawing where it changes; a
-  // second click on a drawing that does not change closes the card. A click between the sheets closes it too
+  // second click on a drawing that does not change closes the card. A click between the drawings closes it too
   Pane.prototype.click = function (e) {
     var spot = this.locate(e);
     if (!spot) {
@@ -1190,7 +1237,7 @@
     }
   };
 
-  // ---- Cards: beside the sheet, level with the drawing, with what it shows, its key equation and key papers ----
+  // ---- Cards: beside the drawing, level with it, with what it shows, its key equation and key papers ----
 
   var note = {
     el: null,
@@ -1277,7 +1324,7 @@
 
   var panes = [];
 
-  // The sheets go in the open space either side of the text column (the content box's side padding), near the text
+  // The boards go in the open space either side of the text column (the content box's side padding), near the text
   function fit() {
     var card = document.querySelector('.main-content > .content-card');
     if (!card) return;
@@ -1297,6 +1344,14 @@
         new Pane('left', [new PredictFigure(), new WorldFigure(), new GridFigure()]),
         new Pane('right', [new OfflineFigure(), new NeedGainFigure(), new WhenFigure()]),
       ];
+      // The equations are written in a handwriting font: once it has loaded, they are written again in it
+      if (document.fonts && document.fonts.load) {
+        document.fonts.load('600 17px Caveat').then(function () {
+          panes.forEach(function (p) {
+            if (p.on) p.draw();
+          });
+        });
+      }
     }
     note.close();
     panes[0].fit(lx, lw, top, h);
