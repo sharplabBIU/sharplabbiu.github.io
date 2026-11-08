@@ -1,7 +1,7 @@
-// A black board down each side of the window (wider windows only), beside the text column, like a computational lab's
+// A board down each side of the window (wider windows only), beside the text column, like a computational lab's
 // board: three drawings on each, in neon marker in the logo's colours, zigzagging down it, with equations scrawled
-// around them. The boards are put away until a tab at the top of either side is clicked: then they roll down (and
-// back up when it is clicked again), and stay down from page to page for the rest of the visit. Left, how to predict and plan: forward and backward prediction (successor and
+// around them. Each board is put away until the button in the middle of its side is clicked: then it opens out from
+// the middle (and closes again with the × at its top), and stays open from page to page for the rest of the visit. Left, how to predict and plan: forward and backward prediction (successor and
 // predecessor representations, Sharp & Eldar), planning with one's own world model, and task construal in a grid world
 // (Ho et al.). Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
 // Eldar). Clicking a drawing opens a card describing it, with key papers, and most drawings also change when clicked
@@ -11,14 +11,14 @@
   'use strict';
 
   // Neon marker: the logo's dodger blue, medium sea green and light coral, made bright
-  var BLUE = '#2fa4ff';
+  var BLUE = '#5cc2ff';
   var GREEN = '#3cf08c';
   var CORAL = '#ff7a7a';
   var INK = BLUE; // what a drawing is drawn in (set for each drawing as it is drawn)
   var PICK = GREEN; // what is picked out in it (the plan, the replay, the backward prediction)
   var STAR = CORAL; // goals and rewards (the stars)
   var COLOURS = { left: [[BLUE, GREEN], [GREEN, BLUE], [BLUE, GREEN]], right: [[GREEN, BLUE], [BLUE, GREEN], [GREEN, BLUE]] };
-  var BOARD = '#0c0f13'; // the black board
+  var BOARD = '#354d77'; // the board: a blue between the navy of the text panel and cornflower blue
   var HAND = '"Caveat", "Comic Sans MS", "Chalkboard SE", cursive'; // handwriting, for the equations
   var DW = 120; // the width the drawings are made at, before scaling to the board
   var PANE = 152; // the drawings are sized to this much of the board's width
@@ -959,15 +959,27 @@
     this.canvas.className = 'glass-pane';
     this.canvas.setAttribute('aria-hidden', 'true');
     document.body.appendChild(this.canvas);
-    // The pull-down tab above the board, which rolls both boards down, or back up
+    // The button in the middle of the side that opens the board, and the × at its top that closes it
+    this.open = false;
     this.pull = document.createElement('button');
     this.pull.type = 'button';
     this.pull.className = 'board-pull';
+    this.pull.textContent = 'See what we’re working on';
     this.pull.addEventListener('click', function (e) {
       e.stopPropagation();
-      roll(!document.body.classList.contains('board-open'), true);
+      self.roll(true, true);
     });
     document.body.appendChild(this.pull);
+    this.shut = document.createElement('button');
+    this.shut.type = 'button';
+    this.shut.className = 'board-close';
+    this.shut.textContent = '×';
+    this.shut.setAttribute('aria-label', 'Close the board');
+    this.shut.addEventListener('click', function (e) {
+      e.stopPropagation();
+      self.roll(false, true);
+    });
+    document.body.appendChild(this.shut);
     this.g = this.canvas.getContext('2d');
     var self = this;
     this.canvas.addEventListener('click', function (e) {
@@ -989,11 +1001,14 @@
   Pane.prototype.fit = function (x, w, top, h) {
     this.on = w >= MIN_PANE && h >= 320;
     this.canvas.style.display = this.on ? 'block' : 'none';
-    this.pull.style.display = this.on ? 'block' : 'none';
+    this.pull.style.display = this.on && !this.open ? 'block' : 'none';
+    this.shut.style.display = this.on && this.open ? 'block' : 'none';
     if (!this.on) return;
     this.pull.style.left = x + w / 2 + 'px';
-    this.pull.style.top = top + 'px';
-    this.pull.style.width = Math.min(w - 16, 200) + 'px';
+    this.pull.style.top = top + h / 2 + 'px';
+    this.pull.style.maxWidth = w - 8 + 'px';
+    this.shut.style.left = x + w - 34 + 'px';
+    this.shut.style.top = top + 8 + 'px';
     var st = this.canvas.style;
     st.left = x + 'px';
     st.top = top + 'px';
@@ -1139,34 +1154,17 @@
     g.closePath();
   }
 
-  // The black board: a black surface the height of the window in a thin aluminium frame, with a soft shadow on the
-  // wall, the faint haze of old writing wiped off it, and a few ghosts of it not quite wiped off (the same each time)
+  // The board: one blue the size of the canvas, with the faint haze of old writing wiped off it, and a few ghosts of it
+  // not quite wiped off (the same each time)
   function board(g, w, h) {
-    var x = 4;
-    var y = 6;
-    var bw = w - 8;
-    var bh = h - 12;
-    var f = 5;
     g.save();
-    g.shadowColor = 'rgba(0, 0, 0, 0.35)';
-    g.shadowBlur = 9;
-    g.shadowOffsetY = 3;
-    var frame = g.createLinearGradient(x, 0, x + bw, 0);
-    frame.addColorStop(0, '#8d969c');
-    frame.addColorStop(0.5, '#e1e5e8');
-    frame.addColorStop(1, '#8d969c');
-    g.fillStyle = frame;
-    rounded(g, x, y, bw, bh, 5);
-    g.fill();
-    g.restore();
-    g.save();
-    rounded(g, x + f, y + f, bw - 2 * f, bh - 2 * f, 2);
+    rounded(g, 0, 0, w, h, 8);
     g.fillStyle = BOARD;
     g.fill();
     g.clip();
     for (var i = 0; i < 10; i++) {
-      var cx = x + f + rnd(i * 7.1 + 1) * (bw - 2 * f);
-      var cy = y + f + rnd(i * 3.7 + 2) * (bh - 2 * f);
+      var cx = rnd(i * 7.1 + 1) * w;
+      var cy = rnd(i * 3.7 + 2) * h;
       var r = 30 + rnd(i * 5.3 + 3) * 70;
       var haze = g.createRadialGradient(cx, cy, 0, cx, cy, r);
       haze.addColorStop(0, 'rgba(255, 255, 255, 0.045)');
@@ -1178,8 +1176,8 @@
     g.lineWidth = 1.4;
     g.lineCap = 'round';
     for (var k = 0; k < 7; k++) {
-      var gx = x + f + rnd(k * 9.3 + 4) * (bw - 2 * f) - 20;
-      var gy = y + f + rnd(k * 4.9 + 5) * (bh - 2 * f);
+      var gx = rnd(k * 9.3 + 4) * w - 20;
+      var gy = rnd(k * 4.9 + 5) * h;
       g.beginPath();
       g.moveTo(gx, gy);
       for (var j = 1; j <= 6; j++) g.lineTo(gx + j * 9, gy + (rnd(k * 13 + j) - 0.5) * 8);
@@ -1251,28 +1249,26 @@
     }
   };
 
-  // Rolls both boards down (open) or back up, at once or (animate) as if pulled down, and remembers which for the rest of
-  // the visit
-  function roll(open, animate) {
-    var b = document.body.classList;
-    if (!animate) b.add('board-instant');
-    b.toggle('board-open', open);
-    panes.forEach(function (p) {
-      p.pull.textContent = open ? 'Roll up the whiteboard ▴' : 'Open the whiteboard to see what we’re working on ▾';
-      p.pull.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
+  // Opens the board (out from the middle, if animate) or puts it away, and remembers which for the rest of the visit
+  Pane.prototype.roll = function (open, animate) {
+    var c = this.canvas.classList;
+    if (!animate) c.add('is-instant');
+    c.toggle('is-open', open);
+    this.open = open;
+    this.pull.style.display = this.on && !open ? 'block' : 'none';
+    this.shut.style.display = this.on && open ? 'block' : 'none';
     if (!open) note.close();
     try {
-      sessionStorage.setItem('board-open', open ? '1' : '');
+      sessionStorage.setItem('board-' + this.side, open ? '1' : '');
     } catch (e) {}
     if (!animate) {
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
-          b.remove('board-instant');
+          c.remove('is-instant');
         });
       });
     }
-  }
+  };
 
   // ---- Cards: beside the drawing, level with it, with what it shows, its key equation and key papers ----
 
@@ -1381,11 +1377,13 @@
         new Pane('left', [new PredictFigure(), new WorldFigure(), new GridFigure()]),
         new Pane('right', [new OfflineFigure(), new NeedGainFigure(), new WhenFigure()]),
       ];
-      var open = false;
-      try {
-        open = sessionStorage.getItem('board-open') === '1';
-      } catch (e) {}
-      roll(open, false);
+      panes.forEach(function (p) {
+        var open = false;
+        try {
+          open = sessionStorage.getItem('board-' + p.side) === '1';
+        } catch (e) {}
+        p.roll(open, false);
+      });
       // The equations are written in a handwriting font: once it has loaded, they are written again in it
       if (document.fonts && document.fonts.load) {
         document.fonts.load('600 17px Caveat').then(function () {
