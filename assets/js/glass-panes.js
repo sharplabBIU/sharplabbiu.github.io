@@ -1,4 +1,4 @@
-// A midnight-blue board down each side of the window (wider windows only), beside the text column and well clear of
+// A navy board down each side of the window (wider windows only), beside the text column and well clear of
 // the header and the bottom of the window, like a computational lab's board: two drawings on each, in neon marker in the
 // logo's colours, with equations scrawled around them. Left, how and when to plan: task construal in a grid world (Ho
 // et al.), and when to plan (Sharp & Eldar). Right, planning with one's own world model, and offline learning by replay. Each board
@@ -18,7 +18,7 @@
   var PICK = GREEN; // what is picked out in it (the plan, the replay, the backward prediction)
   var STAR = CORAL; // goals and rewards (the stars)
   var COLOURS = { left: [[BLUE, GREEN], [GREEN, BLUE]], right: [[GREEN, BLUE], [BLUE, GREEN]] };
-  var BOARD = '#191970'; // midnight blue: the board
+  var BOARD = '#151d28'; // the board: the navy of the header and the text panel (Bluesky's "Dim")
   var HAND = '"Caveat", "Comic Sans MS", "Chalkboard SE", cursive'; // handwriting, for the equations
   var DW = 120; // the width the drawings are made at, before scaling to the board
   var PANE = 152; // the drawings are sized to this much of the board's width
@@ -936,7 +936,7 @@
     g.closePath();
   }
 
-  // The board: one midnight blue the size of the canvas, its corners a little rounded
+  // The board: one navy the size of the canvas, its corners a little rounded
   function board(g, w, h) {
     rounded(g, 0, 0, w, h, 8);
     g.fillStyle = BOARD;

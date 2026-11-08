@@ -2174,8 +2174,25 @@ textarea,
 .news table {
   th,
   td {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+  }
+}
+
+// Join page: more space between the paragraphs, and its links (the email address and the suggested readings)
+// underlined, so they show as links
+.join-page {
+  p {
+    margin-bottom: 1.6rem;
+  }
+
+  li {
+    margin-bottom: 0.6rem;
+  }
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 }
 
