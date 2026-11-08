@@ -1,12 +1,12 @@
-// A board down each side of the window (wider windows only), beside the text column, like a computational lab's
-// board: three drawings on each, in neon marker in the logo's colours, zigzagging down it, with equations scrawled
-// around them. Each board is put away until the button in the middle of its side is clicked: then it opens out from
-// the middle (and closes again with the × at its top), and stays open from page to page for the rest of the visit. Left, how to predict and plan: forward and backward prediction (successor and
-// predecessor representations, Sharp & Eldar), planning with one's own world model, and task construal in a grid world
-// (Ho et al.). Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
-// Eldar). Clicking a drawing opens a card describing it, with key papers, and most drawings also change when clicked
-// (on the home page, the parts of the world model open the matching part of the brain). Two canvases fixed below the
-// header, drawn again only when something changes.
+// A midnight-blue board down each side of the window (wider windows only), beside the text column and well clear of
+// the header and the bottom of the window, like a computational lab's board: two drawings on each, in neon marker in the
+// logo's colours, with equations scrawled around them. Left, what and when to plan: need and gain (Mattar & Daw), and
+// when to plan (Sharp & Eldar). Right, planning with one's own world model, and offline learning by replay. Each board
+// is put away until the button in the middle of its side is clicked: then it opens out from the middle (and closes again
+// with the × at its top), and stays open from page to page for the rest of the visit. Clicking a drawing opens a card
+// describing it, with key papers, and most drawings also change when clicked (on the home page, the parts of the world
+// model open the matching part of the brain). Two canvases fixed beside the text, drawn again only when something
+// changes.
 (function () {
   'use strict';
 
@@ -17,8 +17,8 @@
   var INK = BLUE; // what a drawing is drawn in (set for each drawing as it is drawn)
   var PICK = GREEN; // what is picked out in it (the plan, the replay, the backward prediction)
   var STAR = CORAL; // goals and rewards (the stars)
-  var COLOURS = { left: [[BLUE, GREEN], [GREEN, BLUE], [BLUE, GREEN]], right: [[GREEN, BLUE], [BLUE, GREEN], [GREEN, BLUE]] };
-  var BOARD = '#354d77'; // the board: a blue between the navy of the text panel and cornflower blue
+  var COLOURS = { left: [[BLUE, GREEN], [GREEN, BLUE]], right: [[GREEN, BLUE], [BLUE, GREEN]] };
+  var BOARD = '#191970'; // midnight blue: the board
   var HAND = '"Caveat", "Comic Sans MS", "Chalkboard SE", cursive'; // handwriting, for the equations
   var DW = 120; // the width the drawings are made at, before scaling to the board
   var PANE = 152; // the drawings are sized to this much of the board's width
@@ -30,37 +30,35 @@
   var PAD = 9; // the room around a drawing that a click on it counts in
   // Where each drawing sits, from side to side, on its board (0 at the left, 1 at the right): a zigzag, the two boards
   // mirroring each other, with the middle drawings out toward the window's edges and the others in near the text
-  var STAGGER = { left: [1, 0, 0.9], right: [0, 1, 0.1] };
-  var TILT = { left: [-1.8, 1.4, -1.1], right: [1.5, -2.2, 1.2] }; // how far each drawing is turned, in degrees
+  var STAGGER = { left: [1, 0], right: [0, 1] };
+  var TILT = { left: [-1.6, 1.3], right: [1.4, -1.8] }; // how far each drawing is turned, in degrees
   // The equations scrawled on each board, around the drawings
   var EQUATIONS = {
     left: [
-      'M = (I − γT)^-1',
-      'V = M r',
-      'Q(s,a) = r + γ Σ p(s′|s,a) V(s′)',
-      'π(a|s) ∝ exp(β Q(s,a))',
-      'V(s) = max_a Q(s,a)',
-      'VOR(c) = U(π_c) − C(c)',
-      'p(s′|s,a) ~ Dir(α)',
-      'M_PR ∝ M_SR^T ?',
-      'b′(s′) ∝ Σ p(s′|s,a) b(s)',
-      'H(π) = −Σ π log π',
-      'γ = 0.85',
-      'argmax_a Q !',
-    ],
-    right: [
-      'δ = r + γV(s′) − V(s)',
-      'V(s) ← V(s) + α δ',
       'EVB = Gain × Need',
       'Need(s) = Σ_t γ^t P(s_t = s)',
       'Gain = Σ_a (π_new − π_old) Q',
       'V_take = R γ^Δ',
       'VOC = E[ΔU] − cost',
       'P(plan) = σ(β · VOC)',
-      'ITI ↑ ⇒ lose-shift ↑',
+      'plan iff VOC > 0 ?',
+      'π(a|s) ∝ exp(β Q(s,a))',
+      'V(s) = max_a Q(s,a)',
+      'M = (I − γT)^-1',
+      'argmax_a Q !',
+    ],
+    right: [
+      'Q_i(s,a) = r_i(s) + γ Σ p_i(s′|s,a) V_i(s′)',
+      'p_i(s′|s,a) ~ Dir(α)',
+      'π_i(s) = argmax_a Q_i(s,a)',
+      'b′(s′) ∝ Σ p(s′|s,a) b(s)',
+      'δ = r + γV(s′) − V(s)',
+      'V(s) ← V(s) + α δ',
       'Q ← Q + α(r − Q)',
       'replay: s3 → s2 → s1',
+      'ITI ↑ ⇒ lose-shift ↑',
       'Δt = cost?',
+      'r_i(s) ≠ r_j(s)',
     ],
   };
 
@@ -73,7 +71,6 @@
     worldModel: ['Sharp et al., A world-model theory of trait anxiety (PsyArXiv)', 'https://osf.io/preprints/psyarxiv/98ktg_v4'],
     direction: ['Sharp & Eldar 2024, Humans adaptively deploy forward and backward prediction (Nat Hum Behav)', 'https://doi.org/10.1038/s41562-024-01930-8'],
     delay: ['Sharp & Eldar, Humans adaptively delay planning using cognitive maps (Psychol Sci, accepted)', 'https://osf.io/preprints/psyarxiv/8ubct_v5'],
-    construal: ['Schiff & Sharp, anxiety and task generalization (Top Cogn Sci)', 'https://onlinelibrary.wiley.com/doi/full/10.1111/tops.70051'],
   };
   var REF = {
     suttonBarto: ['Sutton & Barto 2018, Reinforcement Learning: An Introduction', 'http://incompleteideas.net/book/the-book-2nd.html'],
@@ -84,17 +81,8 @@
     mattarDaw: ['Mattar & Daw 2018, Prioritized memory access explains planning and hippocampal replay', 'https://doi.org/10.1038/s41593-018-0232-z'],
     dayan1993: ['Dayan 1993, The successor representation', 'https://doi.org/10.1162/neco.1993.5.4.613'],
     callaway: ['Callaway et al. 2022, Rational use of cognitive resources in human planning', 'https://doi.org/10.1038/s41562-022-01332-8'],
-    lieder: ['Lieder & Griffiths 2020, Resource-rational analysis', 'https://doi.org/10.1017/S0140525X1900061X'],
-    ho2022: ['Ho et al. 2022, People construct simplified mental representations to plan', 'https://doi.org/10.1038/s41586-022-04743-9'],
   };
   var NOTES = {
-    predict: {
-      title: 'Forward and backward prediction',
-      text:
-        'Two ways to predict with a map of the world. From a state (filled), the successor representation predicts which states will follow it, and how soon (the arrows pointing down); the predecessor representation predicts which states came before it (the arrows pointing up). Each circle fills with how much that state is expected, discounted by how many steps away it is. Which is more efficient depends on the world: where paths diverge, possible futures outnumber the present, so it pays to predict backward from a goal to what leads to it; where paths converge, it pays to predict forward. People adapt accordingly, using more backward prediction where paths diverge and more forward prediction where they converge. Click a state to predict from it.',
-      eq: 'M<sub>SR</sub>(s,s′) = E[ Σ<sub>t</sub> γ<sup>t</sup> 𝟙(s<sub>t</sub> = s′) | s<sub>0</sub> = s ]<br>M<sub>PR</sub>(s,s′) = E[ Σ<sub>t</sub> γ<sup>t</sup> 𝟙(s<sub>−t</sub> = s′) | s<sub>0</sub> = s ]',
-      links: [LAB.direction, REF.dayan1993],
-    },
     world: {
       wm: 'model',
       title: 'Planning with one’s own world model',
@@ -126,13 +114,6 @@
         'The value person i expects from taking action a in state s and acting well afterwards, worked out with their own world model; the plan takes the best action (the bold branch). In the brain on our home page this is a task representation, built for the task at hand from the beliefs and goals above it.',
       eq: 'π<sub>i</sub>(s) = argmax<sub>a</sub> Q<sub>i</sub>(s,a)',
       links: [REF.dawNivDayan, LAB.worldModel],
-    },
-    construal: {
-      title: 'Task construal',
-      text:
-        'To plan, people build a simplified representation of the task, keeping only what matters. Here the plan from the dot to the star (the bold line) keeps the wall in its way and ignores the obstacles drawn dashed, which do not change the best route. Representing more costs effort, so the best construal trades how well its plan does against its cost. We ask how anxiety distorts construals. Click an obstacle to keep it or leave it out: leave out the wall and the plan runs into it.',
-      eq: 'VOR(c) = U(π<sub>c</sub>) − C(c)',
-      links: [REF.ho2022, REF.lieder, LAB.anxiety, LAB.construal],
     },
     offline: {
       title: 'Offline learning from memory',
@@ -217,11 +198,6 @@
 
   function line(g, ax, ay, bx, by) {
     marker(g, straight(ax, ay, bx, by), jit(ax * 3.1 + ay * 1.7 + bx * 0.9 + by * 2.3));
-  }
-
-  // A polyline in marker, through points [[x, y], ...]
-  function poly(g, pts) {
-    for (var i = 1; i < pts.length; i++) line(g, pts[i - 1][0], pts[i - 1][1], pts[i][0], pts[i][1]);
   }
 
   // An arrowhead in marker: two short strokes meeting at t along a curve
@@ -337,111 +313,6 @@
   // ---- Drawings. Each is made at width DW from y = 0 down to its height h, and note names its card. hit(x, y) says
   // what a click there does: act changes the drawing, note opens the card on one of its parts ----
 
-  // Forward and backward prediction (Sharp & Eldar): states in rows, time running down, paths converging into the
-  // middle and diverging after it. From the state predicted from (filled), the successor representation runs forward
-  // to the states that follow it (arrows pointing down) and the predecessor representation backward to the states
-  // that came before it (arrows pointing up), each state filling with how much it is expected there, discounted by the steps away. Click a
-  // state to predict from it
-  var ROWS = [[22, 60, 98], [40, 80], [60], [40, 80], [22, 60, 98]];
-  var MOVES = [[0, 3], [1, 3], [1, 4], [2, 4], [3, 5], [4, 5], [5, 6], [5, 7], [6, 8], [6, 9], [7, 9], [7, 10]];
-  var GAMMA = 0.85;
-
-  function PredictFigure() {
-    this.h = 104;
-    this.note = 'predict';
-    this.from = 5;
-    var states = (this.states = []);
-    ROWS.forEach(function (xs, k) {
-      xs.forEach(function (x) {
-        states.push({ x: x, y: 8 + k * 22, k: k, next: [], prev: [], j: jit(x * 1.3 + k * 17) });
-      });
-    });
-    MOVES.forEach(function (m) {
-      states[m[0]].next.push(m[1]);
-      states[m[1]].prev.push(m[0]);
-    });
-    // How likely each state is, starting from the top row at random and moving down at random
-    states.forEach(function (s) {
-      s.p = s.k
-        ? s.prev.reduce(function (sum, a) {
-            return sum + states[a].p / states[a].next.length;
-          }, 0)
-        : 1 / ROWS[0].length;
-    });
-  }
-
-  // The successor representation from the state predicted from (ahead) and the predecessor representation (behind):
-  // the discounted chance of being in each state so many steps after it, or of having been in it so many steps before
-  PredictFigure.prototype.predict = function () {
-    var states = this.states;
-    var f = this.from;
-    var ahead = states.map(function () {
-      return 0;
-    });
-    var behind = ahead.slice();
-    ahead[f] = behind[f] = 1;
-    for (var i = f + 1; i < states.length; i++) {
-      states[i].prev.forEach(function (a) {
-        ahead[i] += (GAMMA * ahead[a]) / states[a].next.length;
-      });
-    }
-    for (var k = f - 1; k >= 0; k--) {
-      var s = states[k];
-      s.next.forEach(function (b) {
-        behind[k] += (GAMMA * behind[b] * s.p) / s.next.length / states[b].p;
-      });
-    }
-    return { ahead: ahead, behind: behind };
-  };
-
-  PredictFigure.prototype.draw = function (g) {
-    var states = this.states;
-    var f = this.from;
-    var r = this.predict();
-    g.lineWidth = 1.4;
-    MOVES.forEach(function (m) {
-      var a = states[m[0]];
-      var b = states[m[1]];
-      if (r.ahead[m[0]] && r.ahead[m[1]]) {
-        g.strokeStyle = INK;
-        arrowBetween(g, [a.x, a.y], [b.x, b.y], 6.5, 7.5, 3.2);
-      } else if (r.behind[m[0]] && r.behind[m[1]]) {
-        g.strokeStyle = PICK;
-        arrowBetween(g, [b.x, b.y], [a.x, a.y], 6.5, 7.5, 3.2);
-      } else {
-        g.strokeStyle = INK;
-        g.globalAlpha = 0.3;
-        line(g, a.x, a.y, b.x, b.y);
-        g.globalAlpha = 1;
-      }
-    });
-    states.forEach(function (s, i) {
-      var full = r.ahead[i] || r.behind[i];
-      g.strokeStyle = g.fillStyle = i !== f && r.behind[i] ? PICK : INK;
-      g.globalAlpha = full ? 1 : 0.45;
-      g.lineWidth = i === f ? 1.8 : 1.3;
-      state(g, s.x, s.y, i === f ? 6.5 : 5.5, full, s.j);
-      g.globalAlpha = 1;
-    });
-  };
-
-  PredictFigure.prototype.hit = function (x, y) {
-    var self = this;
-    for (var i = 0; i < this.states.length; i++) {
-      var s = this.states[i];
-      if (Math.hypot(s.x - x, s.y - y) <= 10) {
-        var k = i;
-        return {
-          tip: 'Click to predict from this state',
-          act: function () {
-            self.from = k;
-          },
-        };
-      }
-    }
-    return null;
-  };
-
   // Planning with one's own world model: a head in profile with, inside it, a map of what leads to what (arrows as
   // thick as they are likely), a star for what is worth having, and a plan branching from a state, its best branch
   // bold. The map, the star and the plan each have a card, tied to the matching part of the home page's brain
@@ -504,177 +375,6 @@
     if (x > 50 && x < 92 && y > 58 && y < 94) return { note: 'world_q' };
     if (x > 22 && x < 62 && y > 20 && y < 68) return { note: 'world_p' };
     return null;
-  };
-
-  // A grid world: a plan from the dot to the star made with a construal that keeps only some obstacles (Ho et al.).
-  // Click an obstacle to add it to the construal or leave it out; the plan is made again, and fails (a cross) if it
-  // runs into one left out
-  function GridFigure() {
-    this.h = 96;
-    this.note = 'construal';
-    this.cols = 7;
-    this.rows = 6;
-    this.cell = 15;
-    this.x0 = (DW - 7 * 15) / 2;
-    this.y0 = 3;
-    this.start = [0, 5];
-    this.goal = [6, 5];
-    this.obstacles = [
-      { cells: [[3, 2], [3, 3], [3, 4], [3, 5]], on: true },
-      { cells: [[4, 4], [5, 4]], on: false },
-      { cells: [[5, 0], [6, 0]], on: false },
-      { cells: [[1, 3], [1, 4]], on: false },
-    ];
-    this.plan();
-  }
-
-  GridFigure.prototype.blocked = function (c, r, construed) {
-    return this.obstacles.some(function (o) {
-      return (!construed || o.on) && o.cells.some(function (k) {
-        return k[0] === c && k[1] === r;
-      });
-    });
-  };
-
-  // The shortest plan around the construed obstacles: distances back from the goal, then steps that bring it closer
-  // (up, right, down, left, in that order of preference)
-  GridFigure.prototype.plan = function () {
-    var self = this;
-    var dist = {};
-    var key = function (c, r) {
-      return c + ',' + r;
-    };
-    var queue = [this.goal];
-    dist[key(this.goal[0], this.goal[1])] = 0;
-    var moves = [[0, -1], [1, 0], [0, 1], [-1, 0]];
-    while (queue.length) {
-      var p = queue.shift();
-      moves.forEach(function (m) {
-        var c = p[0] + m[0];
-        var r = p[1] + m[1];
-        if (c < 0 || r < 0 || c >= self.cols || r >= self.rows || self.blocked(c, r, true)) return;
-        if (dist[key(c, r)] === undefined) {
-          dist[key(c, r)] = dist[key(p[0], p[1])] + 1;
-          queue.push([c, r]);
-        }
-      });
-    }
-    var path = [this.start];
-    var here = this.start;
-    while (dist[key(here[0], here[1])] > 0) {
-      var next = null;
-      for (var i = 0; i < moves.length && !next; i++) {
-        var c = here[0] + moves[i][0];
-        var r = here[1] + moves[i][1];
-        if (dist[key(c, r)] === dist[key(here[0], here[1])] - 1) next = [c, r];
-      }
-      if (!next) break;
-      path.push(next);
-      here = next;
-    }
-    this.path = path;
-    this.crashes = path.filter(function (k) {
-      return self.blocked(k[0], k[1], false);
-    });
-  };
-
-  GridFigure.prototype.cellXY = function (c, r) {
-    return [this.x0 + c * this.cell, this.y0 + r * this.cell];
-  };
-
-  GridFigure.prototype.draw = function (g) {
-    var self = this;
-    var s = this.cell;
-    g.strokeStyle = INK;
-    g.globalAlpha = 0.25;
-    g.lineWidth = 0.8;
-    g.beginPath();
-    for (var c = 0; c <= this.cols; c++) {
-      g.moveTo(this.x0 + c * s, this.y0);
-      g.lineTo(this.x0 + c * s, this.y0 + this.rows * s);
-    }
-    for (var r = 0; r <= this.rows; r++) {
-      g.moveTo(this.x0, this.y0 + r * s);
-      g.lineTo(this.x0 + this.cols * s, this.y0 + r * s);
-    }
-    g.stroke();
-    g.globalAlpha = 1;
-    g.lineWidth = 1.6;
-    rect(g, this.x0, this.y0, this.cols * s, this.rows * s, jit(5));
-    g.stroke();
-    this.obstacles.forEach(function (o, k) {
-      o.cells.forEach(function (cell, i) {
-        var p = self.cellXY(cell[0], cell[1]);
-        g.strokeStyle = g.fillStyle = INK;
-        rect(g, p[0] + 2, p[1] + 2, s - 4, s - 4, jit(k * 13 + i));
-        if (o.on) {
-          g.globalAlpha = 0.6;
-          g.fill();
-          g.globalAlpha = 1;
-          g.lineWidth = 1.5;
-          g.stroke();
-        } else {
-          g.globalAlpha = 0.35;
-          g.lineWidth = 1.2;
-          g.setLineDash([2, 2.5]);
-          g.stroke();
-          g.setLineDash([]);
-          g.globalAlpha = 1;
-        }
-      });
-    });
-    g.strokeStyle = PICK;
-    g.lineWidth = 2.1;
-    var pts = this.path.map(function (k) {
-      var p = self.cellXY(k[0], k[1]);
-      return [p[0] + s / 2, p[1] + s / 2];
-    });
-    var corners = pts.filter(function (p, i) {
-      var a = pts[i - 1];
-      var b = pts[i + 1];
-      return !a || !b || (a[0] - p[0]) * (b[1] - p[1]) !== (a[1] - p[1]) * (b[0] - p[0]);
-    });
-    poly(g, corners);
-    for (var i = 2; i < pts.length - 1; i += 3) {
-      g.lineWidth = 1.4;
-      chevron(g, straight(pts[i - 1][0], pts[i - 1][1], pts[i][0], pts[i][1]), 0.6, 3.6);
-    }
-    this.crashes.forEach(function (k) {
-      var p = self.cellXY(k[0], k[1]);
-      g.strokeStyle = PICK;
-      g.lineWidth = 2.3;
-      line(g, p[0] + 3, p[1] + 3, p[0] + s - 3, p[1] + s - 3);
-      line(g, p[0] + s - 3, p[1] + 3, p[0] + 3, p[1] + s - 3);
-    });
-    var sp = this.cellXY(this.start[0], this.start[1]);
-    var gp = this.cellXY(this.goal[0], this.goal[1]);
-    g.strokeStyle = g.fillStyle = INK;
-    g.lineWidth = 1.4;
-    state(g, sp[0] + s / 2, sp[1] + s / 2, 4, 1, jit(60));
-    goal(g, gp[0] + s / 2, gp[1] + s / 2, 5.5, jit(61));
-  };
-
-  GridFigure.prototype.hit = function (x, y) {
-    var c = Math.floor((x - this.x0) / this.cell);
-    var r = Math.floor((y - this.y0) / this.cell);
-    var self = this;
-    var o = null;
-    this.obstacles.forEach(function (ob) {
-      if (
-        ob.cells.some(function (k) {
-          return k[0] === c && k[1] === r;
-        })
-      )
-        o = ob;
-    });
-    if (!o) return null;
-    return {
-      tip: o.on ? 'Click to leave this obstacle out of the construal' : 'Click to keep this obstacle in the construal',
-      act: function () {
-        o.on = !o.on;
-        self.plan();
-      },
-    };
   };
 
   // Offline learning: at rest (the moon), the steps taken on the way to a reward (the star) are replayed backward (as
@@ -1044,7 +744,7 @@
       var k = Math.floor((bottom - top) / step);
       for (var i = 0; i < k; i++) slots.push({ x: x0, y: top + (bottom - top) * ((i + 0.5) / k), w: x1 - x0 });
     };
-    var above = 16;
+    var above = 40; // below the × that closes the board
     this.figures.forEach(function (f) {
       var p = f.sheet;
       rows(above, p.y, left, right, 27);
@@ -1154,36 +854,11 @@
     g.closePath();
   }
 
-  // The board: one blue the size of the canvas, with the faint haze of old writing wiped off it, and a few ghosts of it
-  // not quite wiped off (the same each time)
+  // The board: one midnight blue the size of the canvas, its corners a little rounded
   function board(g, w, h) {
-    g.save();
     rounded(g, 0, 0, w, h, 8);
     g.fillStyle = BOARD;
     g.fill();
-    g.clip();
-    for (var i = 0; i < 10; i++) {
-      var cx = rnd(i * 7.1 + 1) * w;
-      var cy = rnd(i * 3.7 + 2) * h;
-      var r = 30 + rnd(i * 5.3 + 3) * 70;
-      var haze = g.createRadialGradient(cx, cy, 0, cx, cy, r);
-      haze.addColorStop(0, 'rgba(255, 255, 255, 0.045)');
-      haze.addColorStop(1, 'rgba(255, 255, 255, 0)');
-      g.fillStyle = haze;
-      g.fillRect(cx - r, cy - r, 2 * r, 2 * r);
-    }
-    g.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-    g.lineWidth = 1.4;
-    g.lineCap = 'round';
-    for (var k = 0; k < 7; k++) {
-      var gx = rnd(k * 9.3 + 4) * w - 20;
-      var gy = rnd(k * 4.9 + 5) * h;
-      g.beginPath();
-      g.moveTo(gx, gy);
-      for (var j = 1; j <= 6; j++) g.lineTo(gx + j * 9, gy + (rnd(k * 13 + j) - 0.5) * 8);
-      g.stroke();
-    }
-    g.restore();
   }
 
   // Neon marker on the board: the drawings and the writing, each with a soft glow of its own colour around it
@@ -1191,8 +866,8 @@
     g.save();
     g.setTransform(1, 0, 0, 1, 0, 0);
     if ('filter' in g) {
-      g.filter = 'blur(' + 3 * dpr + 'px)';
-      g.globalAlpha = 0.8;
+      g.filter = 'blur(' + 1.5 * dpr + 'px)';
+      g.globalAlpha = 0.5;
       g.drawImage(layer, 0, 0);
       g.filter = 'none';
     }
@@ -1366,6 +1041,10 @@
     var nav = document.getElementById('navbar');
     var top = nav ? Math.round(nav.getBoundingClientRect().bottom) : 0;
     var h = window.innerHeight - top;
+    // The boards sit in the middle of the height, with room above and below them
+    var m = Math.max(40, Math.round(h * 0.12));
+    top += m;
+    h -= 2 * m;
     var pl = parseFloat(cs.paddingLeft);
     var pr = parseFloat(cs.paddingRight);
     var lw = Math.min(PANE + ZIG, Math.floor(pl - GAP));
@@ -1374,8 +1053,8 @@
     var rx = Math.round(box.right - Math.max(0, pr - NEAR - rw)) - rw;
     if (!panes.length) {
       panes = [
-        new Pane('left', [new PredictFigure(), new WorldFigure(), new GridFigure()]),
-        new Pane('right', [new OfflineFigure(), new NeedGainFigure(), new WhenFigure()]),
+        new Pane('left', [new NeedGainFigure(), new WhenFigure()]),
+        new Pane('right', [new WorldFigure(), new OfflineFigure()]),
       ];
       panes.forEach(function (p) {
         var open = false;
