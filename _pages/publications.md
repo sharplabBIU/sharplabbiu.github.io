@@ -6,14 +6,14 @@ nav: true
 nav_order: 5
 ---
 
-<!-- _pages/publications.md: preprints (unnumbered) followed by published papers numbered counting down -->
+<!-- _pages/publications.md: preprints (unnumbered, folded away until clicked) followed by published papers numbered counting down -->
 <div class="publications">
-  <div>
-    <h2 id="preprints">Preprints</h2>
+  <details class="preprints-fold">
+    <summary><h2 id="preprints">Preprints</h2></summary>
     <div class="preprints">
       {% bibliography --file preprints %}
     </div>
-  </div>
+  </details>
 
   <div>
     <h2 id="peer-reviewed">Published</h2>

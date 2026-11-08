@@ -1044,6 +1044,20 @@ body {
     }
   }
 
+  // Preprints are folded away under their heading, which opens them when clicked (a triangle beside it shows which)
+  details.preprints-fold > summary {
+    margin-bottom: 1rem;
+    cursor: pointer;
+
+    h2 {
+      display: inline;
+    }
+  }
+
+  details.preprints-fold:not([open]) > summary {
+    margin-bottom: 0.5rem;
+  }
+
   h2#preprints,
   h2#peer-reviewed {
     margin-top: 1.5rem;
@@ -2089,6 +2103,15 @@ textarea,
 // News page heading
 .news-heading {
   margin-bottom: 1rem;
+}
+
+// News items, with more space between them
+.news table {
+  th,
+  td {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
 }
 
 // Resources page: the talk video (480px wide at most), with its title above and a YouTube link below

@@ -1,6 +1,6 @@
 // Small sheets of paper down the left and right edges of the window (wider windows only), beside the text column,
-// stapled to the wall, each turned a little to the left or right at random and staggered from side to side, each with
-// a drawing on it in black marker, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
+// stapled to the wall, each turned a little to the left or right and staggered from side to side, each with a drawing
+// on it in white, and no writing. Left, how to predict and plan: forward and backward prediction (successor and
 // predecessor representations, Sharp & Eldar), planning with one's own world model, and task construal in a grid world
 // (Ho et al.). Right, when and what to plan: offline learning by replay, need and gain (Mattar & Daw), and when to plan (Sharp &
 // Eldar). Clicking a drawing opens a card describing it, with key papers, and most drawings also change when clicked
@@ -9,8 +9,8 @@
 (function () {
   'use strict';
 
-  var INK = '#000000'; // black: the drawings
-  var PAPER = '#ffffff'; // white: the sheets of paper
+  var INK = '#ffffff'; // white: the drawings
+  var PAPER = '#151d28'; // dark navy, as the text panel: the sheets of paper
   var DW = 120; // the width the drawings are made at, before scaling to the sheet
   var PANE = 152; // the widest the space for the sheets on each side gets (the sheets are sized to it)
   var ZIG = 70; // and the room added to it, where the window has it, for the sheets to zigzag from side to side
@@ -22,7 +22,7 @@
   // Where each sheet sits, from side to side, in its space (0 at the left, 1 at the right): a zigzag, the two sides
   // mirroring each other, with the middle sheets out toward the window's edges and the others in near the text
   var STAGGER = { left: [1, 0, 0.9], right: [0, 1, 0.1] };
-  var TILT = [1, 2.5]; // how far each sheet is turned, in degrees, to the left or right at random on each visit
+  var TILT = { left: [-1.8, 1.4, -1.1], right: [1.5, -2.2, 1.2] }; // how far each sheet is turned, in degrees, always the same
 
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -938,8 +938,8 @@
   function Pane(side, figures) {
     this.side = side;
     this.figures = figures;
-    figures.forEach(function (f) {
-      f.tilt = (Math.random() < 0.5 ? -1 : 1) * (TILT[0] + Math.random() * (TILT[1] - TILT[0]));
+    figures.forEach(function (f, k) {
+      f.tilt = TILT[side][k];
     });
     this.on = false;
     this.canvas = document.createElement('canvas');
@@ -1057,8 +1057,8 @@
           var below = ((y + 1) % n) * n + ((x + 1) % n);
           var lit = (bumps[k] - bumps[below]) * 2.4 + (hollows[k] - hollows[below]) * 12 + (hollows[k] - 0.5) * 1.2;
           var j = k * 4;
-          img.data[j] = img.data[j + 1] = img.data[j + 2] = lit > 0 ? 255 : 96;
-          img.data[j + 3] = Math.round(Math.min(1, Math.abs(lit)) * (lit > 0 ? 80 : 42));
+          img.data[j] = img.data[j + 1] = img.data[j + 2] = lit > 0 ? 255 : 0;
+          img.data[j + 3] = Math.round(Math.min(1, Math.abs(lit)) * (lit > 0 ? 22 : 60));
         }
       }
       tg.putImageData(img, 0, 0);
@@ -1104,7 +1104,7 @@
     g.restore();
   }
 
-  // A small sheet of white drawing paper stapled flat to the wall at its corners, turned a little, with a soft shadow
+  // A small sheet of dark navy paper stapled flat to the wall at its corners, turned a little, with a soft shadow
   // and the tooth of good paper
   function sheet(g, p) {
     var w = p.w;
@@ -1126,7 +1126,7 @@
     g.restore();
     var face = g.createLinearGradient(0, 0, w, h);
     face.addColorStop(0, PAPER);
-    face.addColorStop(1, '#fbfbf8');
+    face.addColorStop(1, '#111822');
     g.fillStyle = face;
     g.fillRect(0, 0, w, h);
     g.fillStyle = toothOf(g);
