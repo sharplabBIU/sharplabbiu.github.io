@@ -1,0 +1,13 @@
+<!-- Google Scholar, Bluesky, X and GitHub: at the right end of the header (on the narrowest phones, in the menu) -->
+{% if site.scholar_userid %}
+  <a href="https://scholar.google.com/citations?user={{ site.scholar_userid }}" title="Google Scholar" aria-label="Google Scholar"><i class="ai ai-google-scholar"></i></a>
+{% endif %}
+{% if site.bluesky_url %}
+  <a href="https://bsky.app/profile/{{ site.bluesky_url }}" title="Bluesky" aria-label="Bluesky"><i class="fa-brands fa-bluesky"></i></a>
+{% endif %}
+{% if site.x_username %}
+  <a href="https://x.com/{{ site.x_username }}" title="X" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+{% endif %}
+{% if site.github_username %}
+  <a href="https://github.com/{{ site.github_username }}" title="GitHub" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+{% endif %}
