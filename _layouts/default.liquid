@@ -45,7 +45,10 @@
         {% endif %}
       {% else %}
         <!-- All of a page's content sits in one box, as tall as the window leaves room for, that scrolls -->
-        <div class="content-card">{{ content }}</div>
+        <div class="content-card">
+          {{ content }}
+          {% if page.copyright %}{% include copyright.liquid %}{% endif %}
+        </div>
       {% endif %}
     </div>
 

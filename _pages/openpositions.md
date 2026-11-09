@@ -1,4 +1,5 @@
 ---
+copyright: true # the copyright line, at the bottom of the box (the site has no footer)
 layout: page
 permalink: /join/
 title: join
@@ -24,5 +25,3 @@ conveyed your demonstrated quantitative reasoning skills: unlike in many psychol
 - Sharp, P. B. (2024). [Anxiety involves altered planning](https://www.sciencedirect.com/science/article/pii/S1364661324002924). _Trends in Cognitive Sciences_.
 
 </div>
-
-{% include copyright.liquid %}

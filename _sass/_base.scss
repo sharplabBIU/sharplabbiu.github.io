@@ -455,7 +455,16 @@ footer.fixed-bottom {
   }
 }
 
-// The copyright line, small and centred, at the bottom of the join page (the site has no footer)
+// The copyright line, small and centred, at the bottom of the join page's box (the site has no footer)
+.content-card:has(> .site-copyright) {
+  display: flex;
+  flex-direction: column;
+
+  > .post {
+    flex: 1 0 auto;
+  }
+}
+
 .site-copyright {
   margin: 3rem 0 0;
   font-size: 0.86rem;
@@ -2179,10 +2188,10 @@ body.boxed-page {
 }
 
 @media (min-width: 768px) {
-  // Laptops and desktops: the graphic shrinks with the window height so that it and its tagline fit in the window
-  // below the header and the first paragraph (e.g. a 14-inch MacBook Pro in Chrome); the graphic is 880 x 572
+  // Laptops and desktops: the graphic shrinks with the window height so that it and its tagline fit in the box
+  // below the first paragraph (e.g. a 14-inch MacBook Pro in Chrome); the graphic is 880 x 572
   .wm-hero .wm-graphic {
-    max-width: unquote("clamp(480px, calc((100vh - 355px) * 1.53), 880px)");
+    max-width: unquote("clamp(480px, calc((100vh - 410px) * 1.53), 880px)");
   }
 }
 
