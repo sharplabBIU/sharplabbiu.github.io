@@ -2170,13 +2170,52 @@ textarea,
   margin-bottom: 1rem;
 }
 
-// News items, with more space between them
-.news table {
-  th,
-  td {
-    padding-top: 1.2rem;
-    padding-bottom: 1.2rem;
+// News: a box about as tall as the home page's, that scrolls, with about three items showing at a time, in large type,
+// under a heading for each year (which stays at the top of the box while its items scroll), and a divider between years
+.news {
+  --news-height: #{unquote("min(calc(100vh - 170px), 815px)")};
+}
+
+.news-scroll {
+  height: var(--news-height);
+  min-height: 360px;
+  overflow-y: auto;
+  padding-right: 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+}
+
+.news-year-title {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 0.4rem 0 0.6rem;
+  background-color: $card-color;
+  font-size: 1.6rem;
+}
+
+.news-item {
+  display: flex;
+  align-items: center;
+  min-height: #{unquote("calc((var(--news-height) - 3rem) / 3)")};
+  padding: 0.75rem 0;
+
+  p {
+    margin: 0;
+    font-size: 1.2rem;
+    line-height: 1.55;
   }
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+.news-divider {
+  margin: 1rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 // Join page: more space between the paragraphs, and its links (the email address and the suggested readings)
