@@ -16,7 +16,7 @@
   </head>
 
   <!-- Body -->
-  <body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
+  <body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %} boxed-page">
     <!-- Header -->
     {% include header.liquid %}
 
@@ -44,13 +44,10 @@
           </div>
         {% endif %}
       {% else %}
-        <!-- All of a page's content sits in one translucent box -->
+        <!-- All of a page's content sits in one box, as tall as the window leaves room for, that scrolls -->
         <div class="content-card">{{ content }}</div>
       {% endif %}
     </div>
-
-    <!-- Footer -->
-    {% include footer.liquid %}
 
     <!-- JavaScripts -->
     {% include scripts/jquery.liquid %}
@@ -71,6 +68,8 @@
     {% include scripts/progressBar.liquid %}
     {% include scripts/wechatModal.liquid %}
     {% include scripts/imageLayouts.liquid %}
+    <!-- The page's content scrolls inside its box; the wheel and keys scroll it from anywhere on the page -->
+    <script src="{{ '/assets/js/content-scroll.js' | relative_url | bust_file_cache }}" defer></script>
     <!-- Glass panes either side of the text column, with figures in marker -->
     <script src="{{ '/assets/js/glass-panes.js' | relative_url | bust_file_cache }}" defer></script>
   </body>

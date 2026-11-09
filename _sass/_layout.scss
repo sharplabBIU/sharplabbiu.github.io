@@ -27,7 +27,7 @@ body.fixed-top-nav {
 }
 
 body.sticky-bottom-footer {
-  // The footer follows the content; on short pages it sits at the bottom of the window
+  // The content area fills the window below the header
   padding-bottom: 0;
   display: flex;
   flex-direction: column;

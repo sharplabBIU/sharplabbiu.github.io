@@ -1114,12 +1114,15 @@
 
   var panes = [];
 
-  // The boards go in the open space either side of the text column (the content box's side padding), near the text
+  // The boards go in the open space either side of the content box, near its text
   function fit() {
     var card = document.querySelector('.main-content > .content-card');
     if (!card) return;
     var cs = getComputedStyle(card);
-    var box = card.getBoundingClientRect();
+    var rect = card.getBoundingClientRect();
+    var W = document.documentElement.clientWidth;
+    // From either edge of the window to the text in the box
+    var box = { left: 0, right: W };
     var nav = document.getElementById('navbar');
     var top = nav ? Math.round(nav.getBoundingClientRect().bottom) : 0;
     var h = window.innerHeight - top;
@@ -1127,8 +1130,8 @@
     var m = Math.max(40, Math.round(h * 0.12));
     top += m;
     h -= 2 * m;
-    var pl = parseFloat(cs.paddingLeft);
-    var pr = parseFloat(cs.paddingRight);
+    var pl = rect.left + parseFloat(cs.paddingLeft);
+    var pr = W - rect.right + parseFloat(cs.paddingRight) + (card.offsetWidth - card.clientWidth);
     var lw = Math.min(PANE + ZIG, Math.floor(pl - GAP));
     var rw = Math.min(PANE + ZIG, Math.floor(pr - GAP));
     var lx = Math.round(box.left + Math.max(0, pl - NEAR - lw));

@@ -455,53 +455,12 @@ footer.fixed-bottom {
   }
 }
 
-// The footer: a dark navy bar the full width of the window at the end of the page, right below the content box
-// (and over the sheets of paper, which are fixed beside the content)
-footer.sticky-bottom {
-  position: relative;
-  z-index: 3;
+// The copyright line, small and centred, at the bottom of the join page (the site has no footer)
+.site-copyright {
+  margin: 3rem 0 0;
   font-size: 0.86rem;
-  background-color: $bar-color;
-
-  .container {
-    color: var(--global-footer-text-color);
-    padding-top: 10px;
-    padding-bottom: 10px;
-    text-align: center;
-  }
-
-  a {
-    color: var(--global-footer-link-color);
-  }
-}
-
-// Footer contents: social icons centred in the bar, with the copyright centred below them. Icons are white.
-footer .footer-content {
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-items: center;
-  align-items: center;
-  gap: 0.25rem;
-
-  // A site-wide rule colors every div with the body text color; keep the footer text white
-  .footer-copyright {
-    color: var(--global-footer-text-color);
-  }
-
-  .footer-social {
-    font-size: 1.4rem;
-    line-height: 1;
-
-    a,
-    a:hover {
-      margin: 0 0.5rem;
-      color: $bar-text-color;
-    }
-
-    a:hover {
-      opacity: 0.7;
-    }
-  }
+  text-align: center;
+  opacity: 0.75;
 }
 
 
@@ -1627,7 +1586,7 @@ swiper-container {
 
   #navbar .navbar-toggler {
     height: $header-height-phone - 8px;
-    margin-left: auto;
+    margin-left: 0.6rem;
   }
 }
 
@@ -1651,7 +1610,7 @@ swiper-container {
   }
 }
 
-// Header, content box and footer: the full width of the window at every size
+// Header and content area: the full width of the window at every size
 #navbar > .container,
 .container.main-content,
 footer > .container {
@@ -1683,6 +1642,46 @@ footer > .container {
 @media (min-width: 768px) {
   #navbar > .container {
     min-height: $header-height;
+  }
+}
+
+// Google Scholar and Bluesky at the right end of the header, in white: beside the menu button on phones and tablets,
+// and at the far right of the bar, level with the page links, on wider windows
+#navbar .navbar-social {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-left: auto;
+  height: $header-height-phone - 8px;
+  font-size: 1.45rem;
+  line-height: 1;
+
+  a,
+  a:hover {
+    color: $bar-text-color;
+    text-decoration: none;
+  }
+
+  a:hover {
+    opacity: 0.65;
+  }
+}
+
+@media (min-width: 768px) {
+  #navbar .navbar-social {
+    height: $header-height - 8px;
+    font-size: 1.75rem;
+  }
+}
+
+@media (min-width: 992px) {
+  #navbar .navbar-social {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 1.5rem;
+    height: $header-height;
+    gap: 1.1rem;
   }
 }
 
@@ -1752,7 +1751,7 @@ footer > .container {
 }
 
 // Page and content box
-// Between the dark navy header and footer bars the page is Bluesky's blue, with the text on a dark navy panel. Each page's
+// Below the dark navy header bar the page is Bluesky's blue, with the text on a dark navy panel. Each page's
 // text sits in a column $text-column-width wide, centred in the window, with sheets of paper with drawings on them in the open space
 // either side of it (assets/js/glass-panes.js: two canvases fixed below the header, over the content box's
 // side padding, which they leave clear of the text, and under the footer; they respond to clicks)
@@ -1947,26 +1946,28 @@ textarea,
   }
 }
 
-// Main container: the content box fills short pages, so the footer stays at the bottom of the window
+// Main container: below the header, with the content box in it
 .main-content {
   position: relative;
   z-index: 1;
   margin-top: 0;
   display: flex;
   flex-direction: column;
-
-  > .content-card {
-    flex: 1 0 auto;
-  }
-
-  // While one of the brain's bubbles is open, the content goes over the footer, so a bubble near the end of the page
-  // shows whole (assets/js/world-model.js)
-  &.wm-raised {
-    z-index: 4;
-  }
 }
 
-// The content box: clear, so the sheets of paper show either side of the text, and padded to centre the text column
+// The window itself does not scroll: each page's content scrolls inside its box (assets/js/content-scroll.js lets the
+// wheel and keys scroll it from anywhere on the page)
+body.boxed-page {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+// The content box: a raised dark navy panel with a faint outline and rounded corners, centred, a little wider than the
+// text column, from just below the header to just above the bottom of the window (the same space of the page's blue
+// below it as above it). Its content scrolls inside it, with a slim scroll bar at its right edge. The whiteboards go in
+// the open space either side of it
 .content-card {
   // All text inside the box is white, links included (the site's colour variables are re-pointed here)
   --global-text-color: #{$card-text-color};
@@ -1974,27 +1975,52 @@ textarea,
   --global-theme-color: #{$card-text-color};
   --global-hover-color: #{$card-text-color};
   color: $card-text-color;
-  padding: 2rem;
-  padding-left: unquote("max(2rem, calc((100% - #{$text-column-width}) / 2))");
-  padding-right: unquote("max(2rem, calc((100% - #{$text-column-width}) / 2))");
   position: relative;
+  flex: none;
+  box-sizing: border-box;
+  width: unquote("min(calc(#{$text-column-width} + 40px), calc(100% - 1.5rem))");
+  height: unquote("calc(100vh - #{$header-height} - 1.8rem)");
+  height: unquote("calc(100dvh - #{$header-height} - 1.8rem)");
+  margin: 0.9rem auto;
+  // The scroll bar's room is kept at the right (as wide as the padding is narrower), so the text stays centred
+  padding: 1.1rem 8px 1.1rem 20px;
+  scrollbar-gutter: stable;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background-color: $card-color;
+  border: 1px solid rgba(0, 0, 0, 0.13);
+  border-radius: 16px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.09);
 
-  // The text column stands out from the page: a raised dark navy panel, with a faint outline and rounded corners, a
-  // little wider than the text and the height of the box
-  &::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    top: 0.9rem;
-    bottom: 0.9rem;
-    left: unquote("max(0.4rem, calc(max(2rem, (100% - #{$text-column-width}) / 2) - 1.25rem))");
-    right: unquote("max(0.4rem, calc(max(2rem, (100% - #{$text-column-width}) / 2) - 1.25rem))");
-    background-color: $card-color;
-    border: 1px solid rgba(0, 0, 0, 0.13);
-    border-radius: 16px;
-    box-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.06),
-      0 8px 24px rgba(0, 0, 0, 0.09);
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    margin: 14px 0;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 3px solid $card-color;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.35);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.55);
+  }
+
+  // A link to a heading scrolls it to just below the top of the box
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    scroll-margin-top: 0.75rem;
   }
 
   > :first-child {
@@ -2011,16 +2037,31 @@ textarea,
   }
 }
 
+// Browsers without the scroll bar styles above (Firefox) get a slim one in the same colours
+@supports not selector(::-webkit-scrollbar) {
+  .content-card {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+  }
+}
+
+// Phones and small tablets: a lower header above the box
+@media (max-width: 767.98px) {
+  .content-card {
+    height: unquote("calc(100vh - #{$header-height-phone} - 1.8rem)");
+    height: unquote("calc(100dvh - #{$header-height-phone} - 1.8rem)");
+  }
+}
+
+// Phones: the box nearly the width of the screen, with less space around it (their scroll bars take no room)
 @media (max-width: 575.98px) {
   .content-card {
-    padding: 1.5rem 1.1rem;
-
-    &::before {
-      top: 0.6rem;
-      bottom: 0.6rem;
-      left: 0.45rem;
-      right: 0.45rem;
-    }
+    width: unquote("calc(100% - 0.9rem)");
+    height: unquote("calc(100vh - #{$header-height-phone} - 1.2rem)");
+    height: unquote("calc(100dvh - #{$header-height-phone} - 1.2rem)");
+    margin: 0.6rem auto;
+    padding: 0.9rem 0.65rem;
+    scrollbar-gutter: auto;
   }
 }
 
@@ -2174,23 +2215,14 @@ textarea,
   margin-bottom: 1rem;
 }
 
-// News: a box about as tall as the home page's, that scrolls, with about three items showing at a time, in large type,
-// under a heading for each year (which stays at the top of the box while its items scroll), and a divider between years
-.news-scroll {
-  height: unquote("min(calc(100vh - 170px), 815px)");
-  min-height: 360px;
-  overflow-y: auto;
-  padding-right: 0.75rem;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
-}
-
+// News: about three items in view in the box at a time, in large type, under a heading for each year (which stays at
+// the top of the box while its items scroll by), with a divider between years
 .news-year-title {
   position: sticky;
   top: 0;
   z-index: 1;
-  margin: 0;
-  padding: 0.4rem 0 0.6rem;
+  margin: -0.5rem 0 0;
+  padding: 0.9rem 0 0.6rem;
   background-color: $card-color;
   font-size: 1.6rem;
 }
@@ -2198,8 +2230,17 @@ textarea,
 .news-item {
   display: flex;
   align-items: center;
-  min-height: unquote("min(calc((100vh - 170px) / 3 - 1rem), 255px)"); // a third of the box
+  min-height: unquote("calc((100vh - 211px) / 3)"); // a third of the box, below the year's heading
   padding: 0.75rem 0;
+
+  @media (max-width: 767.98px) {
+    min-height: unquote("calc((100vh - 175px) / 3)");
+  }
+
+  @media (max-width: 575.98px) {
+    min-height: unquote("calc((100vh - 159px) / 3)");
+  }
+
 
   p {
     margin: 0;

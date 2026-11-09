@@ -7,6 +7,15 @@
         <span>Sharp Lab</span>
         <img src="{{ '/assets/img/lab_brain_dark.png' | relative_url | bust_file_cache }}" width="232" height="256" alt="">
       </a>
+      <!-- Google Scholar and Bluesky, at the right end of the header on every page -->
+      <div class="navbar-social">
+        {% if site.scholar_userid %}
+          <a href="https://scholar.google.com/citations?user={{ site.scholar_userid }}" title="Google Scholar" aria-label="Google Scholar"><i class="ai ai-google-scholar"></i></a>
+        {% endif %}
+        {% if site.bluesky_url %}
+          <a href="https://bsky.app/profile/{{ site.bluesky_url }}" title="Bluesky" aria-label="Bluesky"><i class="fa-brands fa-bluesky"></i></a>
+        {% endif %}
+      </div>
       <!-- Navbar Toggle -->
       <button
         class="navbar-toggler collapsed"
