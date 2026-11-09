@@ -714,12 +714,12 @@ footer .footer-content {
     font-size: 1.5rem;
   }
 
-  // Extra space below each core role's members, so the roles stand further apart
+  // Plenty of space between members, and more below each core role's members, so the roles stand further apart
   .team-members {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    margin-bottom: 1.75rem;
+    gap: 4rem;
+    margin-bottom: 3.5rem;
   }
 
   .member {
@@ -834,7 +834,7 @@ footer .footer-content {
   }
 
   ul.team-list.team-minor li {
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.7rem;
   }
 }
 
@@ -2152,9 +2152,13 @@ textarea,
     row-gap: 0.2rem;
     text-align: center;
 
-    ul.team-list,
-    .team-members {
+    ul.team-list {
       margin-bottom: 1rem;
+    }
+
+    .team-members {
+      gap: 3rem;
+      margin-bottom: 2.5rem;
     }
 
     .member-photo {
