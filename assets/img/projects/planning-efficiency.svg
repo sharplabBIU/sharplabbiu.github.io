@@ -1,104 +1,103 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
-  <!-- Planning Efficiency: a clock face (when to plan) around a decision tree. The plan runs forward from where one is
-       (blue) and backward from the goal (coral), meeting in the middle (green); planning waits at the dashed choice
-       (paused), and the hourglass marks the time it saves -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif">
+  <!-- Planning Efficiency, as a journal-style schematic. (a) When to plan: moving down a decision tree from the start (S)
+       to the goal (star), planning is spent only at the choice that decides whether the goal is reached (red), and
+       deferred where it does not (dashed); below, planning effort at each step. (b) Which direction: planning can run
+       forward from the start (blue) or backward from the goal (red), meeting in the middle (green) -->
   <defs>
-    <radialGradient id="pe-bg" cx="50%" cy="38%" r="68%">
-      <stop offset="0" stop-color="#34449e" />
-      <stop offset=".55" stop-color="#1c2266" />
-      <stop offset="1" stop-color="#0d1036" />
-    </radialGradient>
-    <linearGradient id="pe-ring" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#5cc2ff" />
-      <stop offset=".5" stop-color="#3cf08c" />
-      <stop offset="1" stop-color="#ffc94d" />
-    </linearGradient>
-    <linearGradient id="pe-gold" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#fff0a8" />
-      <stop offset="1" stop-color="#ffab2e" />
-    </linearGradient>
-    <radialGradient id="pe-sweep" cx="100" cy="100" r="82" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#5cc2ff" stop-opacity="0" />
-      <stop offset="1" stop-color="#5cc2ff" stop-opacity=".38" />
-    </radialGradient>
-    <filter id="pe-glow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="2.4" result="b" />
-      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-    </filter>
-    <marker id="pe-fwd" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto">
-      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#bfe8ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+    <marker id="pe-blue" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 1 L10 5 L0 9 Z" fill="#4DBBD5" />
     </marker>
-    <marker id="pe-bwd" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto">
-      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#ffd0d0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+    <marker id="pe-red" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 1 L10 5 L0 9 Z" fill="#E64B35" />
     </marker>
-    <path id="pe-star" d="M0 -11 L2.7 -3.72 L10.46 -3.4 L4.37 1.42 L6.47 8.9 L0 4.6 L-6.47 8.9 L-4.37 1.42 L-10.46 -3.4 L-2.7 -3.72 Z" />
-    <path id="pe-spark" d="M0 -5 C0.6 -1 1 -0.6 5 0 C1 0.6 0.6 1 0 5 C-0.6 1 -1 0.6 -5 0 C-1 -0.6 -0.6 -1 0 -5 Z" />
+    <marker id="pe-grey" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 1 L10 5 L0 9 Z" fill="#9AA3B2" />
+    </marker>
+    <path id="pe-star" d="M0 -1 L0.245 -0.338 L0.951 -0.309 L0.397 0.129 L0.588 0.809 L0 0.418 L-0.588 0.809 L-0.397 0.129 L-0.951 -0.309 L-0.245 -0.338 Z" />
   </defs>
+  <rect width="320" height="240" rx="10" fill="#ffffff" />
+  <path d="M160 32 V226" stroke="#E6EAF0" stroke-width="1" />
 
-  <!-- Badge and clock face -->
-  <circle cx="100" cy="100" r="97" fill="url(#pe-bg)" />
-  <path d="M100 100 L100 18 A82 82 0 0 1 171 59 Z" fill="url(#pe-sweep)">
-    <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="24s" repeatCount="indefinite" />
-  </path>
-  <circle cx="100" cy="100" r="90" fill="none" stroke="url(#pe-ring)" stroke-width="5" />
-  <circle cx="100" cy="100" r="84" fill="none" stroke="#ffffff" stroke-opacity=".12" stroke-width="1" />
-  <g stroke="#ffffff" stroke-linecap="round">
-    <path d="M100 22 V14 M178 100 H186 M100 178 V186 M22 100 H14" stroke-width="3" stroke-opacity=".8" />
-    <path d="M139 32.5 L142.5 26.4 M167.5 61 L173.6 57.5 M167.5 139 L173.6 142.5 M139 167.5 L142.5 173.6 M61 167.5 L57.5 173.6 M32.5 139 L26.4 142.5 M32.5 61 L26.4 57.5 M61 32.5 L57.5 26.4" stroke-width="2" stroke-opacity=".5" />
+  <!-- a: when to plan -->
+  <text x="12" y="21" font-size="14" font-weight="700" fill="#1f2430">a</text>
+  <text x="26" y="21" font-size="11.5" font-weight="600" fill="#333a47">When to plan</text>
+  <g stroke="#C3CAD6" stroke-width="1.6" stroke-linecap="round">
+    <path d="M80 46 L46 86 M46 86 L30 124 M46 86 L62 124 M114 86 L130 124" />
+  </g>
+  <path d="M80 46 L114 86 L98 124" fill="none" stroke="#3C5488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="114" cy="86" r="10" fill="none" stroke="#E64B35" stroke-width="1.6" opacity="0">
+    <animate attributeName="r" values="10;10;19;19" keyTimes="0;0.3;0.56;1" dur="4s" repeatCount="indefinite" />
+    <animate attributeName="opacity" values="0;0.85;0;0" keyTimes="0;0.3;0.56;1" dur="4s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="46" cy="86" r="10" fill="#ffffff" stroke="#8491B4" stroke-width="1.6" stroke-dasharray="3 2.2" />
+  <circle cx="114" cy="86" r="10" fill="#E64B35" />
+  <g fill="#F1F3F7" stroke="#C3CAD6" stroke-width="1.4">
+    <circle cx="30" cy="124" r="7" /><circle cx="62" cy="124" r="7" /><circle cx="130" cy="124" r="7" />
+  </g>
+  <use href="#pe-star" transform="translate(98 124.5) scale(9)" fill="#F2B134" stroke="#C98A12" stroke-width="0.09" />
+  <circle cx="80" cy="46" r="10" fill="#3C5488" />
+  <text x="80" y="49.8" font-size="10.5" font-weight="700" fill="#ffffff" text-anchor="middle">S</text>
+  <!-- the agent, pausing at the choice where it plans -->
+  <circle r="4" fill="#ffffff" stroke="#1f2430" stroke-width="1.8">
+    <animateMotion path="M80 46 L114 86 L98 124" keyPoints="0;0.545;0.545;1;1" keyTimes="0;0.3;0.56;0.8;1" calcMode="linear" dur="4s" repeatCount="indefinite" />
+  </circle>
+  <!-- planning effort at each step -->
+  <text x="22" y="150" font-size="10" fill="#555d6b">Planning effort</text>
+  <rect x="39" y="176" width="14" height="6" rx="1.5" fill="#C3CAD6" />
+  <rect x="73" y="156" width="14" height="26" rx="1.5" fill="#E64B35" />
+  <rect x="107" y="176" width="14" height="6" rx="1.5" fill="#C3CAD6" />
+  <path d="M26 182 H132" stroke="#9AA3B2" stroke-width="1.2" marker-end="url(#pe-grey)" />
+  <g font-size="9.5" fill="#7a8291" text-anchor="middle">
+    <text x="46" y="194">1</text><text x="80" y="194">2</text><text x="114" y="194">3</text>
+  </g>
+  <text x="136" y="185.5" font-size="9.5" fill="#7a8291">step</text>
+  <!-- key -->
+  <g font-size="10" fill="#333a47">
+    <circle cx="24" cy="212" r="5" fill="#E64B35" />
+    <text x="33" y="215.5">plan</text>
+    <circle cx="70" cy="212" r="5" fill="#ffffff" stroke="#8491B4" stroke-width="1.4" stroke-dasharray="2.4 1.8" />
+    <text x="79" y="215.5">defer</text>
+    <use href="#pe-star" transform="translate(119 212.5) scale(6)" fill="#F2B134" stroke="#C98A12" stroke-width="0.12" />
+    <text x="128" y="215.5">goal</text>
   </g>
 
-  <!-- Sparkles -->
-  <g fill="#ffe17a">
-    <use href="#pe-spark" transform="translate(45 58) scale(.8)" />
-    <use href="#pe-spark" transform="translate(158 84) scale(.6)" fill="#9fdcff" />
-    <use href="#pe-spark" transform="translate(40 116) scale(.5)" fill="#9ff5c4" />
-    <use href="#pe-spark" transform="translate(162 150) scale(.7)" />
+  <!-- b: which direction -->
+  <text x="170" y="21" font-size="14" font-weight="700" fill="#1f2430">b</text>
+  <text x="184" y="21" font-size="11.5" font-weight="600" fill="#333a47">Which direction</text>
+  <g stroke="#D3D8E1" stroke-width="1.4">
+    <path d="M182 104 L212 68 M182 104 L212 140 M212 68 L242 104 M212 140 L242 104 M242 104 L272 68 M242 104 L272 140 M272 68 L302 104 M272 140 L302 104 M212 68 H272 M212 140 H272" />
   </g>
-
-  <!-- The tree: branches not taken -->
-  <g fill="none" stroke="#ffffff" stroke-opacity=".5" stroke-width="2.2" stroke-linecap="round">
-    <path d="M100 52 Q80 66 66 90" />
-    <path d="M66 90 Q52 108 46 132" />
-    <path d="M66 90 Q78 110 84 132" />
-    <path d="M134 90 Q148 108 154 132" />
+  <g fill="none" stroke-width="2.6" stroke-linecap="round">
+    <path d="M188.4 96.3 L205 76.4" stroke="#4DBBD5" marker-end="url(#pe-blue)" />
+    <path d="M218.4 75.7 L235 95.6" stroke="#4DBBD5" marker-end="url(#pe-blue)" />
+    <path d="M295.6 111.7 L279 131.6" stroke="#E64B35" marker-end="url(#pe-red)" />
+    <path d="M265.6 132.3 L249 112.4" stroke="#E64B35" marker-end="url(#pe-red)" />
   </g>
-  <!-- The plan: forward from the start (blue), backward from the goal (coral), meeting in the middle -->
-  <g fill="none" stroke-linecap="round" filter="url(#pe-glow)">
-    <path d="M100 52 Q114 64 120 74" stroke="#5cc2ff" stroke-width="5" marker-end="url(#pe-fwd)" />
-    <path d="M120 74 Q127 82 134 90" stroke="#5cc2ff" stroke-width="5" />
-    <path d="M116 132 Q119 118 125 110" stroke="#ff7a7a" stroke-width="5" marker-end="url(#pe-bwd)" />
-    <path d="M125 110 Q129 99 134 90" stroke="#ff7a7a" stroke-width="5" />
+  <circle cx="242" cy="104" r="10" fill="none" stroke="#00A087" stroke-width="1.6" opacity="0">
+    <animate attributeName="r" values="10;10;20;20" keyTimes="0;0.6;0.9;1" dur="3s" repeatCount="indefinite" />
+    <animate attributeName="opacity" values="0;0.9;0;0" keyTimes="0;0.6;0.9;1" dur="3s" repeatCount="indefinite" />
+  </circle>
+  <g fill="#F1F3F7" stroke="#C3CAD6" stroke-width="1.4">
+    <circle cx="212" cy="68" r="8" /><circle cx="212" cy="140" r="8" /><circle cx="272" cy="68" r="8" /><circle cx="272" cy="140" r="8" />
   </g>
-
-  <!-- States -->
-  <g stroke-width="2.4">
-    <!-- the start: where one is now -->
-    <circle cx="100" cy="52" r="15" fill="none" stroke="#5cc2ff" stroke-opacity=".5">
-      <animate attributeName="r" values="11;19;11" dur="3s" repeatCount="indefinite" />
-      <animate attributeName="stroke-opacity" values=".7;0;.7" dur="3s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="100" cy="52" r="10" fill="#ffffff" stroke="#5cc2ff" />
-    <circle cx="100" cy="52" r="4" fill="#1e90ff" />
-    <!-- a choice where planning can wait (dashed, paused) -->
-    <circle cx="66" cy="90" r="10" fill="#1c2266" stroke="#9fdcff" stroke-dasharray="4 3" />
-    <path d="M62.5 85.5 V94.5 M69.5 85.5 V94.5" stroke="#9fdcff" stroke-width="2.6" stroke-linecap="round" />
-    <!-- where the forward and backward plans meet -->
-    <circle cx="134" cy="90" r="11" fill="#3cf08c" stroke="#d9ffe9" filter="url(#pe-glow)" />
-    <circle cx="46" cy="132" r="7" fill="#1c2266" stroke="#ffffff" stroke-opacity=".7" />
-    <circle cx="84" cy="132" r="7" fill="#1c2266" stroke="#ffffff" stroke-opacity=".7" />
-    <circle cx="154" cy="132" r="7" fill="#1c2266" stroke="#ffffff" stroke-opacity=".7" />
-  </g>
-  <!-- The goal -->
-  <use href="#pe-star" transform="translate(116 133) scale(1.25)" fill="url(#pe-gold)" stroke="#fff4c2" stroke-width="1" filter="url(#pe-glow)" />
-
-  <!-- Hourglass: the time saved by waiting -->
-  <g transform="translate(100 161)">
-    <path d="M-9 -12 H9 M-9 12 H9" stroke="#ffc94d" stroke-width="2.6" stroke-linecap="round" />
-    <path d="M-7 -11 C-7 -4 -1.5 -2 -1.5 0 C-1.5 2 -7 4 -7 11 H7 C7 4 1.5 2 1.5 0 C1.5 -2 7 -4 7 -11 Z" fill="#ffffff" fill-opacity=".14" stroke="#ffffff" stroke-opacity=".75" stroke-width="1.4" />
-    <path d="M-4.5 -6 C-3 -3 -1 -1.6 0 -0.5 C1 -1.6 3 -3 4.5 -6 Z" fill="#ffc94d" />
-    <path d="M0 0 V9" stroke="#ffc94d" stroke-width="1.2" stroke-dasharray="1.5 1.5">
-      <animate attributeName="stroke-dashoffset" values="0;-6" dur="1s" repeatCount="indefinite" />
-    </path>
-    <path d="M-6 10.5 C-4 6.5 -1.5 5 0 5 C1.5 5 4 6.5 6 10.5 Z" fill="#ffc94d" />
+  <circle cx="242" cy="104" r="10" fill="#00A087" />
+  <circle cx="182" cy="104" r="10" fill="#3C5488" />
+  <text x="182" y="107.8" font-size="10.5" font-weight="700" fill="#ffffff" text-anchor="middle">S</text>
+  <use href="#pe-star" transform="translate(302 104.5) scale(11)" fill="#F2B134" stroke="#C98A12" stroke-width="0.08" />
+  <!-- the two predictions, arriving together -->
+  <circle r="3.6" fill="#4DBBD5" stroke="#ffffff" stroke-width="1.4">
+    <animateMotion path="M182 104 L212 68 L242 104" keyPoints="0;1;1" keyTimes="0;0.6;1" calcMode="linear" dur="3s" repeatCount="indefinite" />
+  </circle>
+  <circle r="3.6" fill="#E64B35" stroke="#ffffff" stroke-width="1.4">
+    <animateMotion path="M302 104 L272 140 L242 104" keyPoints="0;1;1" keyTimes="0;0.6;1" calcMode="linear" dur="3s" repeatCount="indefinite" />
+  </circle>
+  <!-- key -->
+  <g font-size="10" fill="#333a47">
+    <path d="M178 178 H200" stroke="#4DBBD5" stroke-width="2.4" marker-end="url(#pe-blue)" />
+    <text x="208" y="181.5">forward, from S</text>
+    <path d="M200 196 H178" stroke="#E64B35" stroke-width="2.4" marker-end="url(#pe-red)" />
+    <text x="208" y="199.5">backward, from goal</text>
+    <circle cx="189" cy="213" r="5" fill="#00A087" />
+    <text x="208" y="216.5">where they meet</text>
   </g>
 </svg>
