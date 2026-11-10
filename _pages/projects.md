@@ -6,15 +6,15 @@ nav: true
 nav_order: 4
 ---
 
-<!-- Research areas: a diagram + equation beside the title and summary -->
+<!-- Research areas: the title in a bar, then a diagram + equation beside the summary -->
 <div class="research-areas">
   <div class="research-area" id="planning-efficiency">
+    <h2 class="research-title section-bar">Planning Efficiency</h2>
     <div class="research-intro">
       <div class="research-diagram">
         {% include diagrams/planning-efficiency.svg %}
       </div>
       <div class="research-text">
-        <h2 class="research-title">Planning Efficiency</h2>
         <p>
           Planning is powerful but costly, so efficient decision makers must decide when and how to plan. One route is timing: in two
           preregistered studies, people learned to defer planning until it was needed, guided by a cognitive map of the task rather than by trial
@@ -28,12 +28,12 @@ nav_order: 4
   </div>
 
   <div class="research-area" id="offline-learning">
+    <h2 class="research-title section-bar">Offline Learning</h2>
     <div class="research-intro">
       <div class="research-diagram">
         {% include diagrams/offline-learning.svg %}
       </div>
       <div class="research-text">
-        <h2 class="research-title">Offline Learning</h2>
         <p>
           We learn quickly from few experiences partly through <a href="https://arxiv.org/pdf/2005.01643">offline learning</a>: using memories and
           a model of the world to simulate actions and outcomes, for example between decisions or during rest. In work in progress presented at the
@@ -47,12 +47,12 @@ nav_order: 4
   </div>
 
   <div class="research-area" id="task-misconstrual">
+    <h2 class="research-title section-bar">Task (Mis)construal</h2>
     <div class="research-intro">
       <div class="research-diagram">
         {% include diagrams/task-representation.svg %}
       </div>
       <div class="research-text">
-        <h2 class="research-title">Task (Mis)construal</h2>
         <p>
           Planning relies on an internal model, or construal, of the task. We propose that anxiety distorts these construals, leading to excessive
           planning, re-checking of decisions already made, and poor generalization

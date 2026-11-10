@@ -20,11 +20,12 @@ dog_photos:
   - { src: dina_3.jpg, w: 1600, h: 899, alt: "Dina stretched out between a couch and a bench" }
 ---
 
-<!-- Names grouped by role: each core lab member with a small photo and their bio beside it (the photo in the bio itself
-     is hidden here), then the Lab Adventures photo collage, then collaborators and alumni as a list -->
+<!-- Names grouped by role, under a bar with the role's name: each core lab member with a small photo and their bio beside
+     it (the photo in the bio itself is hidden here), then the Lab Adventures photo collage, then collaborators and alumni
+     as a list -->
 {% capture lab_adventures %}
   <section class="lab-adventures" aria-labelledby="lab-adventures">
-    <h2 id="lab-adventures">Lab Adventures</h2>
+    <h2 class="section-bar" id="lab-adventures">Lab Adventures</h2>
     <!-- Small photos, all one height, each a link to the full photo, which opens large over the page -->
     <div class="adventures-row">
       {% for photo in page.lab_photos %}
@@ -58,7 +59,7 @@ dog_photos:
           {{ lab_adventures }}
           {% assign adventures_shown = true %}
         {% endunless %}
-        <h2 class="team-category team-minor" id="{{ category }}">{{ category }}</h2>
+        <h2 class="team-category team-minor section-bar" id="{{ category }}">{{ category }}</h2>
         <ul class="team-list team-minor">
           {% for member in members %}
             <li>
@@ -67,7 +68,7 @@ dog_photos:
           {% endfor %}
         </ul>
       {% else %}
-        <h2 class="team-category team-core" id="{{ category }}">{{ category }}</h2>
+        <h2 class="team-category team-core section-bar" id="{{ category }}">{{ category }}</h2>
         <div class="team-members">
           {% for member in members %}
             <div class="member">

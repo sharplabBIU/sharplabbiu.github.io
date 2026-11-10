@@ -10,7 +10,7 @@ box that scrolls (about three items show at a time) -->
     <div class="news-scroll">
       {% for year in years %}
         <section class="news-year">
-          <h3 class="news-year-title">{{ year.name }}</h3>
+          <h3 class="news-year-title section-bar">{{ year.name }}</h3>
           {% for item in year.items %}
             <div class="news-item">
               {% if item.inline %}

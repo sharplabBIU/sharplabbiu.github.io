@@ -8,16 +8,19 @@ nav_order: 7
 ---
 
 ### Code
+{: .section-bar}
 
 Our code and task materials are on the [Sharp Lab GitHub](https://github.com/sharplabbiu).
 
 ### Statistics
+{: .section-bar}
 
 - [Experimentology](https://experimentology.io/), an open textbook on experimental methods in psychology
 - [Statistical Thinking for the 21st Century](https://statsthinking21.github.io/statsthinking21-core-site/) by Russell Poldrack
 - [Statistical Rethinking](https://www.youtube.com/watch?v=FdnMWdICdRs&list=PLDcUM9US4XdPz-KxHM4XHt7uUVGWWVSus), Richard McElreath's lecture series on YouTube
 
 ### Talks
+{: .section-bar}
 
 <div class="talk-video">
   <p><a href="https://www.youtube.com/watch?v=kQJ5UU56xXA">Why do we worry? Paul's Azrieli talk</a></p>
@@ -35,6 +38,7 @@ Our code and task materials are on the [Sharp Lab GitHub](https://github.com/sha
 </div>
 
 ### Paul's favorite books
+{: .section-bar}
 
 - [_Demian_](https://en.wikipedia.org/wiki/Demian) by Hermann Hesse
 - [_Player Piano_](https://en.wikipedia.org/wiki/Player_Piano_%28novel%29) by Kurt Vonnegut

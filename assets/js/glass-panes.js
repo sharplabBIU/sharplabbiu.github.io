@@ -1118,8 +1118,12 @@
   function fit() {
     var card = document.querySelector('.main-content > .content-card');
     if (!card) return;
-    var cs = getComputedStyle(card);
-    var rect = card.getBoundingClientRect();
+    // (on the papers page, the box at either end of the two side by side)
+    var ends = card.classList.contains('content-split') ? card.querySelectorAll('.paper-box') : [card];
+    var first = ends[0] || card;
+    var last = ends[ends.length - 1] || card;
+    var lrect = first.getBoundingClientRect();
+    var rrect = last.getBoundingClientRect();
     var W = document.documentElement.clientWidth;
     // From either edge of the window to the text in the box
     var box = { left: 0, right: W };
@@ -1130,8 +1134,8 @@
     var m = Math.max(40, Math.round(h * 0.12));
     top += m;
     h -= 2 * m;
-    var pl = rect.left + parseFloat(cs.paddingLeft);
-    var pr = W - rect.right + parseFloat(cs.paddingRight) + (card.offsetWidth - card.clientWidth);
+    var pl = lrect.left + parseFloat(getComputedStyle(first).paddingLeft);
+    var pr = W - rrect.right + parseFloat(getComputedStyle(last).paddingRight) + (last.offsetWidth - last.clientWidth);
     var lw = Math.min(PANE + ZIG, Math.floor(pl - GAP));
     var rw = Math.min(PANE + ZIG, Math.floor(pr - GAP));
     var lx = Math.round(box.left + Math.max(0, pl - NEAR - lw));

@@ -663,22 +663,15 @@ footer.fixed-bottom {
 // photo with their name and bio beside it; collaborators and alumni are a list in smaller type, set apart below
 
 .team {
-  display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
-  column-gap: 1.5rem;
-  row-gap: 1.6rem;
-  align-items: baseline;
-
+  // Each role's name in a bar above its members
   h2.team-category {
-    margin: 0;
+    margin: 0 0 1.5rem;
     font-size: 1.7rem;
     font-weight: 700;
     line-height: 1.3;
   }
 
-  // Core roles line up with the top of their first member's photo
   h2.team-category.team-core {
-    align-self: start;
     font-size: 1.5rem;
   }
 
@@ -737,7 +730,8 @@ footer.fixed-bottom {
   ul.team-list {
     list-style: none;
     padding-left: 0;
-    margin: 0;
+    margin: 0 0 2.5rem;
+    text-align: center;
 
     li {
       font-size: 1.7rem;
@@ -748,11 +742,10 @@ footer.fixed-bottom {
 
   // Lab Adventures: the photo collage between the core team and the collaborators, across both columns
   .lab-adventures {
-    grid-column: 1 / -1;
-    margin: 1rem 0 1.5rem;
+    margin: 0 0 3.5rem;
 
     h2 {
-      margin: 0 0 1rem;
+      margin: 0 0 1.25rem;
       font-size: 1.7rem;
       font-weight: 700;
     }
@@ -924,7 +917,7 @@ body {
   .research-area {
     margin-top: 0;
     margin-bottom: 3rem;
-    scroll-margin-top: $header-height + 12px; // anchor targets land below the fixed navbar
+    scroll-margin-top: 0;
 
     &:last-child {
       margin-bottom: 0;
@@ -956,7 +949,7 @@ body {
   }
 
   h2.research-title {
-    margin: 0 0 0.75rem;
+    margin: 0 0 1.25rem;
     font-size: 2rem;
   }
 
@@ -1012,23 +1005,8 @@ body {
     }
   }
 
-  // Preprints are folded away under their heading, which opens them when clicked (a triangle beside it shows which)
-  details.preprints-fold > summary {
-    margin-bottom: 1rem;
-    cursor: pointer;
-
-    h2 {
-      display: inline;
-    }
-  }
-
-  details.preprints-fold:not([open]) > summary {
-    margin-bottom: 0.5rem;
-  }
-
   h2#preprints,
   h2#peer-reviewed {
-    margin-top: 1.5rem;
     color: var(--global-text-color); // white inside the box
   }
 
@@ -2022,26 +2000,18 @@ body.boxed-page {
   overflow: hidden;
 }
 
-// The content box: a raised dark navy panel with a faint outline and rounded corners, centred, a little wider than the
-// text column, from just below the header to just above the bottom of the window (the same space of the page's blue
-// below it as above it). Its content scrolls inside it, with a slim scroll bar at its right edge. The whiteboards go in
-// the open space either side of it
-.content-card {
-  // All text inside the box is white, links included (the site's colour variables are re-pointed here)
-  --global-text-color: #{$card-text-color};
-  --global-text-color-light: #{$card-text-color};
-  --global-theme-color: #{$card-text-color};
-  --global-hover-color: #{$card-text-color};
-  color: $card-text-color;
-  position: relative;
-  flex: none;
+// A box of content: a raised dark navy panel with a faint outline and rounded corners, whose content scrolls inside it,
+// with a slim scroll bar at its right edge (the scroll bar's room is kept at the right, as wide as the padding there is
+// narrower, so the text stays centred). Each page's content box is one; the papers page has two side by side
+$box-pad-top: 1.1rem;
+$box-pad-left: 20px;
+$box-pad-right: 8px;
+$box-pad-top-phone: 0.9rem;
+$box-pad-side-phone: 0.65rem;
+
+@mixin scroll-box {
   box-sizing: border-box;
-  width: unquote("min(calc(#{$text-column-width} + 40px), calc(100% - 1.5rem))");
-  height: unquote("calc(100vh - #{$header-height} - 1.8rem)");
-  height: unquote("calc(100dvh - #{$header-height} - 1.8rem)");
-  margin: 0.9rem auto;
-  // The scroll bar's room is kept at the right (as wide as the padding is narrower), so the text stays centred
-  padding: 1.1rem 8px 1.1rem 20px;
+  padding: $box-pad-top $box-pad-right $box-pad-top $box-pad-left;
   scrollbar-gutter: stable;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -2080,6 +2050,25 @@ body.boxed-page {
   h6 {
     scroll-margin-top: 0.75rem;
   }
+}
+
+// The page's content box: centred, a little wider than the text column, from just below the header to just above the
+// bottom of the window (the same space of the page's blue below it as above it). The whiteboards go in the open space
+// either side of it
+.content-card {
+  // All text inside the box is white, links included (the site's colour variables are re-pointed here)
+  --global-text-color: #{$card-text-color};
+  --global-text-color-light: #{$card-text-color};
+  --global-theme-color: #{$card-text-color};
+  --global-hover-color: #{$card-text-color};
+  @include scroll-box;
+  color: $card-text-color;
+  position: relative;
+  flex: none;
+  width: unquote("min(calc(#{$text-column-width} + 40px), calc(100% - 1.5rem))");
+  height: unquote("calc(100vh - #{$header-height} - 1.8rem)");
+  height: unquote("calc(100dvh - #{$header-height} - 1.8rem)");
+  margin: 0.9rem auto;
 
   > :first-child {
     margin-top: 0;
@@ -2095,9 +2084,83 @@ body.boxed-page {
   }
 }
 
+// The papers page: the published papers and the preprints in two boxes side by side, of the same height, each scrolling
+// on its own; together they take the place (and size) of the one content box. On narrower screens each box is nearly the
+// width of the screen, the preprints to the right of the published papers: swipe across to them (the edge of the
+// preprints' box shows at the right)
+.content-card.content-split {
+  padding: 0;
+  overflow: visible;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+
+  > .post,
+  > .post > article {
+    height: 100%;
+  }
+}
+
+.papers-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+  height: 100%;
+  margin: 0;
+}
+
+.paper-box {
+  @include scroll-box;
+  height: 100%;
+  min-width: 0;
+
+  // Each list's heading starts flush with the top of its box
+  > .section-bar:first-child {
+    margin-top: -$box-pad-top;
+  }
+
+  // The papers fill the width of the box (the column beside them, for thumbnails, is empty)
+  ol.bibliography .row {
+    margin-left: 0;
+    margin-right: 0;
+
+    > .abbr {
+      display: none;
+    }
+
+    > .col-sm-8 {
+      flex: 0 0 100%;
+      max-width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+@media (max-width: 899.98px) {
+  .papers-split {
+    grid-template-columns: unquote("calc(100% - 1.75rem) calc(100% - 1.75rem)");
+    gap: 0.6rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .paper-box {
+    scroll-snap-align: start;
+  }
+}
+
 // Browsers without the scroll bar styles above (Firefox) get a slim one in the same colours
 @supports not selector(::-webkit-scrollbar) {
-  .content-card {
+  .content-card,
+  .paper-box {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
   }
@@ -2118,8 +2181,39 @@ body.boxed-page {
     height: unquote("calc(100vh - #{$header-height-phone} - 1.2rem)");
     height: unquote("calc(100dvh - #{$header-height-phone} - 1.2rem)");
     margin: 0.6rem auto;
-    padding: 0.9rem 0.65rem;
+  }
+
+  .content-card,
+  .paper-box {
+    padding: $box-pad-top-phone $box-pad-side-phone;
     scrollbar-gutter: auto;
+  }
+
+  .paper-box > .section-bar:first-child {
+    margin-top: -$box-pad-top-phone;
+  }
+}
+
+// Subsection headings (the years on the news page, the papers page's two lists, the team's roles, the projects and the
+// resources): a bar the whole width of the box with the heading centred in it (clear of the box's rounded corners). While
+// its section scrolls by, the bar stays at the very top of the box, flush with it, and the next one slides up over it
+.section-bar {
+  position: sticky;
+  top: -$box-pad-top; // sticking starts inside the box's top padding: this puts the bar flush with the top of the box
+  z-index: 2;
+  margin-left: -$box-pad-left;
+  margin-right: -$box-pad-right;
+  padding: 0.65rem 1.25rem 0.6rem;
+  background-color: $card-color;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  text-align: center;
+}
+
+@media (max-width: 575.98px) {
+  .section-bar {
+    top: -$box-pad-top-phone;
+    margin-left: -$box-pad-side-phone;
+    margin-right: -$box-pad-side-phone;
   }
 }
 
@@ -2247,8 +2341,6 @@ body.boxed-page {
 @media (max-width: 575.98px) {
   // Phones: each role above its members, centered (core members' photo and bio stay side by side, smaller)
   .team {
-    grid-template-columns: 1fr;
-    row-gap: 0.2rem;
     text-align: center;
 
     ul.team-list {
@@ -2276,27 +2368,22 @@ body.boxed-page {
 // News: about three items in view in the box at a time, in large type, under a heading for each year (which stays at
 // the top of the box while its items scroll by), with a divider between years
 .news-year-title {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  margin: -0.5rem 0 0;
-  padding: 0.9rem 0 0.6rem;
-  background-color: $card-color;
+  margin: 0 0 0.25rem;
   font-size: 1.6rem;
 }
 
 .news-item {
   display: flex;
   align-items: center;
-  min-height: unquote("calc((100vh - 211px) / 3)"); // a third of the box, below the year's heading
+  min-height: unquote("calc((100vh - 222px) / 3)"); // a third of the box, below the year's bar
   padding: 0.75rem 0;
 
   @media (max-width: 767.98px) {
-    min-height: unquote("calc((100vh - 175px) / 3)");
+    min-height: unquote("calc((100vh - 186px) / 3)");
   }
 
   @media (max-width: 575.98px) {
-    min-height: unquote("calc((100vh - 159px) / 3)");
+    min-height: unquote("calc((100vh - 168px) / 3)");
   }
 
 
