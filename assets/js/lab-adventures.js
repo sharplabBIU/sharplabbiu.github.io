@@ -1,6 +1,6 @@
-// Lab Adventures (team page): a bubble for each photo, "Lab Adventure #1" and on. Either side of the box (on windows with
-// room there), a click on a bubble makes it swell and pop, bursting into droplets, and its photo springs out above where
-// it was; the photo opens large when clicked, and closing it (the ×, a click elsewhere or Escape) blows the bubble again.
+// Lab Adventures (team page): a bubble for each photo, "Lab Adventure #1" and on, then "Lab Mascot #1" and on (the
+// labels are in the page). Either side of the box (on windows with room there), a click on a bubble makes it swell and
+// pop, bursting into droplets, and its photo springs out above where it was; the photo opens large when clicked, and closing it (the ×, a click elsewhere or Escape) blows the bubble again.
 // In the box (narrower windows), the bubble pops and its photo opens large straight away. Large, the arrows (or the
 // arrow keys) step through the photos, and a click beside the photo, the close button or Escape closes it
 (function () {
@@ -14,7 +14,7 @@
   var still = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   function label(i) {
-    return 'Lab Adventure #' + (i + 1);
+    return bubbles[i].getAttribute('data-label');
   }
 
   // ---- A photo large over the page ----

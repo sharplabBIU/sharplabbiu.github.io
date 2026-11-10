@@ -2145,7 +2145,7 @@ $box-pad-side-phone: 0.65rem;
 }
 
 // The open page either side of the content box. On the home page it has the whiteboards (assets/js/glass-panes.js); on
-// the papers page, our newest papers; on the team page, the Lab Adventures bubbles; elsewhere it is left empty. A
+// the news page, papers in its four corners; on the team page, the Lab Adventures bubbles; elsewhere it is left empty. A
 // column down either side, from the top of the box to its bottom, in the middle of the space there; only on windows
 // with room for one ($side-cols), and otherwise the papers are left out and the bubbles go in the box
 $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
@@ -2183,10 +2183,15 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
       right: 0;
     }
   }
+
+  // the papers on the news page: one at the top of either column and one at the bottom, in the corners
+  .side-col.paper-features {
+    justify-content: space-between;
+  }
 }
 
-// The papers page: each of our newest papers as a card, with a picture of its core theme, its journal in a band of colour
-// under it (with the sign of a link) and its title; the whole card links to the paper, in a new tab
+// The news page: each paper as a card, with a picture of its core theme, its journal in a band of colour under it (with
+// the sign of a link) and its title; the whole card links to the paper, in a new tab (_includes/paper_features.liquid)
 .paper-feature {
   display: flex;
   flex-direction: column;
@@ -2259,14 +2264,15 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
   }
 }
 
-// On shorter windows, the cards leave out the titles to fit
-@media (max-height: 820px) {
+// On short windows, the cards leave out the titles to fit
+@media (max-height: 640px) {
   .paper-feature .pf-title {
     display: none;
   }
 }
 
-// Lab Adventures (the team page): a soap bubble for each photo, "Lab Adventure #1" and on, drifting gently. Either side
+// Lab Adventures (the team page): a soap bubble for each photo, "Lab Adventure #1" and on (and, golden, "Lab Mascot #1"
+// and on for the lab dog), drifting gently. Either side
 // of the box they zigzag down a column; in the box (narrower windows) they are a row. A click makes the bubble swell and
 // pop (it bursts into droplets) and the photo springs out above where it was; closing the photo blows the bubble again
 // (assets/js/lab-adventures.js)
@@ -2343,6 +2349,26 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
       inset 8px 6px 18px rgba(110, 220, 255, 0.32),
       0 0 0 3px rgba(255, 255, 255, 0.35),
       0 10px 24px rgba(0, 20, 60, 0.3);
+  }
+
+  // The lab mascot's bubbles (Dina): golden, with a rose rim
+  .adv-mascot & {
+    border-color: rgba(255, 226, 150, 0.85);
+    background:
+      radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.9) 0 5%, rgba(255, 255, 255, 0) 13%),
+      radial-gradient(circle at 72% 80%, rgba(255, 255, 255, 0.35) 0 4%, rgba(255, 255, 255, 0) 11%),
+      radial-gradient(
+        circle at 50% 50%,
+        rgba(255, 210, 110, 0.22) 45%,
+        rgba(255, 190, 80, 0.45) 68%,
+        rgba(255, 120, 150, 0.55) 86%,
+        rgba(255, 90, 130, 0.65) 100%
+      );
+    box-shadow:
+      inset 0 0 14px rgba(255, 240, 200, 0.35),
+      inset -8px -10px 20px rgba(255, 90, 130, 0.3),
+      inset 8px 6px 18px rgba(255, 210, 110, 0.35),
+      0 8px 20px rgba(60, 20, 0, 0.25);
   }
 
   // Swelling, then bursting
