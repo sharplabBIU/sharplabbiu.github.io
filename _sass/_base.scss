@@ -2340,6 +2340,10 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
     transform 0.2s ease,
     box-shadow 0.2s ease;
 
+  span {
+    color: inherit; // (not the site's colour for all spans)
+  }
+
   .adv-bubble:hover &,
   .adv-bubble:focus-visible & {
     transform: scale(1.07);
