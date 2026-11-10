@@ -2154,32 +2154,33 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
   display: none;
 }
 
+// (jekyll-minifier mangles var() inside calc(), so none of the sizes here use custom properties in their sums)
 @media #{$side-cols} {
   .side-col {
-    --side: calc((100vw - 1000px) / 2); // the space either side of the box
-    --col: min(calc(var(--side) - 2.5rem), 250px); // the column in it
     position: fixed;
     top: unquote("calc(#{$header-height} + 0.9rem)");
     bottom: 0.9rem;
     z-index: 3;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 1.1rem;
-    width: var(--col);
+    width: unquote("calc((100vw - 1000px) / 2)"); // the whole space beside the box
     margin: 0;
+    padding: 0 unquote("max(1.25rem, calc((100vw - 1000px) / 4 - 125px))"); // leaving a column at most 250px wide
 
     &.side-only {
       display: flex;
     }
 
     &.side-left {
-      left: unquote("calc((var(--side) - var(--col)) / 2)");
+      left: 0;
     }
 
     &.side-right {
-      right: unquote("calc((var(--side) - var(--col)) / 2)");
+      right: 0;
     }
   }
 }
@@ -2283,15 +2284,34 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
 
 .adv-bubble {
   --size: 92px;
-  position: relative;
-  display: flex;
+  display: block;
   flex: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: var(--size);
   height: var(--size);
   padding: 0;
+  border: 0;
+  background: none;
+  color: $white-color;
+  cursor: pointer;
+  animation: adv-drift 6.5s ease-in-out infinite; // each starts at its own point in it (its inline delay)
+
+  &:focus {
+    outline: none;
+  }
+
+  // Gone while its photo is out
+  &.is-popped {
+    visibility: hidden;
+  }
+}
+
+.adv-skin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
   border: 1.5px solid rgba(255, 255, 255, 0.6);
   border-radius: 50%;
   background:
@@ -2309,17 +2329,14 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
     inset -8px -10px 20px rgba(255, 110, 200, 0.22),
     inset 8px 6px 18px rgba(110, 220, 255, 0.25),
     0 8px 20px rgba(0, 20, 60, 0.25);
-  color: $white-color;
   text-shadow: 0 1px 3px rgba(0, 10, 50, 0.65);
-  cursor: pointer;
-  animation: adv-drift 6.5s ease-in-out infinite;
-  animation-delay: unquote("calc(var(--k) * -1.7s)");
-  transition: scale 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 
-  &:hover,
-  &:focus-visible {
-    scale: 1.07;
-    outline: none;
+  .adv-bubble:hover &,
+  .adv-bubble:focus-visible & {
+    transform: scale(1.07);
     box-shadow:
       inset 0 0 16px rgba(255, 255, 255, 0.4),
       inset -8px -10px 20px rgba(255, 110, 200, 0.3),
@@ -2328,43 +2345,30 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
       0 10px 24px rgba(0, 20, 60, 0.3);
   }
 
-  .adv-word {
-    max-width: 70%;
-    font-size: 0.66rem;
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: 0.02em;
-    text-align: center;
-  }
-
-  .adv-num {
-    font-size: 1.45rem;
-    font-weight: 800;
-    line-height: 1.1;
-  }
-
-  // Swelling, then bursting (still drifting)
-  &.is-popping {
-    animation:
-      adv-drift 6.5s ease-in-out infinite,
-      adv-pop 0.3s ease-in forwards;
-    animation-delay: unquote("calc(var(--k) * -1.7s), 0s");
-    pointer-events: none;
-  }
-
-  // Gone while its photo is out
-  &.is-popped {
-    animation: none;
-    visibility: hidden;
+  // Swelling, then bursting
+  .adv-bubble.is-popping & {
+    animation: adv-pop 0.3s ease-in forwards;
   }
 
   // Blown again
-  &.is-blowing {
-    animation:
-      adv-drift 6.5s ease-in-out infinite,
-      adv-blow 0.5s cubic-bezier(0.3, 1.6, 0.5, 1);
-    animation-delay: unquote("calc(var(--k) * -1.7s), 0s");
+  .adv-bubble.is-blowing & {
+    animation: adv-blow 0.5s cubic-bezier(0.3, 1.6, 0.5, 1);
   }
+}
+
+.adv-word {
+  max-width: 70%;
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.adv-num {
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1.1;
 }
 
 @media #{$side-cols} {
@@ -2387,10 +2391,10 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
     gap: 0;
 
     .adv-bubble {
-      --size: clamp(76px, min(calc((100vh - #{$header-height}) / 6.4), calc(var(--col) * 0.62)), 112px);
+      --size: clamp(76px, min(calc((100vh - #{$header-height}) / 6.4), calc((100vw - 1000px) / 4)), 112px);
     }
 
-    // zigzagging down the column, toward the box and away from it in turn
+    // zigzagging down the column, toward the box and away from it in turn, some a little smaller
     .adv-bubble:nth-child(odd) {
       align-self: flex-start;
     }
@@ -2400,7 +2404,7 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
     }
 
     .adv-bubble:nth-child(3n + 2) {
-      --size: clamp(70px, min(calc((100vh - #{$header-height}) / 7), calc(var(--col) * 0.56)), 100px);
+      --size: clamp(70px, min(calc((100vh - #{$header-height}) / 7), calc((100vw - 1000px) / 4.5)), 100px);
     }
 
     .adv-word {
@@ -2424,26 +2428,26 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
 
 @keyframes adv-pop {
   0% {
-    scale: 1;
+    transform: scale(1);
     opacity: 1;
   }
   70% {
-    scale: 1.3;
+    transform: scale(1.3);
     opacity: 1;
   }
   100% {
-    scale: 1.55;
+    transform: scale(1.55);
     opacity: 0;
   }
 }
 
 @keyframes adv-blow {
   0% {
-    scale: 0.2;
+    transform: scale(0.2);
     opacity: 0;
   }
   100% {
-    scale: 1;
+    transform: scale(1);
     opacity: 1;
   }
 }
@@ -2559,13 +2563,9 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
 
 @media (prefers-reduced-motion: reduce) {
   .adv-bubble,
-  .adv-bubble.is-blowing,
+  .adv-bubble .adv-skin,
   .adv-reveal {
-    animation: none;
-  }
-
-  .adv-bubble.is-popping {
-    animation-duration: 0.01s;
+    animation: none !important;
   }
 }
 

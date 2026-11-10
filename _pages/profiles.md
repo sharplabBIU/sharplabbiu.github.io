@@ -36,8 +36,8 @@ dog_photos: # after the lab photos, as more Lab Adventures
         <div class="side-col {% if side == 1 %}side-left{% else %}side-right{% endif %} adventure-col">
           {% for photo in photos offset: skip limit: take %}
             {% assign n = forloop.index0 | plus: skip | plus: 1 %}
-            <button type="button" class="adv-bubble" data-src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" data-w="{{ photo.w }}" data-h="{{ photo.h }}" data-alt="{{ photo.alt | escape }}" style="--k: {{ n }}" aria-label="Lab Adventure #{{ n }}: show the photo">
-              <span class="adv-word">Lab Adventure</span><span class="adv-num">#{{ n }}</span>
+            <button type="button" class="adv-bubble" data-src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" data-w="{{ photo.w }}" data-h="{{ photo.h }}" data-alt="{{ photo.alt | escape }}" style="animation-delay: -{{ n | times: 1700 }}ms" aria-label="Lab Adventure #{{ n }}: show the photo">
+              <span class="adv-skin"><span class="adv-word">Lab Adventure</span><span class="adv-num">#{{ n }}</span></span>
             </button>
           {% endfor %}
         </div>
