@@ -740,7 +740,7 @@ footer.fixed-bottom {
     }
   }
 
-  // Lab Adventures, between the core team and the collaborators: a row of bubbles under the heading here, on windows
+  // Lab Adventures, between the core team and the collaborators: a row of leaves under the heading here, on windows
   // too narrow for them to go either side of the box (see "Lab Adventures" below)
   .lab-adventures {
     margin: 0 0 3.5rem;
@@ -2277,9 +2277,9 @@ $box-pad-side-phone: 0.65rem;
 }
 
 // The open page either side of the content box. On the home page it has the whiteboards (assets/js/glass-panes.js); on
-// the team page, the Lab Adventures bubbles; elsewhere it is left empty. A column down either side, from the top of the
+// the team page, the Lab Adventures branches; elsewhere it is left empty. A column down either side, from the top of the
 // box to its bottom, in the middle of the space there; only on windows with room for one ($side-cols), and otherwise
-// the bubbles go in the box
+// the leaves go in the box
 $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
 
 // (jekyll-minifier mangles var() inside calc(), so none of the sizes here use custom properties in their sums)
@@ -2309,15 +2309,15 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
   }
 }
 
-// Lab Adventures (the team page): a soap bubble for each photo, "Lab Adventure" (and "Lab Mascot" for the lab dog's), each
-// a slightly different shade of blue, standing still. Either side of the box they zigzag down a column; in the box
-// (narrower windows) they are a row. A click makes the bubble swell and pop (it bursts into droplets) and the photo
-// springs out above where it was; closing the photo blows the bubble again (assets/js/lab-adventures.js)
-.adventure-bubbles {
+// Lab Adventures (the team page): a thin branch of blue bark down either side of the box, the left one's root labelled
+// "Lab Adventures", with a tiny leaf for each photo falling slowly from its twigs (assets/js/lab-adventures.js draws the
+// branches and moves the leaves). In the box (narrower windows) the leaves are a row under the heading. A click on a
+// leaf shows its photo
+.adventure-tree {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem 1.4rem;
+  gap: 0.4rem 0.9rem;
   padding: 0.5rem 0;
 
   .adventure-col {
@@ -2325,103 +2325,74 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
   }
 }
 
-.adv-bubble {
-  --size: 92px;
-  display: block;
-  flex: none;
-  width: var(--size);
-  height: var(--size);
+.adv-branch,
+.adv-root-label {
+  display: none;
+}
+
+.adv-leaf {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
   padding: 0;
   border: 0;
+  border-radius: 50%;
   background: none;
-  color: $white-color;
   cursor: pointer;
+
+  svg {
+    display: block;
+    width: 28px;
+    height: 16px;
+    overflow: visible;
+    transition:
+      scale 0.2s ease,
+      filter 0.2s ease;
+  }
+
+  &:hover svg,
+  &:focus-visible svg {
+    scale: 1.5;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.85));
+  }
 
   &:focus {
     outline: none;
   }
 
-  // Gone while its photo is out
-  &.is-popped {
+  &:focus-visible {
+    outline: 2px solid $white-color;
+    outline-offset: -5px;
+  }
+
+  // Gone from the branch while its photo is out
+  &.is-plucked {
     visibility: hidden;
   }
 }
 
-// A bubble's skin in a shade of blue: clear in the middle, the colour gathering toward its rim
-@mixin bubble-skin($c) {
-  background:
-    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.9) 0 5%, rgba(255, 255, 255, 0) 13%),
-    radial-gradient(circle at 72% 80%, rgba(255, 255, 255, 0.35) 0 4%, rgba(255, 255, 255, 0) 11%),
-    radial-gradient(
-      circle at 50% 50%,
-      rgba($c, 0.14) 45%,
-      rgba($c, 0.38) 70%,
-      rgba($c, 0.62) 88%,
-      rgba(lighten($c, 12%), 0.85) 100%
-    );
-  box-shadow:
-    inset 0 0 14px rgba(255, 255, 255, 0.3),
-    inset -8px -10px 20px rgba(darken($c, 12%), 0.3),
-    inset 8px 6px 18px rgba(lighten($c, 10%), 0.3),
-    0 8px 20px rgba(0, 20, 60, 0.25);
+.leaf-blade {
+  fill: #a9dcff;
+  stroke: #1b57b0;
+  stroke-width: 0.7;
 }
 
-$bubble-blues: (#78c8ff, #5aa0ff, #8caaff, #6ed7fa, #a5cdff);
-
-.adv-skin {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  border: 1.5px solid rgba(255, 255, 255, 0.6);
-  border-radius: 50%;
-  @include bubble-skin(nth($bubble-blues, 1));
-  text-shadow: 0 1px 3px rgba(0, 10, 50, 0.65);
-  transition:
-    transform 0.2s ease,
-    filter 0.2s ease;
-
-  span {
-    color: inherit; // (not the site's colour for all spans)
-  }
-
-  .adv-bubble:hover &,
-  .adv-bubble:focus-visible & {
-    transform: scale(1.06);
-    filter: brightness(1.12);
-  }
-
-  .adv-bubble:focus-visible & {
-    outline: 2px solid $white-color;
-    outline-offset: 3px;
-  }
-
-  // Swelling, then bursting
-  .adv-bubble.is-popping & {
-    animation: adv-pop 0.3s ease-in forwards;
-  }
-
-  // Blown again
-  .adv-bubble.is-blowing & {
-    animation: adv-blow 0.5s cubic-bezier(0.3, 1.6, 0.5, 1);
-  }
+.leaf-vein {
+  fill: none;
+  stroke: #2a6cc8;
+  stroke-width: 0.55;
+  stroke-linecap: round;
 }
 
-// each bubble in one of the shades, in turn
-@for $i from 1 through length($bubble-blues) {
-  .adv-shade-#{$i - 1} .adv-skin {
-    @include bubble-skin(nth($bubble-blues, $i));
-  }
-}
+// each leaf in one of five light blues, in turn
+$leaf-blues: (#b6e3ff, #8fd0ff, #a9c8ff, #9ee6f7, #c6defc);
 
-.adv-word {
-  max-width: 74%;
-  font-size: 0.78rem;
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: 0.02em;
-  text-align: center;
+@for $i from 1 through length($leaf-blues) {
+  .adv-shade-#{$i - 1} .leaf-blade {
+    fill: nth($leaf-blues, $i);
+  }
 }
 
 @media #{$side-cols} {
@@ -2433,90 +2404,60 @@ $bubble-blues: (#78c8ff, #5aa0ff, #8caaff, #6ed7fa, #a5cdff);
     }
   }
 
-  .adventure-bubbles {
+  .adventure-tree {
     display: block;
     padding: 0;
   }
 
-  .adventure-bubbles .side-col.adventure-col {
-    display: flex;
-    justify-content: space-evenly;
-    gap: 0;
+  .adventure-tree .side-col.adventure-col {
+    display: block;
+    padding: 0;
+  }
 
-    .adv-bubble {
-      --size: clamp(76px, min(calc((100vh - #{$header-height}) / 6.4), calc((100vw - 1000px) / 4)), 112px);
-    }
+  .adv-branch {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: visible;
+    pointer-events: none;
+    filter: drop-shadow(0 3px 6px rgba(0, 20, 60, 0.35));
+  }
 
-    // zigzagging down the column, toward the box and away from it in turn, some a little smaller
-    .adv-bubble:nth-child(odd) {
-      align-self: flex-start;
-    }
+  .adv-leaf {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 34px;
+    height: 34px;
+    margin: -17px 0 0 -17px;
 
-    .adv-bubble:nth-child(even) {
-      align-self: flex-end;
+    svg {
+      width: 21px;
+      height: 12px;
     }
+  }
 
-    .adv-bubble:nth-child(3n + 2) {
-      --size: clamp(70px, min(calc((100vh - #{$header-height}) / 7), calc((100vw - 1000px) / 4.5)), 100px);
-    }
-
-    .adv-word {
-      font-size: 0.8rem;
-    }
+  .adv-root-label {
+    display: block;
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.25rem 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    background-color: $card-color;
+    color: $white-color;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
   }
 }
 
-@keyframes adv-pop {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  70% {
-    transform: scale(1.3);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1.55);
-    opacity: 0;
-  }
-}
-
-@keyframes adv-blow {
-  0% {
-    transform: scale(0.2);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-// The droplets a bubble bursts into
-.adv-drop {
-  position: fixed;
-  z-index: 1030;
-  width: 7px;
-  height: 7px;
-  margin: -3.5px 0 0 -3.5px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #ffffff, rgba(170, 230, 255, 0.8) 60%, rgba(255, 160, 220, 0.6));
-  pointer-events: none;
-  animation: adv-drop 0.55s ease-out forwards;
-}
-
-@keyframes adv-drop {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--dx), var(--dy)) scale(0.3);
-    opacity: 0;
-  }
-}
-
-// The photo out of a bubble, above where the bubble was: it springs out from there; a click on it opens it large
+// The photo out of a leaf, above where the leaf was: it springs out from there; a click on it opens it large
 .adv-reveal {
   position: fixed;
   z-index: 1030;
@@ -2591,7 +2532,6 @@ $bubble-blues: (#78c8ff, #5aa0ff, #8caaff, #6ed7fa, #a5cdff);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .adv-bubble .adv-skin,
   .adv-reveal {
     animation: none !important;
   }
