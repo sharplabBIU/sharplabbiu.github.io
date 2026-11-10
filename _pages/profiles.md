@@ -23,7 +23,7 @@ dog_photos: # after the lab photos, as "Lab Mascot"
 <!-- Names grouped by role, under a bar with the role's name: each core lab member with a small photo and their bio beside
      it (the photo in the bio itself is hidden here), then Lab Adventures, then collaborators and alumni as a list -->
 {% capture lab_adventures %}
-  <!-- Lab Adventures: a string of Christmas lights hung down either side of the box (on windows wide enough to have room
+  <!-- Lab Adventures: a string of Christmas lights hung straight down either side of the box (on windows wide enough to have room
        there), "Lab Adventures" written into the left one's cable, with a tiny light for each photo (Dina's too).
        Clicking a light shows its photo above it, and the photo opens large when clicked; on narrower windows the
        lights are a row here, under the heading (assets/js/lab-adventures.js hangs the cable and the lights) -->

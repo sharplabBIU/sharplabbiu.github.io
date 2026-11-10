@@ -1,9 +1,9 @@
-// Lab Adventures (team page): a string of Christmas lights hung down either side of the box (on windows with room
-// there), looping from hook to hook, with "Lab Adventures" written into the left one's cable at the top and a tiny light
-// for each photo. Nothing moves. A click on a light shows its photo above it; the photo opens large when clicked, and
-// the ×, a click elsewhere or Escape puts it away. In the box (narrower windows) the lights are a row and open their
-// photos large straight away. Large, the arrows (or the arrow keys) step through the photos, and a click beside the
-// photo, the close button or Escape closes it
+// Lab Adventures (team page): a string of Christmas lights hung almost straight down either side of the box (on windows
+// with room there), with "Lab Adventures" written into the left one's cable at the top and a tiny light for each photo.
+// Nothing moves. A click on a light shows its photo above it; the photo opens large when clicked, and the ×, a click
+// elsewhere or Escape puts it away. In the box (narrower windows) the lights are a row and open their photos large
+// straight away. Large, the arrows (or the arrow keys) step through the photos, and a click beside the photo, the close
+// button or Escape closes it
 (function () {
   'use strict';
 
@@ -81,19 +81,8 @@
     return x - Math.floor(x);
   }
 
-  // A loop of cable hanging between two hooks: a curve that sags below the line between them
-  function loop(a, b, sag) {
-    var mx = (a[0] + b[0]) / 2;
-    var my = (a[1] + b[1]) / 2 + sag;
-    return { a: a, q: [mx, 2 * my - (a[1] + b[1]) / 2], b: b };
-  }
-
-  function point(l, t) {
-    var u = 1 - t;
-    return [u * u * l.a[0] + 2 * u * t * l.q[0] + t * t * l.b[0], u * u * l.a[1] + 2 * u * t * l.q[1] + t * t * l.b[1]];
-  }
-
-  // Hangs column col's cable (k: 0 on the left, 1 on the right, mirrored) and its lights along it
+  // Hangs column col's cable (k: 0 on the left, 1 on the right) and its lights along it: the cable hangs from a hook at
+  // the top almost straight down, with a slight wave, to a plug at the bottom
   function hang(col, k) {
     var old = col.querySelector('.adv-cable');
     if (old) old.remove();
@@ -107,17 +96,24 @@
     var W = col.clientWidth;
     var H = col.clientHeight;
     if (!W || !H) return;
-    var near = k ? W - 26 : 26; // the hooks on the side away from the box first
-    var far = k ? 26 : W - 26;
-    var top = 34;
+    var x0 = W / 2;
+    var top = 18;
+    var end = H - 22;
     var words = col.getAttribute('data-cable-label');
-    // The hooks: two level at the top (the loop with the words in it), then zigzagging down
-    var rows = 3;
-    var step = (H - 40 - top) / rows;
-    var hooks = [[near, top], [far, top]];
-    for (var r = 1; r <= rows; r++) hooks.push([r % 2 ? near : far, top + r * step]);
-    var loops = [];
-    for (var h = 0; h < hooks.length - 1; h++) loops.push(loop(hooks[h], hooks[h + 1], h === 0 ? 22 : 48));
+    var phase = k ? 2.1 : 0.4;
+    function xAt(y) {
+      return x0 + 5 * Math.sin(((y - top) / 230) * 2 * Math.PI + phase) * Math.min(1, (y - top) / 60);
+    }
+    var pts = [];
+    for (var y = top; y <= end; y += 6) pts.push([xAt(y), y]);
+    pts.push([xAt(end), end]);
+    var d =
+      'M' +
+      pts
+        .map(function (p) {
+          return p[0].toFixed(1) + ' ' + p[1].toFixed(1);
+        })
+        .join(' L');
 
     var svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('class', 'adv-cable');
@@ -125,49 +121,33 @@
     svg.setAttribute('height', H);
     svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
     svg.setAttribute('aria-hidden', 'true');
-    var d = loops
-      .map(function (l, n) {
-        return (n ? '' : 'M' + l.a[0] + ' ' + l.a[1]) + ' Q' + l.q[0].toFixed(1) + ' ' + l.q[1].toFixed(1) + ' ' + l.b[0] + ' ' + l.b[1];
-      })
-      .join('');
+    var id = 'adv-cable-' + k;
     // the cable: two wires twisted together
-    add('path', { d: d, fill: 'none', stroke: '#06142e', 'stroke-width': 3, 'stroke-linecap': 'round' }, svg);
+    add('path', { id: id, d: d, fill: 'none', stroke: '#06142e', 'stroke-width': 3, 'stroke-linecap': 'round' }, svg);
     add('path', { d: d, fill: 'none', stroke: '#2f5fa6', 'stroke-width': 1.2, 'stroke-dasharray': '2.6 3.2', 'stroke-linecap': 'round' }, svg);
-    // the hooks it hangs from
-    hooks.forEach(function (p) {
-      add('circle', { cx: p[0], cy: p[1] - 1, r: 3.2, fill: '#dbe6f7', stroke: '#06142e', 'stroke-width': 1.2 }, svg);
-    });
-    // the words, written into the top loop (the cable's colour cut away behind the letters)
+    // the hook it hangs from, and the plug at its end
+    add('circle', { cx: x0, cy: top - 4, r: 3.6, fill: '#dbe6f7', stroke: '#06142e', 'stroke-width': 1.2 }, svg);
+    var px = xAt(end);
+    add('rect', { x: (px - 4).toFixed(1), y: end, width: 8, height: 11, rx: 2, fill: '#1c2c4a', stroke: '#06142e', 'stroke-width': 1 }, svg);
+    add('path', { d: 'M' + (px - 2).toFixed(1) + ' ' + (end + 11) + ' v4 M' + (px + 2).toFixed(1) + ' ' + (end + 11) + ' v4', stroke: '#dbe6f7', 'stroke-width': 1.2 }, svg);
+    // the words, written down into the cable near its top (the cable's colour cut away behind the letters)
+    var text = null;
     if (words) {
-      var l0 = loops[0];
-      var id = 'adv-cable-words-' + k;
-      add('path', { id: id, d: 'M' + l0.a[0] + ' ' + l0.a[1] + ' Q' + l0.q[0] + ' ' + l0.q[1] + ' ' + l0.b[0] + ' ' + l0.b[1], fill: 'none' }, svg);
-      var text = add('text', { class: 'adv-cable-words', dy: '4.5' }, svg);
-      var tp = add('textPath', { href: '#' + id, startOffset: '50%', 'text-anchor': 'middle' }, text);
+      text = add('text', { class: 'adv-cable-words', dy: '5' }, svg);
+      var tp = add('textPath', { href: '#' + id, startOffset: '22' }, text);
       tp.textContent = words;
     }
     col.insertBefore(svg, col.firstChild);
 
-    // The lights, spaced evenly along the loops below the words (along all of them where there are none)
-    var from = words ? 1 : 0;
-    var pts = [];
-    var total = 0;
-    for (var n = from; n < loops.length; n++) {
-      var prev = point(loops[n], 0);
-      for (var s = 1; s <= 60; s++) {
-        var p = point(loops[n], s / 60);
-        total += Math.hypot(p[0] - prev[0], p[1] - prev[1]);
-        pts.push({ x: p[0], y: p[1], at: total });
-        prev = p;
-      }
-    }
+    // The lights, spaced evenly down the cable below the words, pointing out to either side in turn
+    var first = top + 34 + (text ? text.getComputedTextLength() + 22 : 0);
+    var last = end - 26;
     mine.forEach(function (light, j) {
-      var want = ((j + 0.5) / mine.length) * total;
-      var q = pts[0];
-      for (var m = 0; m < pts.length && pts[m].at < want; m++) q = pts[m];
-      light.style.left = q.x.toFixed(1) + 'px';
-      light.style.top = q.y.toFixed(1) + 'px';
-      light.style.transform = 'rotate(' + ((rnd(j * 3.1 + k * 7) - 0.5) * 24).toFixed(1) + 'deg)';
+      var y = mine.length > 1 ? first + ((last - first) * j) / (mine.length - 1) : (first + last) / 2;
+      var out = j % 2 ? 1 : -1;
+      light.style.left = xAt(y).toFixed(1) + 'px';
+      light.style.top = y.toFixed(1) + 'px';
+      light.style.transform = 'rotate(' + (out * (38 + rnd(j * 3.1 + k * 7) * 14)).toFixed(1) + 'deg)';
     });
   }
 
