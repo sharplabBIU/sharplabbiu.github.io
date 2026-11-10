@@ -6,13 +6,13 @@ nav: true
 nav_order: 4
 ---
 
-<!-- Research areas: the title in a bar, then the project's emblem (assets/img/projects) beside the summary -->
+<!-- Research areas: the title in a bar, then the project's figure (assets/img/projects) beside the summary -->
 <div class="research-areas">
   <div class="research-area" id="planning-efficiency">
     <h2 class="research-title section-bar">Planning Efficiency</h2>
     <div class="research-intro">
       <div class="research-diagram">
-        <img src="{{ '/assets/img/projects/planning-efficiency.svg' | relative_url }}" width="200" height="200" alt="Planning efficiency: a decision tree inside a clock face, planned forward from the start and backward from the goal, with an hourglass">
+        <img src="{{ '/assets/img/projects/planning-efficiency.svg' | relative_url }}" width="200" height="200" alt="Planning efficiency. (a) When to plan: in a decision tree from the start to the goal, planning happens only at the choice that decides whether the goal is reached and is deferred elsewhere, with planning effort at each step below. (b) Which direction: planning forward from the start and backward from the goal, meeting in the middle">
       </div>
       <div class="research-text">
         <p>
@@ -31,7 +31,7 @@ nav_order: 4
     <h2 class="research-title section-bar">Offline Learning</h2>
     <div class="research-intro">
       <div class="research-diagram">
-        <img src="{{ '/assets/img/projects/offline-learning.svg' | relative_url }}" width="200" height="200" alt="Offline learning: under a crescent moon, the path to a star is replayed backward, lighting up each step with value">
+        <img src="{{ '/assets/img/projects/offline-learning.svg' | relative_url }}" width="200" height="200" alt="Offline learning. (a) Trial sequence: a choice, a win, then a short or long interval before the next choice; after a short one people stay, after a long one they more often shift, as if the wait were a cost charged to the choice. (b) Schematic: the chance of shifting after a win rises with the interval">
       </div>
       <div class="research-text">
         <p>
@@ -50,7 +50,7 @@ nav_order: 4
     <h2 class="research-title section-bar">Task (Mis)construal</h2>
     <div class="research-intro">
       <div class="research-diagram">
-        <img src="{{ '/assets/img/projects/task-misconstrual.svg' | relative_url }}" width="200" height="200" alt="Task (mis)construal: a grid world in a viewfinder, the plan going round the wall it kept and running into an obstacle it left out">
+        <img src="{{ '/assets/img/projects/task-misconstrual.svg' | relative_url }}" width="200" height="200" alt="Task (mis)construal. (a) A grid world with four obstacles. (b) An efficient construal keeps only the wall in the way. (c) A misconstrual keeps every obstacle and treats the irrelevant ones as threats. (d) The value of a representation, utility less cost: the misconstrual costs more for the same utility">
       </div>
       <div class="research-text">
         <p>
