@@ -117,7 +117,7 @@
     var hooks = [[near, top], [far, top]];
     for (var r = 1; r <= rows; r++) hooks.push([r % 2 ? near : far, top + r * step]);
     var loops = [];
-    for (var h = 0; h < hooks.length - 1; h++) loops.push(loop(hooks[h], hooks[h + 1], h === 0 ? 22 : 30));
+    for (var h = 0; h < hooks.length - 1; h++) loops.push(loop(hooks[h], hooks[h + 1], h === 0 ? 22 : 48));
 
     var svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('class', 'adv-cable');
