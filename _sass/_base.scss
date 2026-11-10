@@ -756,8 +756,8 @@ footer.fixed-bottom {
   }
 }
 
-// Photo viewer (assets/js/lab-adventures.js): a Lab Adventures photo large over the darkened page, with its caption
-// under it, a close button and arrows to the previous and next photos
+// Photo viewer (assets/js/lab-adventures.js): a Lab Adventures photo large over the darkened page, with a close button
+// and arrows to the previous and next photos
 .photo-viewer {
   position: fixed;
   top: 0;
@@ -789,13 +789,6 @@ footer.fixed-bottom {
     object-fit: contain;
     border-radius: 4px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  }
-
-  figcaption {
-    margin-top: 0.75rem;
-    color: #fffafa; // snow
-    font-size: 1rem;
-    text-align: center;
   }
 
   button {
@@ -2115,10 +2108,139 @@ $box-pad-side-phone: 0.65rem;
   }
 }
 
+// The news page: bulletin boards by theme, two by two in place of the one content box, each a box of its own with a
+// border in its own colour (--board, set in the page) and its theme in a bar at the top, scrolling on its own. On
+// narrower screens each board is nearly the width of the screen, side by side: swipe across to the next
+.news-boards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.9rem;
+  height: 100%;
+}
+
+.news-board {
+  @include scroll-box;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  border: 2px solid var(--board);
+
+  > .section-bar:first-child {
+    margin-top: -$box-pad-top;
+    border-bottom-color: var(--board);
+    font-size: 1.35rem;
+  }
+
+  .board-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .board-item {
+    display: flex;
+    gap: 0.9rem;
+    padding: 0.8rem 0.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  .bi-year {
+    flex: none;
+    width: 2.7rem;
+    padding-top: 0.1rem;
+    color: var(--board);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .bi-body {
+    min-width: 0;
+
+    p {
+      margin: 0;
+    }
+
+    p + p {
+      margin-top: 0.15rem;
+    }
+
+    .bi-metrics {
+      margin-top: 0.35rem;
+    }
+  }
+
+  .bi-main {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.35;
+
+    a {
+      text-decoration: underline;
+      text-decoration-color: rgba(255, 255, 255, 0.35);
+      text-underline-offset: 3px;
+    }
+  }
+
+  .bi-journal {
+    font-size: 0.95rem;
+    font-style: italic;
+  }
+
+  .bi-sub {
+    font-size: 0.92rem;
+    line-height: 1.4;
+    opacity: 0.85;
+  }
+
+  .bi-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 1rem;
+    font-size: 0.82rem;
+    opacity: 0.8;
+
+    span {
+      color: inherit; // (not the site's colour for all spans)
+    }
+
+    b {
+      font-weight: 700;
+    }
+  }
+}
+
+@media (max-width: 899.98px) {
+  .news-boards {
+    grid-template-columns: none;
+    grid-template-rows: 100%;
+    grid-auto-flow: column;
+    grid-auto-columns: unquote("calc(100% - 1.75rem)");
+    gap: 0.6rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .news-board {
+    scroll-snap-align: start;
+  }
+}
+
 // Browsers without the scroll bar styles above (Firefox) get a slim one in the same colours
 @supports not selector(::-webkit-scrollbar) {
   .content-card,
-  .paper-box {
+  .paper-box,
+  .news-board {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
   }
@@ -2142,25 +2264,23 @@ $box-pad-side-phone: 0.65rem;
   }
 
   .content-card,
-  .paper-box {
+  .paper-box,
+  .news-board {
     padding: $box-pad-top-phone $box-pad-side-phone;
     scrollbar-gutter: auto;
   }
 
-  .paper-box > .section-bar:first-child {
+  .paper-box > .section-bar:first-child,
+  .news-board > .section-bar:first-child {
     margin-top: -$box-pad-top-phone;
   }
 }
 
 // The open page either side of the content box. On the home page it has the whiteboards (assets/js/glass-panes.js); on
-// the news page, papers in its four corners; on the team page, the Lab Adventures bubbles; elsewhere it is left empty. A
-// column down either side, from the top of the box to its bottom, in the middle of the space there; only on windows
-// with room for one ($side-cols), and otherwise the papers are left out and the bubbles go in the box
+// the team page, the Lab Adventures bubbles; elsewhere it is left empty. A column down either side, from the top of the
+// box to its bottom, in the middle of the space there; only on windows with room for one ($side-cols), and otherwise
+// the bubbles go in the box
 $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
-
-.side-col.side-only {
-  display: none;
-}
 
 // (jekyll-minifier mangles var() inside calc(), so none of the sizes here use custom properties in their sums)
 @media #{$side-cols} {
@@ -2179,10 +2299,6 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
     margin: 0;
     padding: 0 unquote("max(1.25rem, calc((100vw - 1000px) / 4 - 125px))"); // leaving a column at most 250px wide
 
-    &.side-only {
-      display: flex;
-    }
-
     &.side-left {
       left: 0;
     }
@@ -2191,103 +2307,12 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
       right: 0;
     }
   }
-
-  // the papers on the news page: one at the top of either column and one at the bottom, in the corners
-  .side-col.paper-features {
-    justify-content: space-between;
-  }
 }
 
-// The news page: each paper as a card, with a picture of its core theme, its journal in a band of colour under it (with
-// the sign of a link) and its title; the whole card links to the paper, in a new tab (_includes/paper_features.liquid)
-.paper-feature {
-  display: flex;
-  flex-direction: column;
-  flex: 0 1 auto;
-  min-height: 0;
-  width: 100%;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 14px;
-  background-color: $card-color;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
-  color: $white-color;
-  text-decoration: none;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
-
-  img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: unquote("16 / 9");
-    object-fit: cover;
-  }
-
-  span {
-    color: inherit; // (not the site's colour for all spans)
-  }
-
-  .pf-journal {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.4rem;
-    padding: 0.4rem 0.65rem;
-    background-color: var(--pf-accent);
-    color: #0f1726;
-    font-size: 0.86rem;
-    font-weight: 800;
-    line-height: 1.2;
-
-    i {
-      flex: none;
-      font-size: 0.72rem;
-    }
-  }
-
-  .pf-title {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    margin: 0.45rem 0.65rem 0;
-    font-size: 0.78rem;
-    line-height: 1.3;
-  }
-
-  .pf-note {
-    margin: 0.2rem 0.65rem 0.5rem;
-    font-size: 0.7rem;
-    opacity: 0.7;
-  }
-
-  &:hover,
-  &:focus-visible {
-    transform: translateY(-3px);
-    border-color: var(--pf-accent);
-    box-shadow:
-      0 14px 30px rgba(0, 0, 0, 0.38),
-      0 0 0 1px var(--pf-accent);
-    color: $white-color;
-    text-decoration: none;
-  }
-}
-
-// On short windows, the cards leave out the titles to fit
-@media (max-height: 640px) {
-  .paper-feature .pf-title {
-    display: none;
-  }
-}
-
-// Lab Adventures (the team page): a soap bubble for each photo, "Lab Adventure #1" and on (and, golden, "Lab Mascot #1"
-// and on for the lab dog), drifting gently. Either side
-// of the box they zigzag down a column; in the box (narrower windows) they are a row. A click makes the bubble swell and
-// pop (it bursts into droplets) and the photo springs out above where it was; closing the photo blows the bubble again
-// (assets/js/lab-adventures.js)
+// Lab Adventures (the team page): a soap bubble for each photo, "Lab Adventure" (and "Lab Mascot" for the lab dog's), each
+// a slightly different shade of blue, standing still. Either side of the box they zigzag down a column; in the box
+// (narrower windows) they are a row. A click makes the bubble swell and pop (it bursts into droplets) and the photo
+// springs out above where it was; closing the photo blows the bubble again (assets/js/lab-adventures.js)
 .adventure-bubbles {
   display: flex;
   flex-wrap: wrap;
@@ -2311,7 +2336,6 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
   background: none;
   color: $white-color;
   cursor: pointer;
-  animation: adv-drift 6.5s ease-in-out infinite; // each starts at its own point in it (its inline delay)
 
   &:focus {
     outline: none;
@@ -2323,34 +2347,40 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
   }
 }
 
+// A bubble's skin in a shade of blue: clear in the middle, the colour gathering toward its rim
+@mixin bubble-skin($c) {
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.9) 0 5%, rgba(255, 255, 255, 0) 13%),
+    radial-gradient(circle at 72% 80%, rgba(255, 255, 255, 0.35) 0 4%, rgba(255, 255, 255, 0) 11%),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba($c, 0.14) 45%,
+      rgba($c, 0.38) 70%,
+      rgba($c, 0.62) 88%,
+      rgba(lighten($c, 12%), 0.85) 100%
+    );
+  box-shadow:
+    inset 0 0 14px rgba(255, 255, 255, 0.3),
+    inset -8px -10px 20px rgba(darken($c, 12%), 0.3),
+    inset 8px 6px 18px rgba(lighten($c, 10%), 0.3),
+    0 8px 20px rgba(0, 20, 60, 0.25);
+}
+
+$bubble-blues: (#78c8ff, #5aa0ff, #8caaff, #6ed7fa, #a5cdff);
+
 .adv-skin {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
   border: 1.5px solid rgba(255, 255, 255, 0.6);
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.9) 0 5%, rgba(255, 255, 255, 0) 13%),
-    radial-gradient(circle at 72% 80%, rgba(255, 255, 255, 0.35) 0 4%, rgba(255, 255, 255, 0) 11%),
-    radial-gradient(
-      circle at 50% 50%,
-      rgba(255, 255, 255, 0.04) 52%,
-      rgba(140, 220, 255, 0.3) 70%,
-      rgba(255, 140, 220, 0.38) 85%,
-      rgba(255, 236, 140, 0.45) 100%
-    );
-  box-shadow:
-    inset 0 0 14px rgba(255, 255, 255, 0.3),
-    inset -8px -10px 20px rgba(255, 110, 200, 0.22),
-    inset 8px 6px 18px rgba(110, 220, 255, 0.25),
-    0 8px 20px rgba(0, 20, 60, 0.25);
+  @include bubble-skin(nth($bubble-blues, 1));
   text-shadow: 0 1px 3px rgba(0, 10, 50, 0.65);
   transition:
     transform 0.2s ease,
-    box-shadow 0.2s ease;
+    filter 0.2s ease;
 
   span {
     color: inherit; // (not the site's colour for all spans)
@@ -2358,35 +2388,13 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
 
   .adv-bubble:hover &,
   .adv-bubble:focus-visible & {
-    transform: scale(1.07);
-    box-shadow:
-      inset 0 0 16px rgba(255, 255, 255, 0.4),
-      inset -8px -10px 20px rgba(255, 110, 200, 0.3),
-      inset 8px 6px 18px rgba(110, 220, 255, 0.32),
-      0 0 0 3px rgba(255, 255, 255, 0.35),
-      0 10px 24px rgba(0, 20, 60, 0.3);
+    transform: scale(1.06);
+    filter: brightness(1.12);
   }
 
-  // The lab mascot's bubbles (Dina): golden, with a rose rim
-  .adv-mascot & {
-    border-color: rgba(255, 226, 150, 0.85);
-    background:
-      radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.9) 0 5%, rgba(255, 255, 255, 0) 13%),
-      radial-gradient(circle at 72% 80%, rgba(255, 255, 255, 0.35) 0 4%, rgba(255, 255, 255, 0) 11%),
-      radial-gradient(
-        circle at 50% 50%,
-        rgba(255, 216, 102, 0.8) 40%,
-        rgba(255, 184, 72, 0.88) 68%,
-        rgba(255, 132, 96, 0.93) 88%,
-        rgba(255, 98, 122, 0.96) 100%
-      );
-    box-shadow:
-      inset 0 0 14px rgba(255, 248, 220, 0.5),
-      inset -8px -10px 20px rgba(255, 90, 130, 0.35),
-      inset 8px 6px 18px rgba(255, 236, 160, 0.45),
-      0 8px 20px rgba(60, 20, 0, 0.3);
-    color: #4a1f00;
-    text-shadow: 0 1px 2px rgba(255, 244, 210, 0.7);
+  .adv-bubble:focus-visible & {
+    outline: 2px solid $white-color;
+    outline-offset: 3px;
   }
 
   // Swelling, then bursting
@@ -2400,19 +2408,20 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
   }
 }
 
-.adv-word {
-  max-width: 70%;
-  font-size: 0.66rem;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: 0.02em;
-  text-align: center;
+// each bubble in one of the shades, in turn
+@for $i from 1 through length($bubble-blues) {
+  .adv-shade-#{$i - 1} .adv-skin {
+    @include bubble-skin(nth($bubble-blues, $i));
+  }
 }
 
-.adv-num {
-  font-size: 1.45rem;
-  font-weight: 800;
-  line-height: 1.1;
+.adv-word {
+  max-width: 74%;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  text-align: center;
 }
 
 @media #{$side-cols} {
@@ -2452,21 +2461,8 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
     }
 
     .adv-word {
-      font-size: 0.7rem;
+      font-size: 0.8rem;
     }
-  }
-}
-
-@keyframes adv-drift {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  30% {
-    translate: 3px -7px;
-  }
-  65% {
-    translate: -3px 5px;
   }
 }
 
@@ -2525,7 +2521,7 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
   position: fixed;
   z-index: 1030;
   margin: 0;
-  padding: 7px 7px 0;
+  padding: 7px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 14px;
   background-color: $card-color;
@@ -2551,23 +2547,6 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
     width: 100%;
     height: auto;
     border-radius: 9px;
-  }
-
-  figcaption {
-    padding: 0.45rem 0.25rem 0.55rem;
-    color: $white-color;
-    font-size: 0.8rem;
-    line-height: 1.3;
-
-    span,
-    strong {
-      color: inherit; // (not the site's colours for spans and bold text, which are dark outside the box)
-    }
-
-    strong {
-      display: block;
-      font-size: 0.9rem;
-    }
   }
 
   .adv-close {
@@ -2612,7 +2591,6 @@ $side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .adv-bubble,
   .adv-bubble .adv-skin,
   .adv-reveal {
     animation: none !important;

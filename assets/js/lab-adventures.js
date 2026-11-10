@@ -1,8 +1,8 @@
-// Lab Adventures (team page): a bubble for each photo, "Lab Adventure #1" and on, then "Lab Mascot #1" and on (the
-// labels are in the page). Either side of the box (on windows with room there), a click on a bubble makes it swell and
-// pop, bursting into droplets, and its photo springs out above where it was; the photo opens large when clicked, and closing it (the ×, a click elsewhere or Escape) blows the bubble again.
-// In the box (narrower windows), the bubble pops and its photo opens large straight away. Large, the arrows (or the
-// arrow keys) step through the photos, and a click beside the photo, the close button or Escape closes it
+// Lab Adventures (team page): a bubble for each photo, "Lab Adventure" (or "Lab Mascot"). Either side of the box (on
+// windows with room there), a click on a bubble makes it swell and pop, bursting into droplets, and its photo springs
+// out above where it was; the photo opens large when clicked, and closing it (the ×, a click elsewhere or Escape) blows
+// the bubble again. In the box (narrower windows), the bubble pops and its photo opens large straight away. Large, the
+// arrows (or the arrow keys) step through the photos, and a click beside the photo, the close button or Escape closes it
 (function () {
   'use strict';
 
@@ -26,14 +26,13 @@
   view.setAttribute('aria-label', 'Photo');
   view.hidden = true;
   view.innerHTML =
-    '<figure><img alt=""><figcaption></figcaption></figure>' +
+    '<figure><img alt=""></figure>' +
     '<button type="button" class="pv-close" aria-label="Close">×</button>' +
     '<button type="button" class="pv-prev" aria-label="Previous photo">‹</button>' +
     '<button type="button" class="pv-next" aria-label="Next photo">›</button>';
   document.body.appendChild(view);
 
   var big = view.querySelector('img');
-  var caption = view.querySelector('figcaption');
   var at = 0;
   var opener = null;
   var afterLarge = null; // what to do once the large photo is closed
@@ -43,7 +42,6 @@
     var b = bubbles[at];
     big.src = b.getAttribute('data-src');
     big.alt = b.getAttribute('data-alt');
-    caption.textContent = label(at) + ': ' + b.getAttribute('data-alt');
   }
 
   function openLarge(i, from, then) {
@@ -138,7 +136,7 @@
     fig.setAttribute('aria-label', label(i));
     fig.innerHTML =
       '<button type="button" class="adv-close" aria-label="Close the photo">×</button>' +
-      '<a title="Show it large"><img alt=""></a><figcaption><strong></strong><span></span></figcaption>';
+      '<a title="Show it large"><img alt=""></a>';
     var link = fig.querySelector('a');
     link.href = b.getAttribute('data-src');
     var img = fig.querySelector('img');
@@ -146,8 +144,6 @@
     img.alt = b.getAttribute('data-alt');
     img.width = pw;
     img.height = ph;
-    fig.querySelector('strong').textContent = label(i);
-    fig.querySelector('figcaption span').textContent = b.getAttribute('data-alt');
 
     // As wide as the column and a little more, and no taller than the window leaves room for
     var col = b.parentNode.getBoundingClientRect();
@@ -160,7 +156,7 @@
     document.body.appendChild(fig);
     var h = fig.offsetHeight;
     if (h > room) {
-      var extra = h - (w - 14) * (ph / pw); // the caption and the padding
+      var extra = h - (w - 14) * (ph / pw); // the padding
       w = Math.max(150, Math.floor(((room - extra) * pw) / ph + 14));
       fig.style.width = w + 'px';
       h = fig.offsetHeight;

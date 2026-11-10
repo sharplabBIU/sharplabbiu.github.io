@@ -14,7 +14,7 @@ lab_photos:
   - { src: lab_4.jpg, w: 1400, h: 1050, alt: "Presenting a poster to visitors at a conference" }
   - { src: lab_5.jpg, w: 1400, h: 1330, alt: "Lab lunch outdoors with pizza" }
   - { src: lab_6.jpg, w: 1400, h: 1050, alt: "Explaining a poster at a conference" }
-dog_photos: # after the lab photos, as "Lab Mascot #1" and on, in golden bubbles
+dog_photos: # after the lab photos, as "Lab Mascot"
   - { src: dina_1.jpg, w: 900, h: 1200, alt: "Dina, a black curly-haired dog, sitting on the boardwalk at sunset" }
   - { src: dina_2.jpg, w: 901, h: 1200, alt: "Dina standing on her hind legs, holding paws with a lab member" }
   - { src: dina_3.jpg, w: 1600, h: 899, alt: "Dina stretched out between a couch and a bench" }
@@ -23,9 +23,10 @@ dog_photos: # after the lab photos, as "Lab Mascot #1" and on, in golden bubbles
 <!-- Names grouped by role, under a bar with the role's name: each core lab member with a small photo and their bio beside
      it (the photo in the bio itself is hidden here), then Lab Adventures, then collaborators and alumni as a list -->
 {% capture lab_adventures %}
-  <!-- Lab Adventures: a bubble for each photo, "Lab Adventure #1" and on, then "Lab Mascot #1" and on for Dina's, half down either side of the box (on windows
-       wide enough to have room there; otherwise in a row here, under the heading). Clicking a bubble pops it to show
-       its photo above it, and the photo opens large when clicked (assets/js/lab-adventures.js) -->
+  <!-- Lab Adventures: a bubble for each photo, "Lab Adventure" (and "Lab Mascot" for Dina's), each a slightly different
+       shade of blue, half down either side of the box (on windows wide enough to have room there; otherwise in a row
+       here, under the heading). Clicking a bubble pops it to show its photo above it, and the photo opens large when
+       clicked (assets/js/lab-adventures.js) -->
   <section class="lab-adventures" aria-labelledby="lab-adventures">
     <h2 class="section-bar" id="lab-adventures">Lab Adventures</h2>
     {% assign photos = page.lab_photos | concat: page.dog_photos %}
@@ -37,8 +38,8 @@ dog_photos: # after the lab photos, as "Lab Mascot #1" and on, in golden bubbles
           {% for photo in photos offset: skip limit: take %}
             {% assign n = forloop.index0 | plus: skip | plus: 1 %}
             {% if n > page.lab_photos.size %}{% assign word = 'Lab Mascot' %}{% assign k = n | minus: page.lab_photos.size %}{% else %}{% assign word = 'Lab Adventure' %}{% assign k = n %}{% endif %}
-            <button type="button" class="adv-bubble{% if n > page.lab_photos.size %} adv-mascot{% endif %}" data-src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" data-w="{{ photo.w }}" data-h="{{ photo.h }}" data-alt="{{ photo.alt | escape }}" data-label="{{ word }} #{{ k }}" style="animation-delay: -{{ n | times: 1700 }}ms" aria-label="{{ word }} #{{ k }}: show the photo">
-              <span class="adv-skin"><span class="adv-word">{{ word }}</span><span class="adv-num">#{{ k }}</span></span>
+            <button type="button" class="adv-bubble adv-shade-{{ n | modulo: 5 }}" data-src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" data-w="{{ photo.w }}" data-h="{{ photo.h }}" data-alt="{{ photo.alt | escape }}" data-label="{{ word }} {{ k }}" aria-label="Show {{ word }} photo {{ k }}">
+              <span class="adv-skin"><span class="adv-word">{{ word }}</span></span>
             </button>
           {% endfor %}
         </div>
