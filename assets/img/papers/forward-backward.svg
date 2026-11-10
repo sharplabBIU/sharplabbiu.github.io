@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180">
+  <!-- Humans adaptively deploy forward and backward prediction: across a network of states, prediction sweeps forward
+       from the start (blue ripples and arrows) and backward from the goal (coral), meeting in the middle (the green
+       burst) -->
+  <defs>
+    <linearGradient id="fb-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a2466" />
+      <stop offset="1" stop-color="#0a7aa6" />
+    </linearGradient>
+    <radialGradient id="fb-burst">
+      <stop offset="0" stop-color="#e9fff2" />
+      <stop offset=".4" stop-color="#3cf08c" />
+      <stop offset="1" stop-color="#3cf08c" stop-opacity="0" />
+    </radialGradient>
+    <filter id="fb-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <marker id="fb-blue" viewBox="0 0 10 10" refX="7" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M1 1 L9 5 L1 9 Z" fill="#7fd0ff" />
+    </marker>
+    <marker id="fb-coral" viewBox="0 0 10 10" refX="7" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M1 1 L9 5 L1 9 Z" fill="#ff8f8f" />
+    </marker>
+    <path id="fb-star" d="M0 -11 L2.7 -3.72 L10.46 -3.4 L4.37 1.42 L6.47 8.9 L0 4.6 L-6.47 8.9 L-4.37 1.42 L-10.46 -3.4 L-2.7 -3.72 Z" />
+  </defs>
+  <rect width="320" height="180" fill="url(#fb-bg)" />
+
+  <!-- Ripples: forward from the start, backward from the goal -->
+  <g fill="none" stroke-width="1.6">
+    <circle cx="36" cy="90" r="30" stroke="#7fd0ff">
+      <animate attributeName="r" values="14;120" dur="3.2s" repeatCount="indefinite" />
+      <animate attributeName="stroke-opacity" values=".8;0" dur="3.2s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="36" cy="90" r="30" stroke="#7fd0ff">
+      <animate attributeName="r" values="14;120" dur="3.2s" begin="-1.6s" repeatCount="indefinite" />
+      <animate attributeName="stroke-opacity" values=".8;0" dur="3.2s" begin="-1.6s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="284" cy="90" r="30" stroke="#ff8f8f">
+      <animate attributeName="r" values="14;120" dur="3.2s" begin="-.8s" repeatCount="indefinite" />
+      <animate attributeName="stroke-opacity" values=".8;0" dur="3.2s" begin="-.8s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="284" cy="90" r="30" stroke="#ff8f8f">
+      <animate attributeName="r" values="14;120" dur="3.2s" begin="-2.4s" repeatCount="indefinite" />
+      <animate attributeName="stroke-opacity" values=".8;0" dur="3.2s" begin="-2.4s" repeatCount="indefinite" />
+    </circle>
+  </g>
+
+  <!-- The network of states: columns at x 36, 98, 160, 222, 284 -->
+  <g stroke="#ffffff" stroke-opacity=".28" stroke-width="1.4" fill="none">
+    <path d="M36 90 L98 40 M36 90 L98 90 M36 90 L98 140" />
+    <path d="M98 40 L160 40 M98 40 L160 90 M98 90 L160 40 M98 90 L160 140 M98 140 L160 90 M98 140 L160 140" />
+    <path d="M160 40 L222 40 M160 40 L222 140 M160 90 L222 40 M160 90 L222 140 M160 140 L222 90 M160 140 L222 140" />
+    <path d="M222 40 L284 90 M222 90 L284 90 M222 140 L284 90" />
+  </g>
+  <!-- Forward, from the start -->
+  <g fill="none" stroke="#7fd0ff" stroke-width="3.4" stroke-linecap="round" filter="url(#fb-glow)">
+    <path d="M44 84 L90 47" marker-end="url(#fb-blue)" />
+    <path d="M106 47 L152 83" marker-end="url(#fb-blue)" />
+  </g>
+  <!-- Backward, from the goal -->
+  <g fill="none" stroke="#ff8f8f" stroke-width="3.4" stroke-linecap="round" filter="url(#fb-glow)">
+    <path d="M276 96 L230 133" marker-end="url(#fb-coral)" />
+    <path d="M214 136 L168 94" marker-end="url(#fb-coral)" />
+  </g>
+
+  <!-- States -->
+  <g stroke="#ffffff" stroke-width="2">
+    <circle cx="98" cy="40" r="8" fill="#1e90ff" />
+    <circle cx="98" cy="90" r="7" fill="#0f3c7a" stroke-opacity=".7" />
+    <circle cx="98" cy="140" r="7" fill="#0f3c7a" stroke-opacity=".7" />
+    <circle cx="160" cy="40" r="7" fill="#0f3c7a" stroke-opacity=".7" />
+    <circle cx="160" cy="140" r="7" fill="#0f3c7a" stroke-opacity=".7" />
+    <circle cx="222" cy="40" r="7" fill="#0f3c7a" stroke-opacity=".7" />
+    <circle cx="222" cy="90" r="7" fill="#0f3c7a" stroke-opacity=".7" />
+    <circle cx="222" cy="140" r="8" fill="#ff6f6f" />
+  </g>
+  <!-- Where they meet -->
+  <circle cx="160" cy="90" r="22" fill="url(#fb-burst)">
+    <animate attributeName="r" values="18;26;18" dur="2s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="160" cy="90" r="9" fill="#3cf08c" stroke="#ffffff" stroke-width="2.4" />
+
+  <!-- The start, and the goal -->
+  <circle cx="36" cy="90" r="12" fill="#ffffff" stroke="#1e90ff" stroke-width="3.4" />
+  <circle cx="36" cy="90" r="4.5" fill="#1e90ff" />
+  <circle cx="284" cy="90" r="15" fill="#ffffff" fill-opacity=".14" stroke="#ff8f8f" stroke-width="2" />
+  <use href="#fb-star" transform="translate(284 91) scale(1.2)" fill="#ffc94d" stroke="#fff4c2" stroke-width="1" filter="url(#fb-glow)" />
+</svg>

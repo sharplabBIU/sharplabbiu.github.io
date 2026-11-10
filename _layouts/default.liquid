@@ -73,7 +73,9 @@
     {% include scripts/imageLayouts.liquid %}
     <!-- The page's content scrolls inside its box; the wheel and keys scroll it from anywhere on the page -->
     <script src="{{ '/assets/js/content-scroll.js' | relative_url | bust_file_cache }}" defer></script>
-    <!-- Glass panes either side of the text column, with figures in marker -->
-    <script src="{{ '/assets/js/glass-panes.js' | relative_url | bust_file_cache }}" defer></script>
+    {% if page.layout == 'about' %}
+      <!-- On the home page only: a whiteboard either side of the box, with drawings of what we are working on -->
+      <script src="{{ '/assets/js/glass-panes.js' | relative_url | bust_file_cache }}" defer></script>
+    {% endif %}
   </body>
 </html>

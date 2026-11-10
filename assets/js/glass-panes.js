@@ -1118,10 +1118,8 @@
   function fit() {
     var card = document.querySelector('.main-content > .content-card');
     if (!card) return;
-    // (on the papers page, the box at either end of the two side by side)
-    var ends = card.classList.contains('content-split') ? card.querySelectorAll('.paper-box') : [card];
-    var first = ends[0] || card;
-    var last = ends[ends.length - 1] || card;
+    var first = card;
+    var last = card;
     var lrect = first.getBoundingClientRect();
     var rrect = last.getBoundingClientRect();
     var W = document.documentElement.clientWidth;

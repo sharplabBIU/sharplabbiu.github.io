@@ -6,13 +6,13 @@ nav: true
 nav_order: 4
 ---
 
-<!-- Research areas: the title in a bar, then a diagram + equation beside the summary -->
+<!-- Research areas: the title in a bar, then the project's emblem (assets/img/projects) beside the summary -->
 <div class="research-areas">
   <div class="research-area" id="planning-efficiency">
     <h2 class="research-title section-bar">Planning Efficiency</h2>
     <div class="research-intro">
       <div class="research-diagram">
-        {% include diagrams/planning-efficiency.svg %}
+        <img src="{{ '/assets/img/projects/planning-efficiency.svg' | relative_url }}" width="200" height="200" alt="Planning efficiency: a decision tree inside a clock face, planned forward from the start and backward from the goal, with an hourglass">
       </div>
       <div class="research-text">
         <p>
@@ -31,7 +31,7 @@ nav_order: 4
     <h2 class="research-title section-bar">Offline Learning</h2>
     <div class="research-intro">
       <div class="research-diagram">
-        {% include diagrams/offline-learning.svg %}
+        <img src="{{ '/assets/img/projects/offline-learning.svg' | relative_url }}" width="200" height="200" alt="Offline learning: under a crescent moon, the path to a star is replayed backward, lighting up each step with value">
       </div>
       <div class="research-text">
         <p>
@@ -50,7 +50,7 @@ nav_order: 4
     <h2 class="research-title section-bar">Task (Mis)construal</h2>
     <div class="research-intro">
       <div class="research-diagram">
-        {% include diagrams/task-representation.svg %}
+        <img src="{{ '/assets/img/projects/task-misconstrual.svg' | relative_url }}" width="200" height="200" alt="Task (mis)construal: a grid world in a viewfinder, the plan going round the wall it kept and running into an obstacle it left out">
       </div>
       <div class="research-text">
         <p>

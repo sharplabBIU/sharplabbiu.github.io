@@ -14,39 +14,36 @@ lab_photos:
   - { src: lab_4.jpg, w: 1400, h: 1050, alt: "Presenting a poster to visitors at a conference" }
   - { src: lab_5.jpg, w: 1400, h: 1330, alt: "Lab lunch outdoors with pizza" }
   - { src: lab_6.jpg, w: 1400, h: 1050, alt: "Explaining a poster at a conference" }
-dog_photos:
+dog_photos: # after the lab photos, as more Lab Adventures
   - { src: dina_1.jpg, w: 900, h: 1200, alt: "Dina, a black curly-haired dog, sitting on the boardwalk at sunset" }
   - { src: dina_2.jpg, w: 901, h: 1200, alt: "Dina standing on her hind legs, holding paws with a lab member" }
   - { src: dina_3.jpg, w: 1600, h: 899, alt: "Dina stretched out between a couch and a bench" }
 ---
 
 <!-- Names grouped by role, under a bar with the role's name: each core lab member with a small photo and their bio beside
-     it (the photo in the bio itself is hidden here), then the Lab Adventures photo collage, then collaborators and alumni
-     as a list -->
+     it (the photo in the bio itself is hidden here), then Lab Adventures, then collaborators and alumni as a list -->
 {% capture lab_adventures %}
+  <!-- Lab Adventures: a bubble for each photo, "Lab Adventure #1" and on, half down either side of the box (on windows
+       wide enough to have room there; otherwise in a row here, under the heading). Clicking a bubble pops it to show
+       its photo above it, and the photo opens large when clicked (assets/js/lab-adventures.js) -->
   <section class="lab-adventures" aria-labelledby="lab-adventures">
     <h2 class="section-bar" id="lab-adventures">Lab Adventures</h2>
-    <!-- Small photos, all one height, each a link to the full photo, which opens large over the page -->
-    <div class="adventures-row">
-      {% for photo in page.lab_photos %}
-        {% assign src = '/assets/img/lab/' | append: photo.src | relative_url %}
-        <a class="adventure-photo" href="{{ src }}">
-          <img src="{{ src }}" width="{{ photo.w }}" height="{{ photo.h }}" alt="{{ photo.alt }}" loading="lazy">
-        </a>
+    {% assign photos = page.lab_photos | concat: page.dog_photos %}
+    {% assign half = photos.size | plus: 1 | divided_by: 2 %}
+    <div class="adventure-bubbles">
+      {% for side in (1..2) %}
+        {% if side == 1 %}{% assign skip = 0 %}{% assign take = half %}{% else %}{% assign skip = half %}{% assign take = photos.size %}{% endif %}
+        <div class="side-col {% if side == 1 %}side-left{% else %}side-right{% endif %} adventure-col">
+          {% for photo in photos offset: skip limit: take %}
+            {% assign n = forloop.index0 | plus: skip | plus: 1 %}
+            <button type="button" class="adv-bubble" data-src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" data-w="{{ photo.w }}" data-h="{{ photo.h }}" data-alt="{{ photo.alt | escape }}" style="--k: {{ n }}" aria-label="Lab Adventure #{{ n }}: show the photo">
+              <span class="adv-word">Lab Adventure</span><span class="adv-num">#{{ n }}</span>
+            </button>
+          {% endfor %}
+        </div>
       {% endfor %}
     </div>
-    <figure class="adventures-dog">
-      <div class="adventures-row">
-        {% for photo in page.dog_photos %}
-          {% assign src = '/assets/img/lab/' | append: photo.src | relative_url %}
-          <a class="adventure-photo" href="{{ src }}">
-            <img src="{{ src }}" width="{{ photo.w }}" height="{{ photo.h }}" alt="{{ photo.alt }}" loading="lazy">
-          </a>
-        {% endfor %}
-      </div>
-      <figcaption>Our official lab dog, Dina!</figcaption>
-    </figure>
-    <script src="{{ '/assets/js/photo-viewer.js' | relative_url | bust_file_cache }}" defer></script>
+    <script src="{{ '/assets/js/lab-adventures.js' | relative_url | bust_file_cache }}" defer></script>
   </section>
 {% endcapture %}
 <div class="team">

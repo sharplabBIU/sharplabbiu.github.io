@@ -7,11 +7,23 @@
   if (!card) return;
   var boxes = card.classList.contains('content-split') ? [].slice.call(card.querySelectorAll('.paper-box')) : [card];
   if (!boxes.length) return;
+  // (not the columns either side of the box, though some are inside it: they stay put, and the wheel over them
+  // scrolls the box, as it does anywhere else beside it)
   function inBox(t) {
+    if (t.closest && t.closest('.side-col')) return false;
     return boxes.some(function (b) {
       return b.contains(t);
     });
   }
+  [].forEach.call(document.querySelectorAll('.side-col'), function (col) {
+    col.addEventListener(
+      'wheel',
+      function (e) {
+        if (!e.ctrlKey) e.preventDefault(); // (the box is scrolled below, and only there)
+      },
+      { passive: false }
+    );
+  });
   // The box nearest the pointer, across the page
   function nearest(x) {
     var best = boxes[0];

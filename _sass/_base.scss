@@ -659,8 +659,8 @@ footer.fixed-bottom {
   }
 }
 
-// Team: each role on the left with its members to its right (roles in bold). Core lab members each have a small
-// photo with their name and bio beside it; collaborators and alumni are a list in smaller type, set apart below
+// Team: each role's name in a bar above its members. Core lab members each have a small photo with their name and bio
+// beside it; collaborators and alumni are a list in smaller type, set apart below
 
 .team {
   // Each role's name in a bar above its members
@@ -740,53 +740,10 @@ footer.fixed-bottom {
     }
   }
 
-  // Lab Adventures: the photo collage between the core team and the collaborators, across both columns
+  // Lab Adventures, between the core team and the collaborators: a row of bubbles under the heading here, on windows
+  // too narrow for them to go either side of the box (see "Lab Adventures" below)
   .lab-adventures {
     margin: 0 0 3.5rem;
-
-    h2 {
-      margin: 0 0 1.25rem;
-      font-size: 1.7rem;
-      font-weight: 700;
-    }
-
-    // Small photos, all one height, in centred rows; each opens large when clicked (assets/js/photo-viewer.js)
-    .adventures-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .adventure-photo {
-      display: block;
-      flex: none;
-      overflow: hidden;
-      border-radius: 4px;
-      cursor: zoom-in;
-
-      img {
-        display: block;
-        width: auto;
-        height: 128px;
-        transition: transform 0.2s ease;
-      }
-
-      &:hover img,
-      &:focus-visible img {
-        transform: scale(1.05);
-      }
-    }
-
-    .adventures-dog {
-      margin: 8px 0 0;
-
-      figcaption {
-        margin-top: 0.4rem;
-        font-style: italic;
-        text-align: center;
-      }
-    }
   }
 
   h2.team-category.team-minor,
@@ -799,14 +756,8 @@ footer.fixed-bottom {
   }
 }
 
-@media (max-width: 575.98px) {
-  .team .lab-adventures .adventure-photo img {
-    height: 96px;
-  }
-}
-
-// Photo viewer (assets/js/photo-viewer.js): a photo large over the darkened page, with its caption under it, a close
-// button and arrows to the previous and next photos
+// Photo viewer (assets/js/lab-adventures.js): a Lab Adventures photo large over the darkened page, with its caption
+// under it, a close button and arrows to the previous and next photos
 .photo-viewer {
   position: fixed;
   top: 0;
@@ -912,7 +863,7 @@ body {
   }
 }
 
-// Projects page: each research area has its diagram + equation beside the title and summary
+// Projects page: each research area has its emblem beside its summary, under its title
 .research-areas {
   .research-area {
     margin-top: 0;
@@ -930,16 +881,15 @@ body {
     gap: 1.5rem;
   }
 
+  // Each project's emblem: a round, coloured badge (assets/img/projects)
   .research-diagram {
-    flex: 0 0 150px;
-    padding: 8px;
-    border: 2px solid $outline-color; // a white outline around each graphic, drawn in white on the dark panel
+    flex: 0 0 190px;
 
-    svg {
+    img {
       display: block;
       width: 100%;
       height: auto;
-      font-weight: 500;
+      filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.45));
     }
   }
 
@@ -1788,9 +1738,9 @@ footer > .container {
 
 // Page and content box
 // Below the dark navy header bar the page is Bluesky's blue, with the text on a dark navy panel. Each page's
-// text sits in a column $text-column-width wide, centred in the window, with sheets of paper with drawings on them in the open space
-// either side of it (assets/js/glass-panes.js: two canvases fixed below the header, over the content box's
-// side padding, which they leave clear of the text, and under the footer; they respond to clicks)
+// text sits in a column $text-column-width wide, centred in the window. On the home page, a whiteboard with drawings on
+// it goes in the open space either side of it (assets/js/glass-panes.js: two canvases fixed below the header, beside the
+// box; they respond to clicks)
 body {
   background-color: $page-color;
 }
@@ -2053,8 +2003,8 @@ $box-pad-side-phone: 0.65rem;
 }
 
 // The page's content box: centred, a little wider than the text column, from just below the header to just above the
-// bottom of the window (the same space of the page's blue below it as above it). The whiteboards go in the open space
-// either side of it
+// bottom of the window (the same space of the page's blue below it as above it). The open space either side of it has
+// the whiteboards on the home page, and the columns below on the papers and team pages
 .content-card {
   // All text inside the box is white, links included (the site's colour variables are re-pointed here)
   --global-text-color: #{$card-text-color};
@@ -2191,6 +2141,431 @@ $box-pad-side-phone: 0.65rem;
 
   .paper-box > .section-bar:first-child {
     margin-top: -$box-pad-top-phone;
+  }
+}
+
+// The open page either side of the content box. On the home page it has the whiteboards (assets/js/glass-panes.js); on
+// the papers page, our newest papers; on the team page, the Lab Adventures bubbles; elsewhere it is left empty. A
+// column down either side, from the top of the box to its bottom, in the middle of the space there; only on windows
+// with room for one ($side-cols), and otherwise the papers are left out and the bubbles go in the box
+$side-cols: unquote("(min-width: 1240px) and (min-height: 560px)");
+
+.side-col.side-only {
+  display: none;
+}
+
+@media #{$side-cols} {
+  .side-col {
+    --side: calc((100vw - 1000px) / 2); // the space either side of the box
+    --col: min(calc(var(--side) - 2.5rem), 250px); // the column in it
+    position: fixed;
+    top: unquote("calc(#{$header-height} + 0.9rem)");
+    bottom: 0.9rem;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1rem;
+    width: var(--col);
+    margin: 0;
+
+    &.side-only {
+      display: flex;
+    }
+
+    &.side-left {
+      left: unquote("calc((var(--side) - var(--col)) / 2)");
+    }
+
+    &.side-right {
+      right: unquote("calc((var(--side) - var(--col)) / 2)");
+    }
+  }
+}
+
+// The papers page: each of our newest papers as a card, with a picture of its core theme, its journal in a band of colour
+// under it (with the sign of a link) and its title; the whole card links to the paper, in a new tab
+.paper-feature {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  background-color: $card-color;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+  color: $white-color;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: unquote("16 / 9");
+    object-fit: cover;
+  }
+
+  .pf-journal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    padding: 0.4rem 0.65rem;
+    background-color: var(--pf-accent);
+    color: #0f1726;
+    font-size: 0.86rem;
+    font-weight: 800;
+    line-height: 1.2;
+
+    i {
+      flex: none;
+      font-size: 0.72rem;
+    }
+  }
+
+  .pf-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0.45rem 0.65rem 0;
+    font-size: 0.78rem;
+    line-height: 1.3;
+  }
+
+  .pf-note {
+    margin: 0.2rem 0.65rem 0.5rem;
+    font-size: 0.7rem;
+    opacity: 0.7;
+  }
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-3px);
+    border-color: var(--pf-accent);
+    box-shadow:
+      0 14px 30px rgba(0, 0, 0, 0.38),
+      0 0 0 1px var(--pf-accent);
+    color: $white-color;
+    text-decoration: none;
+  }
+}
+
+// On shorter windows, the cards leave out the titles to fit
+@media (max-height: 820px) {
+  .paper-feature .pf-title {
+    display: none;
+  }
+}
+
+// Lab Adventures (the team page): a soap bubble for each photo, "Lab Adventure #1" and on, drifting gently. Either side
+// of the box they zigzag down a column; in the box (narrower windows) they are a row. A click makes the bubble swell and
+// pop (it bursts into droplets) and the photo springs out above where it was; closing the photo blows the bubble again
+// (assets/js/lab-adventures.js)
+.adventure-bubbles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem 1.4rem;
+  padding: 0.5rem 0;
+
+  .adventure-col {
+    display: contents;
+  }
+}
+
+.adv-bubble {
+  --size: 92px;
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: var(--size);
+  height: var(--size);
+  padding: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.9) 0 5%, rgba(255, 255, 255, 0) 13%),
+    radial-gradient(circle at 72% 80%, rgba(255, 255, 255, 0.35) 0 4%, rgba(255, 255, 255, 0) 11%),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 255, 255, 0.04) 52%,
+      rgba(140, 220, 255, 0.3) 70%,
+      rgba(255, 140, 220, 0.38) 85%,
+      rgba(255, 236, 140, 0.45) 100%
+    );
+  box-shadow:
+    inset 0 0 14px rgba(255, 255, 255, 0.3),
+    inset -8px -10px 20px rgba(255, 110, 200, 0.22),
+    inset 8px 6px 18px rgba(110, 220, 255, 0.25),
+    0 8px 20px rgba(0, 20, 60, 0.25);
+  color: $white-color;
+  text-shadow: 0 1px 3px rgba(0, 10, 50, 0.65);
+  cursor: pointer;
+  animation: adv-drift 6.5s ease-in-out infinite;
+  animation-delay: unquote("calc(var(--k) * -1.7s)");
+  transition: scale 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    scale: 1.07;
+    outline: none;
+    box-shadow:
+      inset 0 0 16px rgba(255, 255, 255, 0.4),
+      inset -8px -10px 20px rgba(255, 110, 200, 0.3),
+      inset 8px 6px 18px rgba(110, 220, 255, 0.32),
+      0 0 0 3px rgba(255, 255, 255, 0.35),
+      0 10px 24px rgba(0, 20, 60, 0.3);
+  }
+
+  .adv-word {
+    max-width: 70%;
+    font-size: 0.66rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+
+  .adv-num {
+    font-size: 1.45rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  // Swelling, then bursting (still drifting)
+  &.is-popping {
+    animation:
+      adv-drift 6.5s ease-in-out infinite,
+      adv-pop 0.3s ease-in forwards;
+    animation-delay: unquote("calc(var(--k) * -1.7s), 0s");
+    pointer-events: none;
+  }
+
+  // Gone while its photo is out
+  &.is-popped {
+    animation: none;
+    visibility: hidden;
+  }
+
+  // Blown again
+  &.is-blowing {
+    animation:
+      adv-drift 6.5s ease-in-out infinite,
+      adv-blow 0.5s cubic-bezier(0.3, 1.6, 0.5, 1);
+    animation-delay: unquote("calc(var(--k) * -1.7s), 0s");
+  }
+}
+
+@media #{$side-cols} {
+  .lab-adventures {
+    margin: 0;
+
+    > .section-bar {
+      display: none;
+    }
+  }
+
+  .adventure-bubbles {
+    display: block;
+    padding: 0;
+  }
+
+  .adventure-bubbles .side-col.adventure-col {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 0;
+
+    .adv-bubble {
+      --size: clamp(76px, min(calc((100vh - #{$header-height}) / 6.4), calc(var(--col) * 0.62)), 112px);
+    }
+
+    // zigzagging down the column, toward the box and away from it in turn
+    .adv-bubble:nth-child(odd) {
+      align-self: flex-start;
+    }
+
+    .adv-bubble:nth-child(even) {
+      align-self: flex-end;
+    }
+
+    .adv-bubble:nth-child(3n + 2) {
+      --size: clamp(70px, min(calc((100vh - #{$header-height}) / 7), calc(var(--col) * 0.56)), 100px);
+    }
+
+    .adv-word {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+@keyframes adv-drift {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  30% {
+    translate: 3px -7px;
+  }
+  65% {
+    translate: -3px 5px;
+  }
+}
+
+@keyframes adv-pop {
+  0% {
+    scale: 1;
+    opacity: 1;
+  }
+  70% {
+    scale: 1.3;
+    opacity: 1;
+  }
+  100% {
+    scale: 1.55;
+    opacity: 0;
+  }
+}
+
+@keyframes adv-blow {
+  0% {
+    scale: 0.2;
+    opacity: 0;
+  }
+  100% {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+// The droplets a bubble bursts into
+.adv-drop {
+  position: fixed;
+  z-index: 1030;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff, rgba(170, 230, 255, 0.8) 60%, rgba(255, 160, 220, 0.6));
+  pointer-events: none;
+  animation: adv-drop 0.55s ease-out forwards;
+}
+
+@keyframes adv-drop {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(0.3);
+    opacity: 0;
+  }
+}
+
+// The photo out of a bubble, above where the bubble was: it springs out from there; a click on it opens it large
+.adv-reveal {
+  position: fixed;
+  z-index: 1030;
+  margin: 0;
+  padding: 7px 7px 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  background-color: $card-color;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  color: $white-color;
+  animation: adv-reveal 0.45s cubic-bezier(0.25, 1.5, 0.45, 1);
+
+  &[hidden] {
+    display: none;
+  }
+
+  &.is-closing {
+    animation: adv-hide 0.22s ease-in forwards;
+  }
+
+  a {
+    display: block;
+    cursor: zoom-in;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 9px;
+  }
+
+  figcaption {
+    padding: 0.45rem 0.25rem 0.55rem;
+    font-size: 0.8rem;
+    line-height: 1.3;
+
+    strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+  }
+
+  .adv-close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    background-color: $card-color;
+    color: $white-color;
+    font-size: 1.1rem;
+    line-height: 26px;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      background-color: lighten($card-color, 10%);
+    }
+  }
+}
+
+@keyframes adv-reveal {
+  0% {
+    transform: scale(0.15);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes adv-hide {
+  100% {
+    transform: scale(0.15);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adv-bubble,
+  .adv-bubble.is-blowing,
+  .adv-reveal {
+    animation: none;
+  }
+
+  .adv-bubble.is-popping {
+    animation-duration: 0.01s;
   }
 }
 

@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Offline Learning: at rest (the moon and the night sky), the path just walked to a reward (the star) is replayed
+       backward (the comet running back along it, and the arc over it), and each replayed step lights up the state it
+       leads back to with value: brightest next to the reward -->
+  <defs>
+    <radialGradient id="ol-bg" cx="62%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#4b2a8c" />
+      <stop offset=".5" stop-color="#22175a" />
+      <stop offset="1" stop-color="#0b0a26" />
+    </radialGradient>
+    <linearGradient id="ol-ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b48cff" />
+      <stop offset=".5" stop-color="#ff7ab8" />
+      <stop offset="1" stop-color="#ffc94d" />
+    </linearGradient>
+    <linearGradient id="ol-moon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff6c9" />
+      <stop offset="1" stop-color="#ffc94d" />
+    </linearGradient>
+    <linearGradient id="ol-arc" x1="1" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#ffc94d" />
+      <stop offset=".5" stop-color="#ff7ab8" />
+      <stop offset="1" stop-color="#b48cff" />
+    </linearGradient>
+    <radialGradient id="ol-comet">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset=".35" stop-color="#ffe17a" />
+      <stop offset="1" stop-color="#ff7ab8" stop-opacity="0" />
+    </radialGradient>
+    <mask id="ol-crescent">
+      <rect width="200" height="200" fill="#ffffff" />
+      <circle cx="147" cy="44" r="17" fill="#000000" />
+    </mask>
+    <filter id="ol-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2.4" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <marker id="ol-head" viewBox="0 0 10 10" refX="6" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#c9a8ff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+    </marker>
+    <path id="ol-star" d="M0 -11 L2.7 -3.72 L10.46 -3.4 L4.37 1.42 L6.47 8.9 L0 4.6 L-6.47 8.9 L-4.37 1.42 L-10.46 -3.4 L-2.7 -3.72 Z" />
+    <path id="ol-spark" d="M0 -5 C0.6 -1 1 -0.6 5 0 C1 0.6 0.6 1 0 5 C-0.6 1 -1 0.6 -5 0 C-1 -0.6 -0.6 -1 0 -5 Z" />
+    <!-- the path walked, and the same path backward, for the replay -->
+    <path id="ol-walk" d="M40 150 C52 128 58 120 70 120 C84 120 88 138 102 138 C116 138 118 108 132 106 C144 104 150 118 158 126" />
+    <path id="ol-back" d="M158 126 C150 118 144 104 132 106 C118 108 116 138 102 138 C88 138 84 120 70 120 C58 120 52 128 40 150" />
+  </defs>
+
+  <circle cx="100" cy="100" r="97" fill="url(#ol-bg)" />
+  <circle cx="100" cy="100" r="90" fill="none" stroke="url(#ol-ring)" stroke-width="5" />
+  <circle cx="100" cy="100" r="84" fill="none" stroke="#ffffff" stroke-opacity=".12" stroke-width="1" />
+
+  <!-- The night sky -->
+  <g fill="#ffffff">
+    <circle cx="52" cy="52" r="1.3"><animate attributeName="opacity" values="1;.2;1" dur="2.6s" repeatCount="indefinite" /></circle>
+    <circle cx="76" cy="36" r="1"><animate attributeName="opacity" values=".3;1;.3" dur="3.1s" repeatCount="indefinite" /></circle>
+    <circle cx="36" cy="88" r="1.1"><animate attributeName="opacity" values="1;.3;1" dur="2.2s" repeatCount="indefinite" /></circle>
+    <circle cx="166" cy="82" r="1.2"><animate attributeName="opacity" values=".4;1;.4" dur="2.8s" repeatCount="indefinite" /></circle>
+    <circle cx="60" cy="80" r=".9" />
+    <circle cx="112" cy="30" r="1" />
+    <circle cx="170" cy="112" r=".9" />
+    <circle cx="126" cy="168" r="1" />
+    <circle cx="72" cy="168" r=".9" />
+  </g>
+  <use href="#ol-spark" transform="translate(98 48) scale(.7)" fill="#ffe17a" />
+  <use href="#ol-spark" transform="translate(44 120) scale(.55)" fill="#c9a8ff" />
+  <use href="#ol-spark" transform="translate(172 140) scale(.6)" fill="#ff9fd0" />
+
+  <!-- The moon, and sleep -->
+  <circle cx="136" cy="52" r="20" fill="url(#ol-moon)" mask="url(#ol-crescent)" filter="url(#ol-glow)" />
+  <g fill="#d9c6ff" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-weight="700">
+    <text x="88" y="78" font-size="10" opacity=".7">z</text>
+    <text x="96" y="69" font-size="13" opacity=".85">z</text>
+    <text x="106" y="58" font-size="16">z</text>
+  </g>
+
+  <!-- Replay runs backward over the path: from the reward back to the start -->
+  <path d="M156 100 C140 70 72 74 48 124" fill="none" stroke="url(#ol-arc)" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 5" marker-end="url(#ol-head)" opacity=".9">
+    <animate attributeName="stroke-dashoffset" values="0;-22" dur="1.4s" repeatCount="indefinite" />
+  </path>
+
+  <!-- The path walked -->
+  <use href="#ol-walk" fill="none" stroke="#ffffff" stroke-opacity=".35" stroke-width="7" stroke-linecap="round" />
+  <use href="#ol-walk" fill="none" stroke="#ffffff" stroke-opacity=".75" stroke-width="1.6" stroke-dasharray="3 4" stroke-linecap="round" />
+
+  <!-- The comet: one replayed step after another, backward -->
+  <g filter="url(#ol-glow)">
+    <circle r="9" fill="url(#ol-comet)">
+      <animateMotion dur="4s" repeatCount="indefinite" rotate="auto">
+        <mpath href="#ol-back" />
+      </animateMotion>
+    </circle>
+  </g>
+
+  <!-- The states, filled with value: most next to the reward -->
+  <g stroke="#ffffff" stroke-width="2" filter="url(#ol-glow)">
+    <circle cx="40" cy="150" r="8" fill="#5cc2ff" />
+    <circle cx="70" cy="120" r="8.5" fill="#9b7bff" />
+    <circle cx="102" cy="138" r="9" fill="#ff7ab8" />
+    <circle cx="132" cy="106" r="9.5" fill="#ff9a5c" />
+  </g>
+  <!-- The reward -->
+  <use href="#ol-star" transform="translate(158 127) scale(1.35)" fill="#ffc94d" stroke="#fff4c2" stroke-width="1" filter="url(#ol-glow)" />
+</svg>
