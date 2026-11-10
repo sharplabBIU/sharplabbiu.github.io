@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180">
+  <!-- Anxiety involves altered planning: from where one stands (left), planning fans out into far more branches than
+       needed, with threats (warning signs) looming on some; a loop at the start goes back to re-check a choice already
+       made; the racing pulse -->
+  <defs>
+    <linearGradient id="ap-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a1c5c" />
+      <stop offset=".6" stop-color="#8e2f4f" />
+      <stop offset="1" stop-color="#d0562e" />
+    </linearGradient>
+    <linearGradient id="ap-warn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe17a" />
+      <stop offset="1" stop-color="#ffab2e" />
+    </linearGradient>
+    <filter id="ap-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2" result="b" />
+      <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+    <marker id="ap-head" viewBox="0 0 10 10" refX="6" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M1 1 L9 5 L1 9 Z" fill="#7fd0ff" />
+    </marker>
+    <g id="ap-warn-sign">
+      <path d="M0 -9 L9 7 H-9 Z" fill="url(#ap-warn)" stroke="#fff4c2" stroke-width="1" stroke-linejoin="round" />
+      <path d="M0 -3 V2" stroke="#5a1e1e" stroke-width="2" stroke-linecap="round" />
+      <circle cx="0" cy="4.6" r="1.1" fill="#5a1e1e" />
+    </g>
+  </defs>
+  <rect width="320" height="180" fill="url(#ap-bg)" />
+  <g fill="#ffffff" opacity=".45"><circle cx="300" cy="20" r="1" /><circle cx="20" cy="164" r="1.2" /><circle cx="170" cy="172" r="1" /></g>
+
+  <!-- The tree of plans, fanning out: first, second and third steps -->
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#ffffff" stroke-opacity=".75" stroke-width="2.2">
+      <path d="M52 90 C80 90 84 46 112 46" /><path d="M52 90 H112" /><path d="M52 90 C80 90 84 134 112 134" />
+    </g>
+    <g stroke="#ffffff" stroke-opacity=".5" stroke-width="1.6">
+      <path d="M112 46 C140 46 144 22 172 22" /><path d="M112 46 H172" /><path d="M112 46 C140 46 144 70 172 70" />
+      <path d="M112 90 C140 90 144 78 172 78" /><path d="M112 90 C140 90 144 102 172 102" />
+      <path d="M112 134 C140 134 144 110 172 110" /><path d="M112 134 H172" /><path d="M112 134 C140 134 144 158 172 158" />
+    </g>
+    <g stroke="#ffffff" stroke-opacity=".3" stroke-width="1.2">
+      <path d="M172 22 C196 22 200 14 226 14" /><path d="M172 22 C196 22 200 30 226 30" />
+      <path d="M172 46 C196 46 200 38 226 38" /><path d="M172 46 C196 46 200 54 226 54" />
+      <path d="M172 70 C196 70 200 62 226 62" /><path d="M172 78 C196 78 200 86 226 86" />
+      <path d="M172 102 C196 102 200 94 226 94" /><path d="M172 110 C196 110 200 118 226 118" />
+      <path d="M172 134 C196 134 200 126 226 126" /><path d="M172 134 C196 134 200 142 226 142" />
+      <path d="M172 158 C196 158 200 150 226 150" /><path d="M172 158 C196 158 200 166 226 166" />
+    </g>
+  </g>
+  <g fill="#ffffff">
+    <circle cx="112" cy="46" r="5.5" /><circle cx="112" cy="90" r="5.5" /><circle cx="112" cy="134" r="5.5" />
+  </g>
+  <g fill="#ffffff" fill-opacity=".8">
+    <circle cx="172" cy="22" r="4" /><circle cx="172" cy="46" r="4" /><circle cx="172" cy="70" r="4" /><circle cx="172" cy="78" r="4" />
+    <circle cx="172" cy="102" r="4" /><circle cx="172" cy="110" r="4" /><circle cx="172" cy="134" r="4" /><circle cx="172" cy="158" r="4" />
+  </g>
+  <g fill="#ffffff" fill-opacity=".55">
+    <circle cx="226" cy="14" r="3" /><circle cx="226" cy="30" r="3" /><circle cx="226" cy="38" r="3" /><circle cx="226" cy="54" r="3" />
+    <circle cx="226" cy="62" r="3" /><circle cx="226" cy="86" r="3" /><circle cx="226" cy="94" r="3" /><circle cx="226" cy="118" r="3" />
+    <circle cx="226" cy="126" r="3" /><circle cx="226" cy="142" r="3" /><circle cx="226" cy="150" r="3" /><circle cx="226" cy="166" r="3" />
+  </g>
+  <!-- threats looming at the ends of some branches -->
+  <g filter="url(#ap-glow)">
+    <use href="#ap-warn-sign" transform="translate(244 30)" />
+    <use href="#ap-warn-sign" transform="translate(244 86) scale(1.15)">
+      <animate attributeName="opacity" values="1;.45;1" dur="1.8s" repeatCount="indefinite" />
+    </use>
+    <use href="#ap-warn-sign" transform="translate(244 126)" />
+    <use href="#ap-warn-sign" transform="translate(244 166) scale(.85)" />
+  </g>
+
+  <!-- Re-checking a choice already made -->
+  <path d="M60 72 C70 52 96 54 104 70" fill="none" stroke="#7fd0ff" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="4 3" />
+  <path d="M100 110 C92 128 66 126 60 108" fill="none" stroke="#7fd0ff" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="4 3" marker-end="url(#ap-head)" />
+
+  <!-- Where one stands -->
+  <circle cx="44" cy="90" r="16" fill="none" stroke="#ffffff" stroke-opacity=".5" stroke-width="1.4">
+    <animate attributeName="r" values="12;22;12" dur="2.4s" repeatCount="indefinite" />
+    <animate attributeName="stroke-opacity" values=".7;0;.7" dur="2.4s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="44" cy="90" r="11" fill="#ffffff" stroke="#ff7a7a" stroke-width="3" />
+  <circle cx="44" cy="90" r="4" fill="#ff7a7a" />
+
+  <!-- The racing pulse -->
+  <path d="M262 100 H272 L277 88 L283 114 L289 76 L295 106 L299 100 H312" fill="none" stroke="#ffe17a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" filter="url(#ap-glow)" />
+</svg>
