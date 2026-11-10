@@ -25,10 +25,6 @@
     <path d="M80 46 L46 86 M46 86 L30 124 M46 86 L62 124 M114 86 L130 124" />
   </g>
   <path d="M80 46 L114 86 L98 124" fill="none" stroke="#3C5488" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-  <circle cx="114" cy="86" r="10" fill="none" stroke="#E64B35" stroke-width="1.6" opacity="0">
-    <animate attributeName="r" values="10;10;19;19" keyTimes="0;0.3;0.56;1" dur="4s" repeatCount="indefinite" />
-    <animate attributeName="opacity" values="0;0.85;0;0" keyTimes="0;0.3;0.56;1" dur="4s" repeatCount="indefinite" />
-  </circle>
   <circle cx="46" cy="86" r="10" fill="#ffffff" stroke="#8491B4" stroke-width="1.6" stroke-dasharray="3 2.2" />
   <circle cx="114" cy="86" r="10" fill="#E64B35" />
   <g fill="#F1F3F7" stroke="#C3CAD6" stroke-width="1.4">
@@ -37,10 +33,6 @@
   <use href="#pe-star" transform="translate(98 124.5) scale(9)" fill="#F2B134" stroke="#C98A12" stroke-width="0.09" />
   <circle cx="80" cy="46" r="10" fill="#3C5488" />
   <text x="80" y="49.8" font-size="10.5" font-weight="700" fill="#ffffff" text-anchor="middle">S</text>
-  <!-- the agent, pausing at the choice where it plans -->
-  <circle r="4" fill="#ffffff" stroke="#1f2430" stroke-width="1.8">
-    <animateMotion path="M80 46 L114 86 L98 124" keyPoints="0;0.545;0.545;1;1" keyTimes="0;0.3;0.56;0.8;1" calcMode="linear" dur="4s" repeatCount="indefinite" />
-  </circle>
   <!-- planning effort at each step -->
   <text x="22" y="150" font-size="10" fill="#555d6b">Planning effort</text>
   <rect x="39" y="176" width="14" height="6" rx="1.5" fill="#C3CAD6" />
@@ -73,10 +65,6 @@
     <path d="M295.6 111.7 L279 131.6" stroke="#E64B35" marker-end="url(#pe-red)" />
     <path d="M265.6 132.3 L249 112.4" stroke="#E64B35" marker-end="url(#pe-red)" />
   </g>
-  <circle cx="242" cy="104" r="10" fill="none" stroke="#00A087" stroke-width="1.6" opacity="0">
-    <animate attributeName="r" values="10;10;20;20" keyTimes="0;0.6;0.9;1" dur="3s" repeatCount="indefinite" />
-    <animate attributeName="opacity" values="0;0.9;0;0" keyTimes="0;0.6;0.9;1" dur="3s" repeatCount="indefinite" />
-  </circle>
   <g fill="#F1F3F7" stroke="#C3CAD6" stroke-width="1.4">
     <circle cx="212" cy="68" r="8" /><circle cx="212" cy="140" r="8" /><circle cx="272" cy="68" r="8" /><circle cx="272" cy="140" r="8" />
   </g>
@@ -84,13 +72,6 @@
   <circle cx="182" cy="104" r="10" fill="#3C5488" />
   <text x="182" y="107.8" font-size="10.5" font-weight="700" fill="#ffffff" text-anchor="middle">S</text>
   <use href="#pe-star" transform="translate(302 104.5) scale(11)" fill="#F2B134" stroke="#C98A12" stroke-width="0.08" />
-  <!-- the two predictions, arriving together -->
-  <circle r="3.6" fill="#4DBBD5" stroke="#ffffff" stroke-width="1.4">
-    <animateMotion path="M182 104 L212 68 L242 104" keyPoints="0;1;1" keyTimes="0;0.6;1" calcMode="linear" dur="3s" repeatCount="indefinite" />
-  </circle>
-  <circle r="3.6" fill="#E64B35" stroke="#ffffff" stroke-width="1.4">
-    <animateMotion path="M302 104 L272 140 L242 104" keyPoints="0;1;1" keyTimes="0;0.6;1" calcMode="linear" dur="3s" repeatCount="indefinite" />
-  </circle>
   <!-- key -->
   <g font-size="10" fill="#333a47">
     <path d="M178 178 H200" stroke="#4DBBD5" stroke-width="2.4" marker-end="url(#pe-blue)" />

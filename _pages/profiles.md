@@ -23,26 +23,25 @@ dog_photos: # after the lab photos, as "Lab Mascot"
 <!-- Names grouped by role, under a bar with the role's name: each core lab member with a small photo and their bio beside
      it (the photo in the bio itself is hidden here), then Lab Adventures, then collaborators and alumni as a list -->
 {% capture lab_adventures %}
-  <!-- Lab Adventures: a thin branch of blue bark down either side of the box (on windows wide enough to have room there),
-       the left one's root labelled "Lab Adventures", with a tiny leaf falling from its twigs for each photo (Dina's too).
-       Clicking a leaf shows its photo above it, and the photo opens large when clicked; on narrower windows the leaves
-       are a row here, under the heading (assets/js/lab-adventures.js draws the branches and moves the leaves) -->
+  <!-- Lab Adventures: a string of Christmas lights hung down either side of the box (on windows wide enough to have room
+       there), "Lab Adventures" written into the left one's cable, with a tiny light for each photo (Dina's too).
+       Clicking a light shows its photo above it, and the photo opens large when clicked; on narrower windows the
+       lights are a row here, under the heading (assets/js/lab-adventures.js hangs the cable and the lights) -->
   <section class="lab-adventures" aria-labelledby="lab-adventures">
     <h2 class="section-bar" id="lab-adventures">Lab Adventures</h2>
     {% assign photos = page.lab_photos | concat: page.dog_photos %}
     {% assign half = photos.size | plus: 1 | divided_by: 2 %}
-    <div class="adventure-tree">
+    <div class="adventure-lights">
       {% for side in (1..2) %}
         {% if side == 1 %}{% assign skip = 0 %}{% assign take = half %}{% else %}{% assign skip = half %}{% assign take = photos.size %}{% endif %}
-        <div class="side-col {% if side == 1 %}side-left{% else %}side-right{% endif %} adventure-col"{% if side == 1 %} data-root-label{% endif %}>
+        <div class="side-col {% if side == 1 %}side-left{% else %}side-right{% endif %} adventure-col"{% if side == 1 %} data-cable-label="Lab Adventures"{% endif %}>
           {% for photo in photos offset: skip limit: take %}
             {% assign n = forloop.index0 | plus: skip | plus: 1 %}
             {% if n > page.lab_photos.size %}{% assign word = 'Lab Mascot' %}{% assign k = n | minus: page.lab_photos.size %}{% else %}{% assign word = 'Lab Adventure' %}{% assign k = n %}{% endif %}
-            <button type="button" class="adv-leaf adv-shade-{{ n | modulo: 5 }}" data-src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" data-w="{{ photo.w }}" data-h="{{ photo.h }}" data-alt="{{ photo.alt | escape }}" data-label="{{ word }} {{ k }}" aria-label="Show {{ word }} photo {{ k }}" title="{{ word }}">
-              <svg viewBox="-12 -7 24 14" aria-hidden="true"><path class="leaf-blade" d="M-9 0 C-6 -4.6 2 -5.6 9 0 C2 5.6 -6 4.6 -9 0 Z" /><path class="leaf-vein" d="M-11.5 1 L-9 0 M-8.5 0 Q0 -0.8 8 0 M-3 -0.3 L0 -2.8 M1.5 -0.4 L4 -2.4 M-3 0.3 L0 2.8 M1.5 0.4 L4 2.4" /></svg>
+            <button type="button" class="adv-light adv-glow-{{ n | modulo: 6 }}" data-src="{{ '/assets/img/lab/' | append: photo.src | relative_url }}" data-w="{{ photo.w }}" data-h="{{ photo.h }}" data-alt="{{ photo.alt | escape }}" data-label="{{ word }} {{ k }}" aria-label="Show {{ word }} photo {{ k }}" title="{{ word }}">
+              <svg viewBox="-7 -1 14 22" aria-hidden="true"><rect class="bulb-cap" x="-2.8" y="0" width="5.6" height="5.2" rx="1.2" /><path class="bulb-glass" d="M0 4.4 C3.8 6 4.9 10.6 3.6 14.6 C2.7 17.6 1.3 19.4 0 19.4 C-1.3 19.4 -2.7 17.6 -3.6 14.6 C-4.9 10.6 -3.8 6 0 4.4 Z" /><ellipse class="bulb-shine" cx="-1.4" cy="10" rx="0.9" ry="2.6" /></svg>
             </button>
           {% endfor %}
-          {% if side == 1 %}<span class="adv-root-label">Lab Adventures</span>{% endif %}
         </div>
       {% endfor %}
     </div>
