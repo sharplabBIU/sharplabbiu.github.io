@@ -93,17 +93,18 @@
   }
 
   // A limb (the branch, a twig or a root) along a curve: points down its middle, each with its width there, tapering
-  // from w0 to w1, a little uneven, and flaring out at its foot by flare
-  function limbAlong(P, n, w0, w1, seed, flare) {
+  // from w0 to w1, a little uneven, flaring out at its foot by flare, and waving from side to side by wave
+  function limbAlong(P, n, w0, w1, seed, flare, wave) {
     var C = [];
     for (var i = 0; i <= n; i++) {
       var t = i / n;
       var p = bez(P, t);
       var d = dir(P, t);
-      var w = w0 + (w1 - w0) * t;
+      var w = w0 + (w1 - w0) * Math.pow(t, 0.85);
       if (flare && t < 0.1) w += ((0.1 - t) / 0.1) * flare;
       w *= 1 + (rnd(seed + i * 1.3) - 0.5) * 0.14;
-      C.push({ x: p[0], y: p[1], tx: d[0], ty: d[1], nx: -d[1], ny: d[0], w: w });
+      var o = wave ? wave * (Math.sin(t * Math.PI * 3.2 + seed) * 0.7 + Math.sin(t * Math.PI * 7.1 + seed * 2) * 0.3) * Math.min(1, t * 6) : 0;
+      C.push({ x: p[0] - d[1] * o, y: p[1] + d[0] * o, tx: d[0], ty: d[1], nx: -d[1], ny: d[0], w: w });
     }
     return C;
   }
@@ -169,41 +170,63 @@
       [x0 + side * W * 0.06, top],
     ];
     var N = 90;
-    var trunk = limbAlong(main, N, 11, 2.4, 17 + k * 50, 8);
+    var trunk = limbAlong(main, N, 13, 2.6, 17 + k * 50, 9, W * 0.035);
     var limbs = [trunk];
     var tips = [];
     var leafSpots = [];
 
     // Twigs, on alternate sides, reaching up and out
-    [0.18, 0.31, 0.44, 0.56, 0.68, 0.79, 0.9].forEach(function (t, j) {
-      var c = trunk[Math.round(t * N)];
-      var s = (j % 2 ? -1 : 1) * side;
-      var len = (24 + rnd(j * 3.3 + k * 5) * 22) * (1 - t * 0.35);
-      for (var tries = 0; tries < 2; tries++) {
-        var a = s * (0.8 + rnd(j * 7.1 + k) * 0.35);
-        var dx = c.tx * Math.cos(a) - c.ty * Math.sin(a);
-        var dy = c.tx * Math.sin(a) + c.ty * Math.cos(a);
-        var ex = c.x + dx * len;
-        var ey = c.y + dy * len;
-        if (ex > 12 && ex < W - 12) break;
-        s = -s; // no room on this side: the other
-      }
-      var bend = s * len * 0.12;
-      var twig = [
+    // a twig from point c, heading at angle a (radians, from c's direction), len long: its curve
+    function shoot(c, a, len, s) {
+      var dx = c.tx * Math.cos(a) - c.ty * Math.sin(a);
+      var dy = c.tx * Math.sin(a) + c.ty * Math.cos(a);
+      var bend = -s * len * 0.14; // curving up toward the light
+      return [
         [c.x, c.y],
         [c.x + dx * len * 0.35, c.y + dy * len * 0.35],
         [c.x + dx * len * 0.7 - dy * bend, c.y + dy * len * 0.7 + dx * bend],
-        [ex, ey],
+        [c.x + dx * len, c.y + dy * len + bend * 0.3],
       ];
-      limbs.push(limbAlong(twig, 14, Math.max(1.6, c.w * 0.55), 0.8, j * 13 + k * 7, 0));
-      tips.push({ x: ex, y: ey });
-      var m = bez(twig, 0.55);
-      var md = dir(twig, 0.55);
-      leafSpots.push({ x: m[0], y: m[1], a: (Math.atan2(md[1], md[0]) * 180) / Math.PI - s * 55 });
+    }
+    function inside(P) {
+      return P[3][0] > 12 && P[3][0] < W - 12;
+    }
+    // a leaf on a twig at t along it, angled off it toward side s
+    function leafOn(P, t, s, j) {
+      var m = bez(P, t);
+      var md = dir(P, t);
+      leafSpots.push({ x: m[0], y: m[1], a: (Math.atan2(md[1], md[0]) * 180) / Math.PI - s * (40 + rnd(j * 3.7) * 30) });
+    }
+    [0.16, 0.28, 0.4, 0.52, 0.63, 0.74, 0.84, 0.93].forEach(function (t, j) {
+      var c = trunk[Math.round(t * N)];
+      var s = (j % 2 ? -1 : 1) * side;
+      var len = (38 + rnd(j * 3.3 + k * 5) * 30) * (1 - t * 0.45);
+      var a = 0.85 + rnd(j * 7.1 + k) * 0.35;
+      var twig = shoot(c, s * a, len, s);
+      for (var tries = 0; !inside(twig) && tries < 6; tries++) {
+        if (tries === 0) s = -s; // no room on this side: the other
+        else len *= 0.8;
+        twig = shoot(c, s * a, len, s);
+      }
+      var C = limbAlong(twig, 16, Math.max(1.8, c.w * 0.5), 0.8, j * 13 + k * 7, 0, 0);
+      limbs.push(C);
+      tips.push({ x: twig[3][0], y: twig[3][1] });
+      leafOn(twig, 0.5, s, j + k * 20);
+      leafOn(twig, 0.8, -s, j + k * 20 + 5);
+      // every other twig forks
+      if (j % 2 === 0 && len > 26) {
+        var f = C[10];
+        var fork = shoot(f, -s * 0.6, len * 0.45, -s);
+        if (inside(fork)) {
+          limbs.push(limbAlong(fork, 10, Math.max(1.2, f.w * 0.7), 0.6, j * 17 + k * 3, 0, 0));
+          leafOn(fork, 0.95, s, j + k * 20 + 9);
+        }
+      }
     });
     // and leaves at the top
     var tt = trunk[N];
-    leafSpots.push({ x: tt.x, y: tt.y, a: -70 - side * 25 });
+    leafSpots.push({ x: tt.x, y: tt.y, a: -90 + side * 20 });
+    leafSpots.push({ x: tt.x, y: tt.y + 6, a: -90 - side * 50 });
 
     // Roots, spreading out at its foot
     [-1, 1].forEach(function (s, j) {
@@ -214,7 +237,7 @@
         [b.x + s * 16, b.y + 4],
         [b.x + s * (24 + j * 5), b.y + 7],
       ];
-      limbs.push(limbAlong(rootCurve, 10, 5.5, 0.8, 300 + j + k * 3, 0));
+      limbs.push(limbAlong(rootCurve, 10, 6, 0.8, 300 + j + k * 3, 0, 0));
     });
 
     var svg = document.createElementNS(NS, 'svg');
@@ -233,16 +256,16 @@
       add('path', { d: strip(C, -0.5, 0.5), fill: 'none', stroke: '#03122e', 'stroke-width': 1.6, 'stroke-linejoin': 'round' }, svg);
     });
     limbs.forEach(function (C) {
-      add('path', { d: strip(C, -0.5, 0.5), fill: '#0e3778' }, svg);
+      add('path', { d: strip(C, -0.5, 0.5), fill: '#103d84' }, svg);
     });
     // the bark: lit down one side, shaded down the other, with furrows, ridges and knots
     var bark = add('g', { 'clip-path': 'url(#' + id + ')' }, svg);
     limbs.forEach(function (C) {
-      add('path', { d: strip(C, -0.42, -0.06), fill: '#3f86de', opacity: 0.55 }, bark);
-      add('path', { d: strip(C, -0.3, -0.18), fill: '#8cc2ff', opacity: 0.35 }, bark);
-      add('path', { d: strip(C, 0.18, 0.5), fill: '#051a42', opacity: 0.6 }, bark);
+      add('path', { d: strip(C, -0.44, -0.04), fill: '#4a92ea', opacity: 0.6 }, bark);
+      add('path', { d: strip(C, -0.32, -0.16), fill: '#a6d1ff', opacity: 0.4 }, bark);
+      add('path', { d: strip(C, 0.16, 0.5), fill: '#041638', opacity: 0.65 }, bark);
     });
-    [-0.34, -0.17, 0, 0.16, 0.32].forEach(function (f, j) {
+    [-0.38, -0.24, -0.1, 0.04, 0.18, 0.32].forEach(function (f, j) {
       var dash = [];
       for (var q = 0; q < 14; q++) dash.push((4 + rnd(j * 5 + q + k * 11) * 20).toFixed(1), (1.5 + rnd(j * 7 + q * 3 + k) * 5).toFixed(1));
       add(
@@ -251,8 +274,8 @@
           d: furrow(trunk, f, j * 31 + k * 17, 0.12),
           fill: 'none',
           stroke: '#03122e',
-          'stroke-width': 0.9,
-          'stroke-opacity': 0.8,
+          'stroke-width': j % 2 ? 0.7 : 1.1,
+          'stroke-opacity': 0.85,
           'stroke-dasharray': dash.join(' '),
           'stroke-linecap': 'round',
         },
@@ -298,17 +321,13 @@
     });
     // leaves still on the branch
     leafSpots.forEach(function (l, j) {
-      add(
-        'path',
-        {
-          d: LEAF,
-          transform: 'translate(' + l.x.toFixed(1) + ' ' + l.y.toFixed(1) + ') rotate(' + l.a.toFixed(1) + ') translate(8 0) scale(' + (0.7 + rnd(j + k * 9) * 0.25).toFixed(2) + ')',
-          fill: '#1d5cbf',
-          stroke: '#0a2f6e',
-          'stroke-width': 0.7,
-        },
+      var g = add(
+        'g',
+        { transform: 'translate(' + l.x.toFixed(1) + ' ' + l.y.toFixed(1) + ') rotate(' + l.a.toFixed(1) + ') translate(8 0) scale(' + (0.75 + rnd(j + k * 9) * 0.3).toFixed(2) + ')' },
         svg
       );
+      add('path', { d: LEAF, fill: ['#3d86e4', '#4f97ee', '#3577d6'][j % 3], stroke: '#0a2f6e', 'stroke-width': 0.7 }, g);
+      add('path', { d: 'M-9 0 Q0 -0.8 8 0', fill: 'none', stroke: '#0f3f8c', 'stroke-width': 0.6 }, g);
     });
 
     col.insertBefore(svg, col.firstChild);

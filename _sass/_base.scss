@@ -2429,13 +2429,14 @@ $leaf-blues: (#b6e3ff, #8fd0ff, #a9c8ff, #9ee6f7, #c6defc);
     top: 0;
     left: 0;
     z-index: 1;
-    width: 34px;
-    height: 34px;
-    margin: -17px 0 0 -17px;
+    width: 36px;
+    height: 36px;
+    margin: -18px 0 0 -18px;
 
     svg {
-      width: 21px;
-      height: 12px;
+      width: 24px;
+      height: 14px;
+      filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55)); // a soft glow: the leaves that can be clicked
     }
   }
 
