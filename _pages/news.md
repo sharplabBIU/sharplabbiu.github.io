@@ -7,8 +7,7 @@ nav_order: 2
 split: true # boards side by side, in place of the one content box
 # Lab news on bulletin boards by theme, each in its own box (with a border of its own colour) that scrolls. Newest first
 # on each board. Fields: year; main (the line in bold; linked if url is given); journal (in italics); sub (a second,
-# plainer line); impact and acceptance (a journal's impact factor and acceptance rate, shown small; leave either out
-# where it is not known)
+# plainer line). A board with latest_only: true shows only its items from its most recent year
 boards:
   - title: Top publications
     color: "#7fd0ff"
@@ -17,29 +16,22 @@ boards:
         main: Delaying planning with cognitive maps
         url: https://osf.io/preprints/psyarxiv/8ubct_v1
         journal: Psychological Science (accepted)
-        acceptance: 5.9% # Sage Journals, Psychological Science home page; impact factor: not found on the publisher's pages
       - year: 2026
         main: Reinforcement learning and repetitive negative thinking
         url: https://osf.io/preprints/psyarxiv/cu46a_v1
         journal: Clinical Psychological Science (accepted)
-        acceptance: 14.3% # Sage Journals, Clinical Psychological Science home page; impact factor: not found on the publisher's pages
       - year: 2026
         main: Anxiety and biased task generalization
         url: https://onlinelibrary.wiley.com/doi/full/10.1111/tops.70051
         journal: Topics in Cognitive Science
-        impact: 3.3 # Wiley Online Library journal page
-        acceptance: 42% # Wiley Online Library journal page
       - year: 2024
         main: Anxiety involves altered planning
         url: https://www.sciencedirect.com/science/article/pii/S1364661324002924
         journal: Trends in Cognitive Sciences
-        impact: 20.3 # Cell Press journal page; no acceptance rate published (mostly invited reviews)
       - year: 2024
         main: Forward and backward prediction in planning
         url: https://rdcu.be/dNWDV
         journal: Nature Human Behaviour
-        impact: 18.8 # nature.com journal metrics, 2025
-        acceptance: 4–6% # the journal's editor, 2022
   - title: Awards and grants
     color: "#ffd36e"
     items:
@@ -57,6 +49,7 @@ boards:
         sub: Paul Sharp
   - title: New members
     color: "#5df0a4"
+    latest_only: true # only the newest year's members show
     items:
       - year: 2026
         main: Daniel Toledano
@@ -81,7 +74,7 @@ boards:
     items:
       - year: 2026
         main: Computational Psychiatry Conference, Yale
-        sub: The lab presented its work
+        sub: Adi Pizanti gave a poster spotlight talk
       - year: 2025
         main: Symposium chair, Computational Psychiatry Conference
         sub: Paul Sharp, on cognitive map biases in psychopathology
@@ -93,20 +86,19 @@ box; each board scrolls on its own -->
   {% for board in page.boards %}
     <section class="news-board" style="--board: {{ board.color }}" aria-labelledby="board-{{ forloop.index }}">
       <h2 class="section-bar" id="board-{{ forloop.index }}">{{ board.title }}</h2>
+      {% assign items = board.items %}
+      {% if board.latest_only %}
+        {% assign latest = board.items | map: 'year' | sort | last %}
+        {% assign items = board.items | where: 'year', latest %}
+      {% endif %}
       <ul class="board-list">
-        {% for item in board.items %}
+        {% for item in items %}
           <li class="board-item">
             <span class="bi-year">{{ item.year }}</span>
             <div class="bi-body">
               <p class="bi-main">{% if item.url %}<a href="{{ item.url }}" target="_blank" rel="noopener">{{ item.main }}</a>{% else %}{{ item.main }}{% endif %}</p>
               {% if item.journal %}<p class="bi-journal">{{ item.journal }}</p>{% endif %}
               {% if item.sub %}<p class="bi-sub">{{ item.sub }}</p>{% endif %}
-              {% if item.impact or item.acceptance %}
-                <p class="bi-metrics">
-                  {% if item.impact %}<span>Impact factor <b>{{ item.impact }}</b></span>{% endif %}
-                  {% if item.acceptance %}<span>Acceptance rate <b>{{ item.acceptance }}</b></span>{% endif %}
-                </p>
-              {% endif %}
             </div>
           </li>
         {% endfor %}

@@ -40,9 +40,9 @@
     });
     return best;
   }
-  // Not while a photo is open large, or over a card that opened beside a whiteboard
+  // Not over a card that opened beside a whiteboard
   function busy(t) {
-    return document.body.classList.contains('pv-open') || (t && t.closest && t.closest('.glass-note'));
+    return t && t.closest && t.closest('.glass-note');
   }
   window.addEventListener(
     'wheel',

@@ -756,82 +756,6 @@ footer.fixed-bottom {
   }
 }
 
-// Photo viewer (assets/js/lab-adventures.js): a Lab Adventures photo large over the darkened page, with a close button
-// and arrows to the previous and next photos
-.photo-viewer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem 4rem;
-  background-color: rgba(0, 0, 0, 0.88);
-
-  &[hidden] {
-    display: none;
-  }
-
-  figure {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 100%;
-  }
-
-  img {
-    max-width: 100%;
-    max-height: unquote("calc(100vh - 8rem)");
-    object-fit: contain;
-    border-radius: 4px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  }
-
-  button {
-    position: absolute;
-    padding: 0.5rem 1rem;
-    border: 0;
-    background: none;
-    color: #fffafa;
-    font-size: 2.6rem;
-    line-height: 1;
-    cursor: pointer;
-    opacity: 0.8;
-
-    &:hover,
-    &:focus-visible {
-      opacity: 1;
-    }
-  }
-
-  .pv-close {
-    top: 0.5rem;
-    right: 0.75rem;
-  }
-
-  .pv-prev,
-  .pv-next {
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .pv-prev {
-    left: 0.5rem;
-  }
-
-  .pv-next {
-    right: 0.5rem;
-  }
-}
-
-body.pv-open {
-  overflow: hidden;
-}
-
 // Base text about 15% larger than the 1rem default
 body {
   font-size: 1.15rem;
@@ -870,13 +794,13 @@ body {
 
   .research-intro {
     display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
+    align-items: center;
+    gap: 1.75rem;
   }
 
-  // Each project's figure: a journal-style schematic on white (assets/img/projects)
+  // Each project's figure: a journal-style schematic on white (assets/img/projects), centred beside the text
   .research-diagram {
-    flex: 0 0 320px;
+    flex: 0 0 224px;
     max-width: 100%;
 
     img {
@@ -913,7 +837,7 @@ body {
   .research-areas .research-diagram {
     flex: none;
     width: 100%;
-    max-width: 360px;
+    max-width: 252px;
   }
 }
 
@@ -2168,10 +2092,6 @@ $box-pad-side-phone: 0.65rem;
     p + p {
       margin-top: 0.15rem;
     }
-
-    .bi-metrics {
-      margin-top: 0.35rem;
-    }
   }
 
   .bi-main {
@@ -2195,22 +2115,6 @@ $box-pad-side-phone: 0.65rem;
     font-size: 0.92rem;
     line-height: 1.4;
     opacity: 0.85;
-  }
-
-  .bi-metrics {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.2rem 1rem;
-    font-size: 0.82rem;
-    opacity: 0.8;
-
-    span {
-      color: inherit; // (not the site's colour for all spans)
-    }
-
-    b {
-      font-weight: 700;
-    }
   }
 }
 
@@ -2454,26 +2358,19 @@ $light-colours: (#ffc94d, #ff7a7a, #5df0a4, #7fd0ff, #c39bff, #ff8fc8);
   letter-spacing: 0.06em;
 }
 
-// The photo out of a light, just above it; a click on it opens it large
+// The photo out of a light: beside the box, just above or below its light (clicks go through it to the lights); in the
+// box, on a line of its own under the row of lights. Only a click on its light puts it away
 .adv-reveal {
   position: fixed;
   z-index: 1030;
+  box-sizing: border-box;
   margin: 0;
   padding: 7px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 14px;
   background-color: $card-color;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-  color: $white-color;
-
-  &[hidden] {
-    display: none;
-  }
-
-  a {
-    display: block;
-    cursor: zoom-in;
-  }
+  pointer-events: none;
 
   img {
     display: block;
@@ -2482,27 +2379,18 @@ $light-colours: (#ffc94d, #ff7a7a, #5df0a4, #7fd0ff, #c39bff, #ff8fc8);
     border-radius: 9px;
   }
 
-  .adv-close {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    width: 28px;
-    height: 28px;
-    padding: 0;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 50%;
-    background-color: $card-color;
-    color: $white-color;
-    font-size: 1.1rem;
-    line-height: 26px;
-    text-align: center;
-    cursor: pointer;
-
-    &:hover,
-    &:focus-visible {
-      background-color: lighten($card-color, 10%);
-    }
+  &.in-row {
+    position: static;
+    max-width: 100%;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   }
+}
+
+.adv-reveal-row {
+  display: flex;
+  flex: 0 0 100%;
+  justify-content: center;
+  padding-top: 0.5rem;
 }
 
 // Subsection headings (the years on the news page, the papers page's two lists, the team's roles, the projects and the

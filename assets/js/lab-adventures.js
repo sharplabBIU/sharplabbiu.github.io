@@ -1,9 +1,7 @@
 // Lab Adventures (team page): a string of Christmas lights hung almost straight down either side of the box (on windows
 // with room there), with "Lab Adventures" written into the left one's cable at the top and a tiny light for each photo.
-// Nothing moves. A click on a light shows its photo above it; the photo opens large when clicked, and the ×, a click
-// elsewhere or Escape puts it away. In the box (narrower windows) the lights are a row and open their photos large
-// straight away. Large, the arrows (or the arrow keys) step through the photos, and a click beside the photo, the close
-// button or Escape closes it
+// Nothing moves. A click on a light shows its photo (beside the box, just above or below the light; in the box, on
+// narrower windows, under the row of lights), and only another click on that light puts it away
 (function () {
   'use strict';
 
@@ -14,57 +12,6 @@
   // The same test as $side-cols in _sass/_base.scss: whether the lights hang either side of the box
   var wide = window.matchMedia('(min-width: 1240px) and (min-height: 560px)');
   var NS = 'http://www.w3.org/2000/svg';
-
-  function label(i) {
-    return lights[i].getAttribute('data-label');
-  }
-
-  // ---- A photo large over the page ----
-
-  var view = document.createElement('div');
-  view.className = 'photo-viewer';
-  view.setAttribute('role', 'dialog');
-  view.setAttribute('aria-modal', 'true');
-  view.setAttribute('aria-label', 'Photo');
-  view.hidden = true;
-  view.innerHTML =
-    '<figure><img alt=""></figure>' +
-    '<button type="button" class="pv-close" aria-label="Close">×</button>' +
-    '<button type="button" class="pv-prev" aria-label="Previous photo">‹</button>' +
-    '<button type="button" class="pv-next" aria-label="Next photo">›</button>';
-  document.body.appendChild(view);
-
-  var big = view.querySelector('img');
-  var at = 0;
-  var opener = null;
-
-  function show(i) {
-    at = (i + lights.length) % lights.length;
-    big.src = lights[at].getAttribute('data-src');
-    big.alt = lights[at].getAttribute('data-alt');
-  }
-
-  function openLarge(i, from) {
-    opener = from;
-    show(i);
-    view.hidden = false;
-    document.body.classList.add('pv-open');
-    view.querySelector('.pv-close').focus();
-  }
-
-  function closeLarge() {
-    view.hidden = true;
-    document.body.classList.remove('pv-open');
-    big.removeAttribute('src');
-    if (opener && document.body.contains(opener)) opener.focus({ preventScroll: true });
-  }
-
-  view.addEventListener('click', function (e) {
-    e.stopPropagation(); // (so it does not also close the photo out of a light)
-    if (e.target.closest('.pv-prev')) show(at - 1);
-    else if (e.target.closest('.pv-next')) show(at + 1);
-    else if (e.target !== big) closeLarge();
-  });
 
   // ---- The cable and its lights ----
 
@@ -144,119 +91,106 @@
     var last = end - 26;
     mine.forEach(function (light, j) {
       var y = mine.length > 1 ? first + ((last - first) * j) / (mine.length - 1) : (first + last) / 2;
-      var out = j % 2 ? 1 : -1;
+      var side = j % 2 ? 1 : -1;
       light.style.left = xAt(y).toFixed(1) + 'px';
       light.style.top = y.toFixed(1) + 'px';
-      light.style.transform = 'rotate(' + (out * (38 + rnd(j * 3.1 + k * 7) * 14)).toFixed(1) + 'deg)';
+      light.style.transform = 'rotate(' + (side * (38 + rnd(j * 3.1 + k * 7) * 14)).toFixed(1) + 'deg)';
     });
   }
 
   function hangAll() {
-    hide();
     cols.forEach(hang);
   }
 
-  // ---- The photo out of a light, above it ----
+  // ---- The photo out of a light ----
 
-  var out = null; // { i, light, fig }
+  var out = null; // { i, light, box (what to take away), wide }
 
-  function reveal(i, keyed) {
-    var light = lights[i];
+  // Beside the box: the photo just above its light, or below it where there is more room there, as big as the room
+  // allows (up to a little wider than the column), and never over the light itself
+  function place(fig, light, pw, ph) {
     var r = light.getBoundingClientRect();
+    var col = light.parentNode.getBoundingClientRect();
+    var nav = document.getElementById('navbar');
+    var top0 = (nav ? nav.getBoundingClientRect().bottom : 0) + 10;
+    var above = r.top - 6 - top0;
+    var below = window.innerHeight - 10 - (r.bottom + 6);
+    var F = 16; // the frame round the photo (padding and border), across and down
+    var w = Math.round(Math.min(330, Math.max(210, col.width + 70)));
+    var h = ((w - F) * ph) / pw + F;
+    var up = h <= above || above >= below;
+    var room = up ? above : below;
+    if (h > room) {
+      w = Math.max(120, Math.floor(((room - F) * pw) / ph + F));
+      h = ((w - F) * ph) / pw + F;
+    }
+    fig.style.width = w + 'px';
+    var cx = r.left + r.width / 2;
+    fig.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, cx - w / 2)) + 'px';
+    fig.style.top = (up ? r.top - 6 - h : r.bottom + 6) + 'px';
+  }
+
+  function reveal(i) {
+    var light = lights[i];
     var pw = +light.getAttribute('data-w');
     var ph = +light.getAttribute('data-h');
     var fig = document.createElement('figure');
     fig.className = 'adv-reveal';
-    fig.setAttribute('role', 'dialog');
-    fig.setAttribute('aria-label', label(i));
-    fig.innerHTML =
-      '<button type="button" class="adv-close" aria-label="Close the photo">×</button>' +
-      '<a title="Show it large"><img alt=""></a>';
-    var link = fig.querySelector('a');
-    link.href = light.getAttribute('data-src');
-    var img = fig.querySelector('img');
+    var img = document.createElement('img');
     img.src = light.getAttribute('data-src');
     img.alt = light.getAttribute('data-alt');
     img.width = pw;
     img.height = ph;
-
-    // As wide as the column and a little more, and no taller than the window leaves room for
-    var col = light.parentNode.getBoundingClientRect();
-    var nav = document.getElementById('navbar');
-    var top0 = (nav ? nav.getBoundingClientRect().bottom : 0) + 10;
-    var room = window.innerHeight - top0 - 10;
-    var w = Math.round(Math.min(330, Math.max(210, col.width + 70)));
-    fig.style.width = w + 'px';
-    fig.style.visibility = 'hidden';
-    document.body.appendChild(fig);
-    var h = fig.offsetHeight;
-    if (h > room) {
-      var extra = h - (w - 14) * (ph / pw); // the padding
-      w = Math.max(150, Math.floor(((room - extra) * pw) / ph + 14));
-      fig.style.width = w + 'px';
-      h = fig.offsetHeight;
+    fig.appendChild(img);
+    var box = fig;
+    if (wide.matches) {
+      place(fig, light, pw, ph);
+      document.body.appendChild(fig);
+    } else {
+      // on a line of its own under the lights, no taller than most of the window
+      var row = light.closest('.adventure-lights');
+      box = document.createElement('div');
+      box.className = 'adv-reveal-row';
+      fig.classList.add('in-row');
+      box.appendChild(fig);
+      row.appendChild(box);
+      fig.style.width = Math.round(Math.min(440, (window.innerHeight * 0.6 * pw) / ph + 16)) + 'px';
     }
-    // Its bottom just above the light, over the light's column
-    var cx = r.left + r.width / 2;
-    var left = Math.max(8, Math.min(window.innerWidth - w - 8, cx - w / 2));
-    var top = Math.max(top0, Math.min(window.innerHeight - h - 10, r.top - h - 6));
-    fig.style.left = left + 'px';
-    fig.style.top = top + 'px';
-    fig.style.visibility = '';
     light.classList.add('is-on');
-
-    out = { i: i, light: light, fig: fig };
-    fig.addEventListener('click', function (e) {
-      e.stopPropagation();
-      if (e.target.closest('.adv-close')) {
-        hide(true);
-      } else if (e.target.closest('a')) {
-        e.preventDefault();
-        openLarge(i, link);
-      }
-    });
-    if (keyed) link.focus({ preventScroll: true });
+    light.setAttribute('aria-expanded', 'true');
+    out = { i: i, light: light, box: box, wide: wide.matches };
   }
 
-  function hide(focus) {
+  function hide() {
     if (!out) return;
-    var o = out;
+    out.box.remove();
+    out.light.classList.remove('is-on');
+    out.light.setAttribute('aria-expanded', 'false');
     out = null;
-    o.fig.remove();
-    o.light.classList.remove('is-on');
-    if (focus) o.light.focus({ preventScroll: true });
   }
 
+  // A click on a light shows its photo (in place of any other), and a second click on it puts it away
   lights.forEach(function (light, i) {
-    light.addEventListener('click', function (e) {
-      e.stopPropagation();
+    light.setAttribute('aria-expanded', 'false');
+    light.addEventListener('click', function () {
       var again = out && out.i === i;
-      hide(false);
-      if (again) return; // a second click on the light puts its photo away
-      if (wide.matches) reveal(i, e.detail === 0);
-      else openLarge(i, light);
+      hide();
+      if (!again) reveal(i);
     });
   });
 
-  document.addEventListener('click', function () {
-    hide(false);
-  });
-
-  document.addEventListener('keydown', function (e) {
-    if (!view.hidden) {
-      if (e.key === 'Escape') closeLarge();
-      else if (e.key === 'ArrowLeft') show(at - 1);
-      else if (e.key === 'ArrowRight') show(at + 1);
-    } else if (e.key === 'Escape' && out) {
-      hide(true);
-    }
-  });
-
+  // A new window size hangs the lights again, and puts a photo that is out back beside its light
   var timer;
   window.addEventListener('resize', function () {
-    hide(false);
     clearTimeout(timer);
-    timer = setTimeout(hangAll, 150);
+    timer = setTimeout(function () {
+      hangAll();
+      if (out && (out.wide || wide.matches)) {
+        var i = out.i;
+        hide();
+        reveal(i);
+      }
+    }, 150);
   });
 
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(hangAll);

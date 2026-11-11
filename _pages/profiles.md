@@ -25,8 +25,9 @@ dog_photos: # after the lab photos, as "Lab Mascot"
 {% capture lab_adventures %}
   <!-- Lab Adventures: a string of Christmas lights hung straight down either side of the box (on windows wide enough to have room
        there), "Lab Adventures" written into the left one's cable, with a tiny light for each photo (Dina's too).
-       Clicking a light shows its photo above it, and the photo opens large when clicked; on narrower windows the
-       lights are a row here, under the heading (assets/js/lab-adventures.js hangs the cable and the lights) -->
+       Clicking a light shows its photo beside it, and clicking the light again puts it away; on narrower windows the
+       lights are a row here, under the heading, and the photo shows under them (assets/js/lab-adventures.js hangs the
+       cable and the lights) -->
   <section class="lab-adventures" aria-labelledby="lab-adventures">
     <h2 class="section-bar" id="lab-adventures">Lab Adventures</h2>
     {% assign photos = page.lab_photos | concat: page.dog_photos %}
