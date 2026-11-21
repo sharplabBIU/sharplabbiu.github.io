@@ -1,8 +1,8 @@
 # Google Scholar citation counts, keyed by Scholar article id (google_scholar_id in the .bib files).
 # Updated automatically by .github/workflows/update-citations.yml via bin/update_citations.py.
-updated: 2026-11-17
+updated: 2026-11-21
 counts:
-  'MAUkC_7iAq8C': 349
+  'MAUkC_7iAq8C': 348
   'u5HHmVD_uO8C': 225
   '1taIhTC69MYC': 116
   'kw52XkFRtyQC': 64
