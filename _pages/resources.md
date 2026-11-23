@@ -46,7 +46,7 @@ Our code and task materials are on the [Sharp Lab GitHub](https://github.com/sha
 - [_The Neverending Story_](https://en.wikipedia.org/wiki/The_Neverending_Story) by Michael Ende
 - [_Nisim VeNifla'ot_ (ניסים ונפלאות)](https://www.goodreads.com/book/show/59013908) by Leah Goldberg
 
-### Paul's greatest achievement
+### Paul's complicated relationship to mathematics
 {: .section-bar}
 
-In 11th grade, Paul scored 109.5 on the AMC 12, about the 99.9th percentile in mathematical reasoning among U.S. high school students ([official results, page 100](/assets/pdf/AMC_Competition_12.pdf#page=102)).
+In 11th grade, Paul scored 109.5 on the AMC 12 ([official results, page 100](/assets/pdf/AMC_Competition_12.pdf#page=102)). He took a long and windy road before returning to his love of math when he started his post-doc at UCL in computational psychiatry. Before that, his intellectual journey included studying finance, political science and environmental law.
