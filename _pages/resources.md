@@ -45,3 +45,15 @@ Our code and task materials are on the [Sharp Lab GitHub](https://github.com/sha
 - [_Kafka on the Shore_](https://en.wikipedia.org/wiki/Kafka_on_the_Shore) by Haruki Murakami
 - [_The Neverending Story_](https://en.wikipedia.org/wiki/The_Neverending_Story) by Michael Ende
 - [_Nisim VeNifla'ot_ (ניסים ונפלאות)](https://www.goodreads.com/book/show/59013908) by Leah Goldberg
+
+### Paul's greatest achievement
+{: .section-bar}
+
+In February 2007, as an 11th grader at Lower Moreland High School in Huntingdon Valley, Pennsylvania, Paul scored **109.5** out of 150
+on the AMC 12B, the Mathematical Association of America's national high school mathematics competition. Of the 33,489 students who
+took it, the average score was 73.1 (71.2 among 11th graders), and only about 1 in 30 scored higher than Paul: roughly the top 4%
+nationally. It put him on the competition's national Student Honor Roll, which recognizes the top 5% of scorers, and cleared the
+cutoff of 100 to qualify for the American Invitational Mathematics Examination (AIME), the next round on the road to the USA
+Mathematical Olympiad.
+
+- [The official 2007 AMC results (PDF)](/assets/pdf/AMC_Competition_12.pdf#page=102): Paul is on the Student Honor Roll on page 100, under Pennsylvania
